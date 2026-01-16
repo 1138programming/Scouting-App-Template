@@ -1,0 +1,182 @@
+package com.scouting_app_template;
+
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.BLUETOOTH;
+import static android.Manifest.permission.BLUETOOTH_ADMIN;
+import static android.Manifest.permission.BLUETOOTH_ADVERTISE;
+import static android.Manifest.permission.BLUETOOTH_CONNECT;
+import static android.Manifest.permission.BLUETOOTH_SCAN;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
+import android.widget.Toast;
+
+import com.scouting_app_template.Bluetooth.BluetoothConnectedThread;
+import com.scouting_app_template.Fragments.ArchiveFragment;
+import com.scouting_app_template.Fragments.AutonFragment;
+import com.scouting_app_template.Fragments.DataFragment;
+import com.scouting_app_template.Fragments.FragmentTransManager;
+import com.scouting_app_template.Fragments.PostMatchFragment;
+import com.scouting_app_template.Fragments.PreAutonFragment;
+import com.scouting_app_template.Fragments.TeleopFragment;
+import com.scouting_app_template.JSON.FileSaver;
+import com.scouting_app_template.JSON.UpdateScoutingInfo;
+import com.scouting_app_template.Fragments.Popups.AutonStart;
+import com.scouting_app_template.Fragments.Popups.ConfirmSubmit;
+import com.scouting_app_template.Fragments.Popups.TeleopStart;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.UUID;
+
+public class MainActivity extends AppCompatActivity {
+    public static final String TAG = "Team1138ScoutingApp";
+    public static final UUID MY_UUID = UUID.fromString("0007EA11-1138-1000-5465-616D31313338");
+    @SuppressLint("StaticFieldLeak")
+    public static Context context;
+    public BluetoothConnectedThread connectedThread;
+    public static FragmentTransManager ftm;
+    public ArrayList<DataFragment> fragments = new ArrayList<>();
+    public PreAutonFragment preAuton = new PreAutonFragment();
+    public AutonStart autonStart = new AutonStart();
+    public AutonFragment auton = new AutonFragment();
+    public TeleopStart teleopStart = new TeleopStart();
+    public TeleopFragment teleop = new TeleopFragment();
+    public PostMatchFragment postMatch = new PostMatchFragment();
+    public ConfirmSubmit confirmSubmit = new ConfirmSubmit();
+    public ArchiveFragment archiveFragment = new ArchiveFragment();
+    public PermissionManager permissionManager = new PermissionManager(this);
+    public final static String datapointEventValue = "Event";
+    public final static String defaultTimestamp = "0";
+    private boolean connectivity = false;
+
+    /**
+     * @Info: Updates the variable that tracks Bluetooth Connectivity
+     */
+    public void setConnectivity(boolean connectivity) {
+        this.connectivity = connectivity;
+        updateConnectivity();
+    }
+
+    /**
+     * @Info: called when GUI element needs to be updated. This is not a switch,
+     * it looks at {@code connectivity} to make sure GUI element is accurate.
+     */
+    private void updateConnectivity() {
+        runOnUiThread(() -> preAuton.setBtStatus(connectivity));
+    }
+
+    private void addFragmentsToManager() {
+        fragments.add(preAuton);
+        fragments.add(auton);
+        fragments.add(autonStart);
+        fragments.add(teleop);
+        fragments.add(teleopStart);
+        fragments.add(postMatch);
+        fragments.add(confirmSubmit);
+        fragments.add(archiveFragment);
+
+        ftm = new FragmentTransManager(fragments);
+    }
+
+    private void addPermissions() {
+        permissionManager.addPermission(BLUETOOTH_CONNECT);
+        permissionManager.addPermission(BLUETOOTH_SCAN);
+        permissionManager.addPermission(ACCESS_FINE_LOCATION);
+        permissionManager.addPermission(BLUETOOTH);
+        permissionManager.addPermission(BLUETOOTH_ADMIN);
+        permissionManager.addPermission(BLUETOOTH_ADVERTISE);
+    }
+
+    public void setConnectedThread(BluetoothConnectedThread connectedThread) {
+        this.connectedThread = connectedThread;
+    }
+    public void updateTabletInformation() {
+        if(!connectivity) return;
+        byte[] info = preAuton.getTabletInformation();
+        connectedThread.sendInformation(info, 2);
+    }
+    public void updateBtScoutingInfo() {
+        if (!Objects.isNull(connectedThread) && !connectedThread.checkLists()) {
+            connectedThread.updateLists();
+        }
+        ArrayList<ArrayList<CharSequence>> splitData = (new UpdateScoutingInfo()).getSplitFileData();
+        if (!splitData.isEmpty() && !splitData.get(0).isEmpty()) {
+            preAuton.setScoutingInfo(splitData);
+        }
+    }
+    public JSONObject getBaseJSON() throws JSONException {
+        return preAuton.getBaseJSON();
+    }
+    public void recreateFragments() {
+        fragments.clear();
+        preAuton = new PreAutonFragment();
+        fragments.add(preAuton);
+        auton = new AutonFragment();
+        fragments.add(auton);
+        autonStart = new AutonStart();
+        fragments.add(autonStart);
+        teleop = new TeleopFragment();
+        fragments.add(teleop);
+        teleopStart = new TeleopStart();
+        fragments.add(teleopStart);
+        postMatch = new PostMatchFragment();
+        fragments.add(postMatch);
+        confirmSubmit = new ConfirmSubmit();
+        fragments.add(confirmSubmit);
+        archiveFragment = new ArchiveFragment();
+        fragments.add(archiveFragment);
+
+        ftm = new FragmentTransManager(fragments);
+    }
+    public void sendMatchData() {
+        JSONObject jsonFile = new JSONObject();
+        JSONArray jsonArray;
+        JSONArray jsonCollection = new JSONArray();
+        try {
+            for (DataFragment fragment : fragments) {
+                jsonArray = fragment.getFragmentMatchData();
+                Log.d(TAG, jsonArray.toString());
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    jsonCollection.put(jsonArray.getJSONObject(i));
+                }
+            }
+
+            jsonFile.put("scoutingData",jsonCollection);
+        }
+        catch (JSONException e) {
+            Log.e(TAG, "Failed to compile match data from each fragment to send.\n" + e);
+            return;
+        }
+
+        FileSaver.saveFile(jsonFile.toString(), preAuton.getFileTitle());
+
+        if(connectivity) {
+            connectedThread.sendInformation(jsonFile.toString().getBytes(StandardCharsets.UTF_8), 1);
+        }
+        else {
+            Toast.makeText(this, "Data has not been uploaded because bluetooth isn't connected", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        context = this;
+        addFragmentsToManager();
+
+        addPermissions();
+        permissionManager.requestPermissions();
+    }
+}
