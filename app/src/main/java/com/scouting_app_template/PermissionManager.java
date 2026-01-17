@@ -30,14 +30,14 @@ public class PermissionManager {
     }
 
     /**
-     * @Info: Adds a permission to the permission tracker
+     * Adds a permission to the permission tracker
      */
     public void addPermission(String permission) {
         permissionTracker.put(permission, false);
     }
 
     /**
-     * @Info: Should be called once to request all permissions added
+     * Should be called once to request all permissions added
      * to the {@code PermissionManager}. Returns {@code boolean} value
      * that communicates whether all permissions have been granted.
      */
@@ -46,16 +46,16 @@ public class PermissionManager {
     }
 
     /**
-     * @Info: Called to check if app has a certain permission
+     * Called to check if app has a certain permission
      * @return Returns if you have the permission or not
      */
-    public boolean checkPermission(String permission) {
-        return ActivityCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
+    public boolean permissionNotGranted(String permission) {
+        return ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED;
     }
     private String[] getNeededPermissions() {
         ArrayList<String> neededPermissions = new ArrayList<>();
         for(String permission : permissionTracker.keySet()) {
-            if(!checkPermission(permission)) {
+            if(permissionNotGranted(permission)) {
                 neededPermissions.add(permission);
             }
         }

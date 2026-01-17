@@ -81,18 +81,17 @@ public class PreAutonFragment extends DataFragment {
         teamNumberSpinner = new Spinner(datapointID, binding.teamNumberSpinner, false);
         teamNumberSpinner.setOnClickFunction(() -> ((MainActivity) requireContext()).updateTabletInformation());
 
-        RadioCheckboxGroup startingPositionGroup = new RadioCheckboxGroup(-1);
-            datapointID = 1;
+        RadioCheckboxGroup startingPositionGroup = new RadioCheckboxGroup(1);
+            datapointID = -1;
         RadioGroup startingPosition = new RadioGroup(datapointID, binding.startingLocation);
             startingPositionGroup.addElement(startingPosition);
-            undoStack.addElement(startingPosition);
 
-            datapointID = 2;
         Checkbox noShowCheckbox = new Checkbox(datapointID, binding.noShowCheckbox, true, "noShow");
             startingPositionGroup.addElement(noShowCheckbox);
-            undoStack.addElement(noShowCheckbox);
 
             startingPositionGroup.elementSelected(noShowCheckbox);
+
+            undoStack.addElement(startingPositionGroup);
 
         datapointID = Objects.requireNonNull(nonDataIDs.get(NonDataEnum.PreAutonNext));
         Button nextButton = new Button(datapointID, binding.nextButton);
@@ -102,7 +101,7 @@ public class PreAutonFragment extends DataFragment {
 
         datapointID = Objects.requireNonNull(nonDataIDs.get(NonDataEnum.ArchiveHamburger));
         ImageButton button = new ImageButton(datapointID, binding.archiveButton);
-        button.setOnClickFunction(() -> ftm.preAutonMenu());
+//        button.setOnClickFunction(() -> ftm.preAutonMenu());
         button.setOnClickFunction(this::scanCode);
     }
 

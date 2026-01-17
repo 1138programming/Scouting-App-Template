@@ -7,32 +7,24 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
-import com.scouting_app_template.Fragments.DataFragment;
-import com.scouting_app_template.JSON.JSONManager;
-import com.scouting_app_template.MainActivity;
+import com.scouting_app_template.Fragments.AutonFragment;
 import com.scouting_app_template.UIElements.Button;
 
-import static com.scouting_app_template.MainActivity.defaultTimestamp;
 import static com.scouting_app_template.MainActivity.ftm;
 import static com.scouting_app_template.DatapointIDs.DatapointIDs.nonDataIDs;
 
 import com.scouting_app_template.DatapointIDs.NonDataEnum;
 import com.scouting_app_template.databinding.AutonStartFragmentBinding;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.util.Calendar;
-import java.util.Locale;
 import java.util.Objects;
 
-public class AutonStart extends DataFragment {
+public class AutonStart extends Fragment {
     AutonStartFragmentBinding binding;
-    private String autonStartTimestamp;
 
     public AutonStart() {
-        super();
+
     }
 
     @Override
@@ -52,25 +44,13 @@ public class AutonStart extends DataFragment {
         Button startButton = new Button(
                 Objects.requireNonNull(nonDataIDs.get(NonDataEnum.AutonStartStart)), binding.startButton);
         startButton.setOnClickFunction(() -> ftm.autonStartStart());
-        startButton.setOnClickFunction(this::autonStart);
+        startButton.setOnClickFunction(() -> ((AutonFragment) Objects.requireNonNull(
+                getParentFragmentManager().findFragmentByTag("AutonFragment"))).startAuton());
     }
 
     @NonNull
     @Override
     public String toString() {
         return "AutonStartFragment";
-    }
-
-    public void autonStart() {
-        if(autonStartTimestamp == null) {
-            autonStartTimestamp = String.valueOf(Calendar.getInstance(Locale.US).getTimeInMillis());
-        }
-    }
-
-    @Override
-    public JSONArray getFragmentMatchData() throws JSONException {
-        JSONManager manager = new JSONManager(((MainActivity) MainActivity.context).getBaseJSON());
-        manager.addStart(2, Objects.requireNonNullElse(autonStartTimestamp, defaultTimestamp));
-        return manager.getJSON();
     }
 }

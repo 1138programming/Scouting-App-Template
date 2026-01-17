@@ -34,6 +34,9 @@
         <string name="start_far">Far</string>
     <string name="no_show_title">Team didn\'t show up</string>
     <string name="hamburger_desc">Menu Button</string>
+    <string name="menu_connect_title">Connect</string>
+    <string name="menu_archive_title">Archive</string>
+    <string name="menu_reset_title">Reset</string>
 
     <!-- Auton Popup -->
     <string name="auton_start_prompt">Press when Auton starts</string>

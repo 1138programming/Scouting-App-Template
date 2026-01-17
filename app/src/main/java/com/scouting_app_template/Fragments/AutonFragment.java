@@ -1,5 +1,6 @@
 package com.scouting_app_template.Fragments;
 
+import static com.scouting_app_template.DatapointIDs.DatapointIDs.nonDataIDs;
 import static com.scouting_app_template.MainActivity.ftm;
 
 import android.os.Bundle;
@@ -10,10 +11,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.scouting_app_template.DatapointIDs.NonDataEnum;
+import com.scouting_app_template.UIElements.Button;
 import com.scouting_app_template.databinding.AutonFragmentBinding;
 
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Objects;
 
 public class AutonFragment extends DataFragment {
     AutonFragmentBinding binding;
@@ -34,6 +38,15 @@ public class AutonFragment extends DataFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        int datapointID = Objects.requireNonNull(nonDataIDs.get(NonDataEnum.AutonBack));
+        Button backButton = new Button(datapointID, binding.backButton);
+        backButton.setOnClickFunction(() -> ftm.autonBack());
+
+        datapointID = Objects.requireNonNull(nonDataIDs.get(NonDataEnum.AutonNext));
+        Button nextButton = new Button(datapointID, binding.nextButton);
+        nextButton.setOnClickFunction(() -> ftm.autonNext());
+        nextButton.setOnClickFunction(() -> ((TeleopFragment) Objects.requireNonNull(
+                getParentFragmentManager().findFragmentByTag("TeleopFragment"))).teleopOpen());
     }
 
     public void autonOpen() {

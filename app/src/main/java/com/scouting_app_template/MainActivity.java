@@ -12,6 +12,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.widget.Toast;
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     public static Context context;
     public BluetoothConnectedThread connectedThread;
     public static FragmentTransManager ftm;
-    public ArrayList<DataFragment> fragments = new ArrayList<>();
+    public ArrayList<Fragment> fragments = new ArrayList<>();
     public PreAutonFragment preAuton = new PreAutonFragment();
     public AutonStart autonStart = new AutonStart();
     public AutonFragment auton = new AutonFragment();
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean connectivity = false;
 
     /**
-     * @Info: Updates the variable that tracks Bluetooth Connectivity
+     * Updates the variable that tracks Bluetooth Connectivity
      */
     public void setConnectivity(boolean connectivity) {
         this.connectivity = connectivity;
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * @Info: called when GUI element needs to be updated. This is not a switch,
+     * Called when GUI element needs to be updated. This is not a switch,
      * it looks at {@code connectivity} to make sure GUI element is accurate.
      */
     private void updateConnectivity() {
@@ -144,11 +145,13 @@ public class MainActivity extends AppCompatActivity {
         JSONArray jsonArray;
         JSONArray jsonCollection = new JSONArray();
         try {
-            for (DataFragment fragment : fragments) {
-                jsonArray = fragment.getFragmentMatchData();
-                Log.d(TAG, jsonArray.toString());
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    jsonCollection.put(jsonArray.getJSONObject(i));
+            for (Fragment fragment : fragments) {
+                if(fragment instanceof DataFragment) {
+                    jsonArray = ((DataFragment)fragment).getFragmentMatchData();
+                    Log.d(TAG, jsonArray.toString());
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        jsonCollection.put(jsonArray.getJSONObject(i));
+                    }
                 }
             }
 

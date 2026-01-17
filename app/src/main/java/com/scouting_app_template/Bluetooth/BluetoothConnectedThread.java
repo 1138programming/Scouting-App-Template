@@ -1,6 +1,7 @@
 package com.scouting_app_template.Bluetooth;
 
 import static com.scouting_app_template.MainActivity.TAG;
+import static com.scouting_app_template.MainActivity.context;
 
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
@@ -28,7 +29,7 @@ public class BluetoothConnectedThread extends Thread {
     private int timeoutMs = 10000;
     private final byte[] byteAck = ack.getBytes(StandardCharsets.UTF_8);
     /**
-     * @Info:
+     * 
      */
     public BluetoothConnectedThread(BluetoothSocket socket) {
         this.socket = socket;
@@ -56,9 +57,10 @@ public class BluetoothConnectedThread extends Thread {
 
     @Override
     public void run() {
-        ((MainActivity)MainActivity.context).setConnectedThread(this);
-        ((MainActivity)MainActivity.context).setConnectivity(true);
-        ((MainActivity)MainActivity.context).updateBtScoutingInfo();
+        MainActivity main = (MainActivity)context;
+        main.setConnectedThread(this);
+        main.setConnectivity(true);
+        main.runOnUiThread(main::updateBtScoutingInfo);
     }
 
     private void resetByteBuffer(int capacity) {
@@ -67,7 +69,7 @@ public class BluetoothConnectedThread extends Thread {
     }
 
     /**
-     * @Info: Only reads and stores the next message in {@code buffer}. {@code numBytes}
+     * Only reads and stores the next message in {@code buffer}. {@code numBytes}
      * is used to set the length of {@code buffer}, not to read that amount of bytes.
      * */
     private void read(int numBytes) throws CommErrorException {
@@ -87,7 +89,7 @@ public class BluetoothConnectedThread extends Thread {
         }
     }
     /**
-     * @Info: Called to read specifically an {@code "ack"} and
+     * Called to read specifically an {@code "ack"} and
      * throws an error if {@code read()} fails or ack is incorrect
      */
     private void readAck() throws CommErrorException {
@@ -99,7 +101,7 @@ public class BluetoothConnectedThread extends Thread {
         }
     }
     /**
-     * @Info: Called to read specifically an {@code "ack"} and
+     * Called to read specifically an {@code "ack"} and
      * throws an error if {@code read()} fails or ack is incorrect
      */
     private void sendAck() throws CommErrorException {
@@ -107,7 +109,7 @@ public class BluetoothConnectedThread extends Thread {
     }
 
     /**
-     * @Info: Just write a {@code byte[]} to central computer
+     * Just write a {@code byte[]} to central computer
      */
     private void write(byte[] bytes) throws CommErrorException{
         try {
@@ -127,7 +129,7 @@ public class BluetoothConnectedThread extends Thread {
      *     -2 - update lists of teams and matches <p>
      *      {@code IMPORTANT} numbers -1 and -2 shouldn't be used with this function.
      *             Use {@link BluetoothConnectedThread#checkLists()}  and {@link BluetoothConnectedThread#updateLists()} instead as needed
-     * @Info: sends information
+     * sends information
      *
      */
     public void sendInformation(byte[] bytes, int code) {
@@ -145,7 +147,6 @@ public class BluetoothConnectedThread extends Thread {
         }
     }
     /**
-     * @Info:
      * @return Returns true if the data is up to date with the central computer
      * and false if there is a difference;
      */
@@ -175,7 +176,7 @@ public class BluetoothConnectedThread extends Thread {
         }
     }
     /**
-     * @Info:
+     * 
      */
     public void updateLists() {
         int listLength;
@@ -198,16 +199,21 @@ public class BluetoothConnectedThread extends Thread {
 
     }
 
+    /**
+     * @param timeoutMs time in ms for how long to set the timeout
+     */
     public void setTimeoutMs(int timeoutMs) {
         this.timeoutMs = timeoutMs;
     }
 
-    //used to flush stream and close socket
+    /**
+     * used to flush stream and close socket
+     */
     public void cancel() {
         try {
             outputStream.flush();
             socket.close();
-            ((MainActivity)MainActivity.context).setConnectivity(false);
+            ((MainActivity) context).setConnectivity(false);
         }
         catch(IOException e) {
             Log.e(TAG, "failed flush stream and close socket: ", e);
