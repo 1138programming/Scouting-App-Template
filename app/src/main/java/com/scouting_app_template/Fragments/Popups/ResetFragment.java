@@ -15,24 +15,24 @@ import androidx.fragment.app.Fragment;
 
 import com.scouting_app_template.DatapointIDs.NonDataEnum;
 import com.scouting_app_template.Fragments.AutonFragment;
-import com.scouting_app_template.Fragments.DataFragment;
-import com.scouting_app_template.Fragments.TeleopFragment;
+import com.scouting_app_template.Fragments.PreAutonFragment;
 import com.scouting_app_template.MainActivity;
 import com.scouting_app_template.UIElements.Button;
-import com.scouting_app_template.databinding.TeleopStartFragmentBinding;
+import com.scouting_app_template.databinding.ConfirmResetFragmentBinding;
 
 import java.util.Objects;
 
-public class TeleopStart extends Fragment {
-    TeleopStartFragmentBinding binding;
+public class ResetFragment extends Fragment {
+    ConfirmResetFragmentBinding binding;
 
-    public TeleopStart() {
+    public ResetFragment() {
 
     }
 
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.binding = TeleopStartFragmentBinding.inflate(inflater,container,false);
+        this.binding = ConfirmResetFragmentBinding.inflate(inflater,container,false);
         return this.binding.getRoot();
     }
 
@@ -40,21 +40,20 @@ public class TeleopStart extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Button backButton = new Button(
-                Objects.requireNonNull(nonDataIDs.get(NonDataEnum.TeleopStartBack)), binding.backButton);
-        backButton.setOnClickFunction(() -> ftm.teleopStartBack());
+        Button cancelButton = new Button(
+                Objects.requireNonNull(nonDataIDs.get(NonDataEnum.ResetCancel)), binding.cancelButton);
+        cancelButton.setOnClickFunction(() -> ftm.resetCancel());
 
         Button startButton = new Button(
-                Objects.requireNonNull(nonDataIDs.get(NonDataEnum.TeleopStartStart)), binding.startButton);
-        startButton.setOnClickFunction(((MainActivity)context)::teleopStart);
-        startButton.setOnClickFunction(() -> ftm.teleopStartStart());
-        startButton.setOnClickFunction(() -> ((TeleopFragment) Objects.requireNonNull(
-                getParentFragmentManager().findFragmentByTag("TeleopFragment"))).startTeleop());
+                Objects.requireNonNull(nonDataIDs.get(NonDataEnum.ResetConfirm)), binding.confirmButton);
+        startButton.setOnClickFunction(((PreAutonFragment) Objects.requireNonNull(
+                getParentFragmentManager().findFragmentByTag("PreAutonFragment")))::decrementMatchIndex);
+        startButton.setOnClickFunction(((MainActivity)context)::recreateFragments);
     }
 
     @NonNull
     @Override
     public String toString() {
-        return "TeleopStartFragment";
+        return "ConfirmResetFragment";
     }
 }

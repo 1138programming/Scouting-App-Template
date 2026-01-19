@@ -10,8 +10,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.scouting_app_template.Fragments.AutonFragment;
+import com.scouting_app_template.MainActivity;
 import com.scouting_app_template.UIElements.Button;
 
+import static com.scouting_app_template.MainActivity.context;
 import static com.scouting_app_template.MainActivity.ftm;
 import static com.scouting_app_template.DatapointIDs.DatapointIDs.nonDataIDs;
 
@@ -43,6 +45,7 @@ public class AutonStart extends Fragment {
 
         Button startButton = new Button(
                 Objects.requireNonNull(nonDataIDs.get(NonDataEnum.AutonStartStart)), binding.startButton);
+        startButton.setOnClickFunction(((MainActivity)context)::autonStart);
         startButton.setOnClickFunction(() -> ftm.autonStartStart());
         startButton.setOnClickFunction(() -> ((AutonFragment) Objects.requireNonNull(
                 getParentFragmentManager().findFragmentByTag("AutonFragment"))).startAuton());

@@ -70,11 +70,11 @@
             app:layout_constraintTop_toBottomOf="@+id/redoButton" />
 
         <Button
-            android:id="@+id/submitButton"
+            android:id="@+id/nextButton"
             android:layout_width="240sp"
             android:layout_height="120sp"
             android:backgroundTint="@color/chaminade_orange"
-            android:text="@string/submit_button_title"
+            android:text="@string/next_button_title"
             android:textColor="@color/background_default"
             android:textSize="48sp"
             app:layout_constraintBottom_toBottomOf="parent"

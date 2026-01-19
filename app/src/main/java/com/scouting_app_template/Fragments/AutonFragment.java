@@ -63,8 +63,8 @@ public class AutonFragment extends DataFragment {
         this.autonStart = Calendar.getInstance(Locale.US).getTimeInMillis();
     }
 
-    public String getAutonStart() {
-        return this.autonStart.toString();
+    public long getAutonStart() {
+        return this.autonStart;
     }
 
     @NonNull

@@ -25,6 +25,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ListView
+            android:id="@+id/submissionList"
+            android:layout_width="750sp"
+            android:layout_height="900sp"
+            app:layout_constraintBottom_toTopOf="@+id/closeArchive"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mainTitle" />
+
         <Button
             android:id="@+id/closeArchive"
             android:layout_width="300sp"
@@ -37,6 +46,5 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

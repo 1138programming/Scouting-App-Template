@@ -39,8 +39,8 @@ public class PostMatchFragment extends DataFragment {
         Button backButton = new Button(datapointID, binding.returnToTeleop);
         backButton.setOnClickFunction(() -> ftm.postMatchBack());
 
-        datapointID = Objects.requireNonNull(nonDataIDs.get(NonDataEnum.PostMatchBack));
-        Button submitButton = new Button(datapointID, binding.returnToTeleop);
+        datapointID = Objects.requireNonNull(nonDataIDs.get(NonDataEnum.PostMatchSubmit));
+        Button submitButton = new Button(datapointID, binding.submitButton);
         submitButton.setOnClickFunction(() -> ftm.matchSubmit());
     }
 

@@ -13,17 +13,21 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.scouting_app_template.DatapointIDs.NonDataEnum;
+import com.scouting_app_template.Fragments.ArchiveFragment;
 import com.scouting_app_template.Fragments.AutonFragment;
 import com.scouting_app_template.Fragments.DataFragment;
 import com.scouting_app_template.UIElements.Button;
+import com.scouting_app_template.databinding.ArchiveConfirmSubmitBinding;
 import com.scouting_app_template.databinding.ArchiveFragmentBinding;
 import com.scouting_app_template.databinding.AutonStartFragmentBinding;
+import com.scouting_app_template.databinding.ConfirmSubmitFragmentBinding;
 
+import java.io.File;
 import java.util.Objects;
 
 public class ArchiveConfirm extends Fragment {
 
-    ArchiveFragmentBinding binding;
+    ArchiveConfirmSubmitBinding binding;
 
     public ArchiveConfirm() {
 
@@ -31,25 +35,27 @@ public class ArchiveConfirm extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.binding = ArchiveFragmentBinding.inflate(inflater,container,false);
+        this.binding = ArchiveConfirmSubmitBinding.inflate(inflater,container,false);
         return this.binding.getRoot();
     }
 
-//    @Override
-//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//
-//        Button backButton = new Button(
-//                Objects.requireNonNull(nonDataIDs.get(NonDataEnum.AutonStartBack)), binding.backButton);
-//        backButton.setOnClickFunction(() -> ftm.autonStartBack());
-//
-//        Button startButton = new Button(
-//                Objects.requireNonNull(nonDataIDs.get(NonDataEnum.AutonStartStart)), binding.startButton);
-//        startButton.setOnClickFunction(() -> ftm.autonStartStart());
-//        startButton.setOnClickFunction(() -> ((AutonFragment) Objects.requireNonNull(
-//                getParentFragmentManager().findFragmentByTag("AutonFragment"))).startAuton());
-//    }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
+        Button backButton = new Button(
+                Objects.requireNonNull(nonDataIDs.get(NonDataEnum.AutonStartBack)), binding.cancelButton);
+        backButton.setOnClickFunction(() -> ftm.archiveSubmitCancel());
+
+        Button submitButton = new Button(
+                Objects.requireNonNull(nonDataIDs.get(NonDataEnum.AutonStartStart)), binding.submitButton);
+        submitButton.setOnClickFunction(() -> ((ArchiveFragment) Objects.requireNonNull(
+                getParentFragmentManager().findFragmentByTag("ArchiveFragment"))).submitFile());
+    }
+
+    public void setFileName(String fileName) {
+        binding.fileName.setText(fileName);
+    }
 
     @NonNull
     @Override

@@ -1,5 +1,7 @@
 package com.scouting_app_template.Fragments;
 
+import static com.scouting_app_template.MainActivity.context;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -12,10 +14,10 @@ import java.util.Objects;
 
 public class FragmentTransManager {
     private FragmentTransaction ft;
-    private final FragmentManager fm = ((MainActivity)MainActivity.context).getSupportFragmentManager();
+    private final FragmentManager fm = ((MainActivity) context).getSupportFragmentManager();
 
     public FragmentTransManager(ArrayList<Fragment> fragments) {
-        ((MainActivity)MainActivity.context).setContentView(R.layout.activity_main);
+        ((MainActivity) context).setContentView(R.layout.activity_main);
 
         ft = fm.beginTransaction();
         for (Fragment fragment : fragments) {
@@ -25,7 +27,7 @@ public class FragmentTransManager {
         for(int i = 1; i < fragments.size(); i++) {
             ft.hide(fragments.get(i));
         }
-        ft.commit();
+        ft.commitNow();
     }
 
     private void showFragment(String tag) {
@@ -40,13 +42,14 @@ public class FragmentTransManager {
         ft = fm.beginTransaction();
         hideFragment("PreAutonFragment");
         showFragment("AutonFragment");
-        ft.commit();
+        ft.commitNow();
+        ((MainActivity)context).updateFragments();
     }
 
     public void showAutonStart() {
         ft = fm.beginTransaction();
         showFragment("AutonStartFragment");
-        ft.commit();
+        ft.commitNow();
     }
 
     public void autonStartBack() {
@@ -54,33 +57,37 @@ public class FragmentTransManager {
         hideFragment("AutonStartFragment");
         hideFragment("AutonFragment");
         showFragment("PreAutonFragment");
-        ft.commit();
+        ft.commitNow();
+        ((MainActivity)context).updateFragments();
     }
 
     public void autonStartStart() {
         ft = fm.beginTransaction();
         hideFragment("AutonStartFragment");
-        ft.commit();
+        ft.commitNow();
+        ((MainActivity)context).updateFragments();
     }
 
     public void autonBack() {
         ft = fm.beginTransaction();
         hideFragment("AutonFragment");
         showFragment("PreAutonFragment");
-        ft.commit();
+        ft.commitNow();
+        ((MainActivity)context).updateFragments();
     }
 
     public void autonNext() {
         ft = fm.beginTransaction();
         hideFragment("AutonFragment");
         showFragment("TeleopFragment");
-        ft.commit();
+        ft.commitNow();
+        ((MainActivity)context).updateFragments();
     }
 
     public void showTeleopStart() {
         ft = fm.beginTransaction();
         showFragment("TeleopStartFragment");
-        ft.commit();
+        ft.commitNow();
     }
 
     public void teleopStartBack() {
@@ -88,59 +95,114 @@ public class FragmentTransManager {
         hideFragment("TeleopStartFragment");
         hideFragment("TeleopFragment");
         showFragment("AutonFragment");
-        ft.commit();
+        ft.commitNow();
+        ((MainActivity)context).updateFragments();
     }
 
     public void teleopStartStart() {
         ft = fm.beginTransaction();
         hideFragment("TeleopStartFragment");
-        ft.commit();
+        ft.commitNow();
+        ((MainActivity)context).updateFragments();
     }
 
     public void teleopBack() {
         ft = fm.beginTransaction();
         hideFragment("TeleopFragment");
         showFragment("AutonFragment");
-        ft.commit();
+        ft.commitNow();
+        ((MainActivity)context).updateFragments();
     }
 
     public void teleopNext() {
         ft = fm.beginTransaction();
         hideFragment("TeleopFragment");
         showFragment("PostMatchFragment");
-        ft.commit();
+        ft.commitNow();
+        ((MainActivity)context).updateFragments();
     }
 
     public void postMatchBack() {
         ft = fm.beginTransaction();
         hideFragment("PostMatchFragment");
         showFragment("TeleopFragment");
-        ft.commit();
+        ft.commitNow();
+        ((MainActivity)context).updateFragments();
     }
 
     public void matchSubmit() {
         ft = fm.beginTransaction();
         showFragment("ConfirmSubmitFragment");
-        ft.commit();
+        ft.commitNow();
     }
 
     public void confirmSubmitBack() {
         ft = fm.beginTransaction();
         hideFragment("ConfirmSubmitFragment");
-        ft.commit();
+        ft.commitNow();
+    }
+
+    public void showBlocker() {
+        ft = fm.beginTransaction();
+        showFragment("BlockerFragment");
+        ft.commitNow();
+    }
+
+    public void hideBlocker() {
+        ft = fm.beginTransaction();
+        hideFragment("BlockerFragment");
+        ft.commitNow();
     }
 
     public void preAutonMenu() {
         ft = fm.beginTransaction();
+        showFragment("MenuFragment");
+        ft.commitNow();
+    }
+
+    public void menuClose() {
+        ft = fm.beginTransaction();
+        hideFragment("MenuFragment");
+        ft.commitNow();
+    }
+
+    public void menuReset() {
+        ft = fm.beginTransaction();
+        hideFragment("MenuFragment");
+        showFragment("ConfirmResetFragment");
+        ft.commitNow();
+    }
+
+    public void resetCancel() {
+        ft = fm.beginTransaction();
+        hideFragment("ConfirmResetFragment");
+        ft.commitNow();
+    }
+
+    public void menuArchive() {
+        ft = fm.beginTransaction();
+        hideFragment("MenuFragment");
         hideFragment("PreAutonFragment");
         showFragment("ArchiveFragment");
-        ft.commit();
+        ft.commitNow();
+    }
+
+    public void archiveSubmit() {
+        ft = fm.beginTransaction();
+        showFragment("ArchiveConfirmFragment");
+        ft.commitNow();
+    }
+
+    public void archiveSubmitCancel() {
+        ft = fm.beginTransaction();
+        hideFragment("ArchiveConfirmFragment");
+        ft.commitNow();
     }
 
     public void archiveFragmentBack() {
         ft = fm.beginTransaction();
         hideFragment("ArchiveFragment");
         showFragment("PreAutonFragment");
-        ft.commit();
+        ft.commitNow();
     }
 }

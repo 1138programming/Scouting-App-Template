@@ -22,6 +22,10 @@ import com.scouting_app_template.Fragments.ArchiveFragment;
 import com.scouting_app_template.Fragments.AutonFragment;
 import com.scouting_app_template.Fragments.DataFragment;
 import com.scouting_app_template.Fragments.FragmentTransManager;
+import com.scouting_app_template.Fragments.Popups.ArchiveConfirm;
+import com.scouting_app_template.Fragments.Popups.BlockerFragment;
+import com.scouting_app_template.Fragments.Popups.MenuFragment;
+import com.scouting_app_template.Fragments.Popups.ResetFragment;
 import com.scouting_app_template.Fragments.PostMatchFragment;
 import com.scouting_app_template.Fragments.PreAutonFragment;
 import com.scouting_app_template.Fragments.TeleopFragment;
@@ -35,7 +39,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
@@ -49,16 +56,31 @@ public class MainActivity extends AppCompatActivity {
     public static FragmentTransManager ftm;
     public ArrayList<Fragment> fragments = new ArrayList<>();
     public PreAutonFragment preAuton = new PreAutonFragment();
-    public AutonStart autonStart = new AutonStart();
     public AutonFragment auton = new AutonFragment();
-    public TeleopStart teleopStart = new TeleopStart();
     public TeleopFragment teleop = new TeleopFragment();
+    public BlockerFragment blockerFragment = new BlockerFragment();
+    public AutonStart autonStart = new AutonStart();
+    public TeleopStart teleopStart = new TeleopStart();
     public PostMatchFragment postMatch = new PostMatchFragment();
     public ConfirmSubmit confirmSubmit = new ConfirmSubmit();
     public ArchiveFragment archiveFragment = new ArchiveFragment();
+    public ArchiveConfirm archiveConfirmSubmit = new ArchiveConfirm();
+    public MenuFragment menuFragment = new MenuFragment();
+    public ResetFragment resetFragment = new ResetFragment();
     public PermissionManager permissionManager = new PermissionManager(this);
-    public final static String datapointEventValue = "Event";
-    public final static String defaultTimestamp = "0";
+    private enum gameState {
+        preAuton,
+        autonStarted,
+        autonStopped,
+        teleopStarted,
+        postMatch
+    }
+    private gameState currentState = gameState.preAuton;
+    public static final int autonLengthMs = 20000;
+    public static final int teleopLengthMs = 140000;
+    public static final int timeBufferMs = 3000;
+    public static final String datapointEventValue = "";
+    public static final String defaultTimestamp = "0";
     private boolean connectivity = false;
 
     /**
@@ -80,12 +102,16 @@ public class MainActivity extends AppCompatActivity {
     private void addFragmentsToManager() {
         fragments.add(preAuton);
         fragments.add(auton);
-        fragments.add(autonStart);
         fragments.add(teleop);
+        fragments.add(blockerFragment);
+        fragments.add(autonStart);
         fragments.add(teleopStart);
         fragments.add(postMatch);
-        fragments.add(confirmSubmit);
         fragments.add(archiveFragment);
+        fragments.add(archiveConfirmSubmit);
+        fragments.add(confirmSubmit);
+        fragments.add(resetFragment);
+        fragments.add(menuFragment);
 
         ftm = new FragmentTransManager(fragments);
     }
@@ -121,14 +147,16 @@ public class MainActivity extends AppCompatActivity {
     }
     public void recreateFragments() {
         fragments.clear();
-        preAuton = new PreAutonFragment();
+        preAuton = new PreAutonFragment(preAuton.getScouterIndex(), preAuton.getMatchIndex()+1);
         fragments.add(preAuton);
         auton = new AutonFragment();
         fragments.add(auton);
-        autonStart = new AutonStart();
-        fragments.add(autonStart);
         teleop = new TeleopFragment();
         fragments.add(teleop);
+        blockerFragment = new BlockerFragment();
+        fragments.add(blockerFragment);
+        autonStart = new AutonStart();
+        fragments.add(autonStart);
         teleopStart = new TeleopStart();
         fragments.add(teleopStart);
         postMatch = new PostMatchFragment();
@@ -137,8 +165,26 @@ public class MainActivity extends AppCompatActivity {
         fragments.add(confirmSubmit);
         archiveFragment = new ArchiveFragment();
         fragments.add(archiveFragment);
+        archiveConfirmSubmit = new ArchiveConfirm();
+        fragments.add(archiveConfirmSubmit);
+        menuFragment = new MenuFragment();
+        fragments.add(menuFragment);
+        resetFragment = new ResetFragment();
+        fragments.add(resetFragment);
 
         ftm = new FragmentTransManager(fragments);
+    }
+    public void sendSavedData(File file) {
+        if(connectivity) {
+            try {
+                connectedThread.sendInformation(Files.readAllBytes(file.toPath()), 1);
+            } catch (IOException e) {
+                Log.e(TAG, "failed to read from file to submit match");
+            }
+        }
+        else {
+            Toast.makeText(this,"not connected to Bluetooth", Toast.LENGTH_SHORT).show();
+        }
     }
     public void sendMatchData() {
         JSONObject jsonFile = new JSONObject();
@@ -170,6 +216,36 @@ public class MainActivity extends AppCompatActivity {
         else {
             Toast.makeText(this, "Data has not been uploaded because bluetooth isn't connected", Toast.LENGTH_LONG).show();
         }
+    }
+
+    public long getCurrStartTime() {
+        switch(currentState) {
+            case autonStarted:
+                return auton.getAutonStart();
+            case teleopStarted:
+                return teleop.getTeleopStart();
+            default:
+                Log.e(TAG, "Tried to get time while game is not active.");
+                return -1;
+        }
+    }
+
+    public void updateFragments() {
+        if((auton.isVisible() && currentState != gameState.autonStarted) ||
+                (teleop.isVisible() && currentState != gameState.teleopStarted)) {
+            ftm.showBlocker();
+        }
+        else {
+            ftm.hideBlocker();
+        }
+    }
+
+    public void autonStart() {
+        currentState = gameState.autonStarted;
+    }
+
+    public void teleopStart() {
+        currentState = gameState.teleopStarted;
     }
 
     @Override

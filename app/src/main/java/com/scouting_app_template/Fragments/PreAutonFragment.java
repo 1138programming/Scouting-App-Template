@@ -2,21 +2,15 @@ package com.scouting_app_template.Fragments;
 
 import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.journeyapps.barcodescanner.ScanContract;
-import com.journeyapps.barcodescanner.ScanOptions;
-import com.scouting_app_template.Bluetooth.CaptureAct;
-import com.scouting_app_template.Bluetooth.QrBtConnThread;
 import com.scouting_app_template.MainActivity;
 import com.scouting_app_template.R;
 import com.scouting_app_template.UIElements.Button;
@@ -44,11 +38,17 @@ public class PreAutonFragment extends DataFragment {
     private Spinner matchNumberSpinner;
     private RadioGroup teamColorButtons;
     private Spinner teamNumberSpinner;
-
+    private int scouterIndex;
+    private int matchIndex;
     private ArrayList<Integer> scouterIDs = new ArrayList<>(List.of(-1));
 
     public PreAutonFragment() {
-
+        this.scouterIndex = 0;
+        this.matchIndex = 0;
+    }
+    public PreAutonFragment(int scouterIndex, int matchIndex) {
+        this.scouterIndex = scouterIndex;
+        this.matchIndex = matchIndex;
     }
 
     /* When the fragment binding is created we override the function so we
@@ -67,11 +67,19 @@ public class PreAutonFragment extends DataFragment {
         int datapointID = Objects.requireNonNull(nonDataIDs.get(NonDataEnum.ScouterName));
         scouterNameSpinner = new Spinner(datapointID, binding.nameOfScouterSpinner, true);
         scouterNameSpinner.setOnClickFunction(() -> ((MainActivity) requireContext()).updateTabletInformation());
-        
+        scouterNameSpinner.setOnClickFunction(this::updateIndices);
+        if(scouterIndex < scouterNameSpinner.getLength()) {
+            scouterNameSpinner.setIndex(scouterIndex);
+        }
+
         datapointID = Objects.requireNonNull(nonDataIDs.get(NonDataEnum.MatchNumber));
         matchNumberSpinner = new Spinner(datapointID, binding.matchNumberSpinner, false);
         matchNumberSpinner.updateSpinnerList(generateMatches());
         matchNumberSpinner.setOnClickFunction(() -> ((MainActivity) requireContext()).updateTabletInformation());
+        matchNumberSpinner.setOnClickFunction(this::updateIndices);
+        if(matchIndex < matchNumberSpinner.getLength()) {
+            matchNumberSpinner.setIndex(matchIndex);
+        }
 
         datapointID = Objects.requireNonNull(nonDataIDs.get(NonDataEnum.TeamColor));
         teamColorButtons = new RadioGroup(datapointID, binding.teamColorSwitch);
@@ -82,10 +90,12 @@ public class PreAutonFragment extends DataFragment {
         teamNumberSpinner.setOnClickFunction(() -> ((MainActivity) requireContext()).updateTabletInformation());
 
         RadioCheckboxGroup startingPositionGroup = new RadioCheckboxGroup(1);
-            datapointID = -1;
+
+        datapointID = Objects.requireNonNull(nonDataIDs.get(NonDataEnum.StartPosRadio));
         RadioGroup startingPosition = new RadioGroup(datapointID, binding.startingLocation);
             startingPositionGroup.addElement(startingPosition);
 
+        datapointID = Objects.requireNonNull(nonDataIDs.get(NonDataEnum.NoShow));
         Checkbox noShowCheckbox = new Checkbox(datapointID, binding.noShowCheckbox, true, "noShow");
             startingPositionGroup.addElement(noShowCheckbox);
 
@@ -101,8 +111,7 @@ public class PreAutonFragment extends DataFragment {
 
         datapointID = Objects.requireNonNull(nonDataIDs.get(NonDataEnum.ArchiveHamburger));
         ImageButton button = new ImageButton(datapointID, binding.archiveButton);
-//        button.setOnClickFunction(() -> ftm.preAutonMenu());
-        button.setOnClickFunction(this::scanCode);
+        button.setOnClickFunction(() -> ftm.preAutonMenu());
     }
 
     /* When the fragment is completely created, we test so see
@@ -181,6 +190,8 @@ public class PreAutonFragment extends DataFragment {
         }
 
         scouterNameSpinner.updateSpinnerList(list.get(0));
+        scouterNameSpinner.setIndex(scouterIndex);
+
         teamNumberSpinner.updateSpinnerList(list.get(2));
     }
 
@@ -198,33 +209,6 @@ public class PreAutonFragment extends DataFragment {
     public String getFileTitle() {
         return scouterNameSpinner.getValue() + " Match #"+matchNumberSpinner.getValue();
     }
-
-    public void scanCode() {
-        ScanOptions options = new ScanOptions();
-        options.setPrompt("Scan QR-Code on Computer to Connect");
-        options.setBeepEnabled(true);
-        options.setOrientationLocked(true);
-        options.setCaptureActivity(CaptureAct.class);
-        barLauncher.launch(options);
-    }
-
-    ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
-        if(result.getContents() == null) {
-            Log.e("1138 SCApp", "QR-Code empty");
-        }
-        else {
-            String contents = result.getContents();
-            String[] results = contents.split(";");
-            if(results.length == 2) {
-                String log = "MAC Address: " + results[0] + "  Port: " + results[1];
-                Log.d("1138 SCApp", log);
-                QrBtConnThread.bluetoothConnect(results[0], Integer.parseInt(results[1]));
-            }
-            else {
-                Log.e("1138 SCApp", "Error parsing QR-Code");
-            }
-        }
-    });
 
     public JSONObject getBaseJSON() throws JSONException {
         JSONObject baseJson = new JSONObject();
@@ -246,5 +230,21 @@ public class PreAutonFragment extends DataFragment {
         }
 
         return baseJson;
+    }
+    
+    private void updateIndices() {
+        this.scouterIndex = scouterNameSpinner.getSelectedIndex();
+        this.matchIndex = matchNumberSpinner.getSelectedIndex();
+    }
+    
+    public int getScouterIndex() {
+        return scouterIndex;
+    }
+
+    public int getMatchIndex() {
+        return matchIndex;
+    }
+    public void decrementMatchIndex() {
+        matchIndex--;
     }
 }

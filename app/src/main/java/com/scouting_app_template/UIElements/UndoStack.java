@@ -1,10 +1,12 @@
 package com.scouting_app_template.UIElements;
 
 import static com.scouting_app_template.MainActivity.TAG;
+import static com.scouting_app_template.MainActivity.context;
 
 import android.util.Log;
 
 import com.scouting_app_template.JSON.JSONManager;
+import com.scouting_app_template.MainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -15,7 +17,7 @@ import java.util.Locale;
 import java.util.Stack;
 
 /**
- * @Info:
+ *
  */
 public class UndoStack {
     private final Stack<UIElement> inputStack = new Stack<>();
@@ -41,7 +43,7 @@ public class UndoStack {
             addElement(element);
         }
         inputStack.add(element);
-        timestamps.add(Calendar.getInstance(Locale.US).getTimeInMillis());
+        timestamps.add((Calendar.getInstance(Locale.US).getTimeInMillis()-((MainActivity)context).getCurrStartTime()));
         redoStack = new Stack<>();
     }
 
@@ -66,7 +68,7 @@ public class UndoStack {
         return manager.getJSON();
     }
     /**
-     * @Info:
+     *
      */
     public void undo() {
         if(inputStack.isEmpty()) return;

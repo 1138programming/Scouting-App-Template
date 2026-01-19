@@ -43,8 +43,8 @@ public class TeleopFragment extends DataFragment {
         backButton.setOnClickFunction(() -> ftm.teleopBack());
 
         datapointID = Objects.requireNonNull(nonDataIDs.get(NonDataEnum.PostMatchBack));
-        Button submitButton = new Button(datapointID, binding.submitButton);
-        submitButton.setOnClickFunction(() -> ftm.matchSubmit());
+        Button submitButton = new Button(datapointID, binding.nextButton);
+        submitButton.setOnClickFunction(() -> ftm.teleopNext());
     }
 
     /**
@@ -59,8 +59,8 @@ public class TeleopFragment extends DataFragment {
     public void startTeleop() {
         this.teleopStart = Calendar.getInstance(Locale.US).getTimeInMillis();
     }
-    public String getTeleopStart() {
-        return this.teleopStart.toString();
+    public long getTeleopStart() {
+        return this.teleopStart;
     }
 
     @NonNull

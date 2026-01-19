@@ -7,7 +7,7 @@ public class UIElement {
     private final ArrayList<Runnable> onClickFunctions = new ArrayList<>();
 
     /**
-     * @Info: Base constructor for UI Elements that are going to be
+     * Base constructor for UI Elements that are going to be
      * undone or redone.
      */
     public UIElement(int datapointID) {

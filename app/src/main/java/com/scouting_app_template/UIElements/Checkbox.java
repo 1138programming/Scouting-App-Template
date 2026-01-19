@@ -53,10 +53,6 @@ public class Checkbox extends UIElement {
         else return Boolean.toString(checkbox.isChecked());
     }
 
-    /**
-     * @Info: Called by both {@link Checkbox#undo()} and {@link Checkbox#redo()} functions
-     * to update the status of the checkbox
-     */
     @Override
     public void undo() {
         if(locking) {

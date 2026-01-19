@@ -91,7 +91,7 @@ public class Button extends UIElement {
     }
 
     /**
-     * @Info: Called by {@link UndoStack} to decrease the value displayed on the button.
+     * Called by {@link UndoStack} to decrease the value displayed on the button.
      */
     @Override
     public void undo() {
@@ -100,7 +100,7 @@ public class Button extends UIElement {
     }
 
     /**
-     * @Info: Called by {@link UndoStack} to increase the value displayed on the button.
+     * Called by {@link UndoStack} to increase the value displayed on the button.
      */
     public void redo() {
         increment();
@@ -144,7 +144,7 @@ public class Button extends UIElement {
     }
 
     /**
-     * @Info: Called to increment value of the button. If the value exceeds a maximum
+     * Called to increment value of the button. If the value exceeds a maximum
      * value it remains at that value.
      * @return Returns a {@code boolean} for whether or not the button's value
      * was updated or not due to it being at max value.
@@ -166,7 +166,7 @@ public class Button extends UIElement {
     }
 
     /**
-     * @Info: Called to decrement value of the button. If the value goes below a minimum value
+     * Called to decrement value of the button. If the value goes below a minimum value
      * (zero by default), it remains at the minimum. This doesn't have a {@code boolean}
      * to track if the decrement was successful because this is only used by {@link Button#undo()}
      */

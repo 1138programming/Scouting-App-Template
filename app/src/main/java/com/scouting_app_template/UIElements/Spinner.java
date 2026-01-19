@@ -54,6 +54,12 @@ public class Spinner extends UIElement {
     public int getSelectedIndex() {
         return spinner.getSelectedItemPosition();
     }
+    public void setIndex(int index) {
+        spinner.setSelection(index);
+    }
+    public int getLength() {
+        return spinner.getCount();
+    }
 
     public void updateSpinnerList(ArrayList<CharSequence> providedList) {
         ArrayList<CharSequence> spinnerList = new ArrayList<>();
