@@ -1,7 +1,7 @@
 package com.scouting_app_template.UIElements;
 
 import static com.scouting_app_template.MainActivity.datapointEventValue;
-import static com.scouting_app_template.DatapointIDs.DatapointIDs.datapointIDs;
+import static com.scouting_app_template.DatapointIDs.DatapointIDs.reversedDatapointIDs;
 
 import android.content.res.ColorStateList;
 import android.widget.Toast;
@@ -96,7 +96,7 @@ public class Button extends UIElement {
     @Override
     public void undo() {
         decrement();
-        Toast.makeText((MainActivity.context), "Undid " + datapointIDs.get(datapointID), Toast.LENGTH_SHORT).show();
+        Toast.makeText((MainActivity.context), "Undid " + reversedDatapointIDs.get(datapointID), Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -104,7 +104,7 @@ public class Button extends UIElement {
      */
     public void redo() {
         increment();
-        Toast.makeText((MainActivity.context), "Redid " + datapointIDs.get(datapointID), Toast.LENGTH_SHORT).show();
+        Toast.makeText((MainActivity.context), "Redid " + reversedDatapointIDs.get(datapointID), Toast.LENGTH_SHORT).show();
     }
 
     /**

@@ -14,8 +14,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.scouting_app_template.DatapointIDs.NonDataEnum;
-import com.scouting_app_template.Fragments.AutonFragment;
-import com.scouting_app_template.Fragments.DataFragment;
 import com.scouting_app_template.Fragments.TeleopFragment;
 import com.scouting_app_template.MainActivity;
 import com.scouting_app_template.UIElements.Button;
@@ -46,10 +44,10 @@ public class TeleopStart extends Fragment {
 
         Button startButton = new Button(
                 Objects.requireNonNull(nonDataIDs.get(NonDataEnum.TeleopStartStart)), binding.startButton);
-        startButton.setOnClickFunction(((MainActivity)context)::teleopStart);
-        startButton.setOnClickFunction(() -> ftm.teleopStartStart());
         startButton.setOnClickFunction(() -> ((TeleopFragment) Objects.requireNonNull(
                 getParentFragmentManager().findFragmentByTag("TeleopFragment"))).startTeleop());
+        startButton.setOnClickFunction(((MainActivity)context)::teleopStart);
+        startButton.setOnClickFunction(() -> ftm.teleopStartStart());
     }
 
     @NonNull

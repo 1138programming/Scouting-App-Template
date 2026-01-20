@@ -14,7 +14,7 @@ public class Checkbox extends UIElement {
         this.checkbox = checkbox;
         this.locking = locking;
         this.undoStack = undoStack;
-        checkbox.setOnClickListener(view -> clicked());
+        checkbox.setOnClickListener(view -> this.clicked());
         if(startingState) checkbox.performClick();
     }
 
@@ -24,14 +24,14 @@ public class Checkbox extends UIElement {
         this.locking = false;
         this.undoStack = null;
         this.nameValue = name;
-        checkbox.setOnClickListener(view -> super.clicked());
+        checkbox.setOnClickListener(View1 -> this.clicked());
         if(startingState) checkbox.performClick();
     }
 
     @Override
     public void clicked() {
         Log.d(TAG, "check clicked");
-        if(!checkbox.isEnabled()) super.clicked();
+        if(checkbox.isEnabled()) super.clicked();
         if (locking) {
             if(checkbox.isChecked()) {
                 checkbox.setEnabled(false);

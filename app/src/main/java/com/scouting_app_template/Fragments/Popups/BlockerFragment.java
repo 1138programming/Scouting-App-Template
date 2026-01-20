@@ -30,7 +30,7 @@ public class BlockerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         binding.layout.setOnClickListener(View1 -> Toast.makeText(context,
-                "This part of the match is over \nplease proceed to the next section", Toast.LENGTH_LONG).show());
+                "This part of the  ", Toast.LENGTH_LONG).show());
         binding.layout.setOnClickListener(View1 -> ((MainActivity)context).updateFragments());
     }
 

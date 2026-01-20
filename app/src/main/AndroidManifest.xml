@@ -17,8 +17,8 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:label="@string/app_name"
-        android:icon="@mipmap/alt_app_logo"
-        android:roundIcon="@mipmap/alt_app_logo"
+        android:icon="@mipmap/app_logo"
+        android:roundIcon="@mipmap/app_logo"
         android:supportsRtl="false"
         android:theme="@style/Theme.ScoutingApp1138">
         <activity

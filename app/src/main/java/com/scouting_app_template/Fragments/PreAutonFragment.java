@@ -1,6 +1,5 @@
 package com.scouting_app_template.Fragments;
 
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
 
 import com.scouting_app_template.MainActivity;
 import com.scouting_app_template.R;
@@ -22,6 +22,7 @@ import com.scouting_app_template.UIElements.Spinner;
 import com.scouting_app_template.UIElements.ImageButton;
 import com.scouting_app_template.databinding.PreAutonFragmentBinding;
 
+import static com.scouting_app_template.MainActivity.context;
 import static com.scouting_app_template.MainActivity.ftm;
 import static com.scouting_app_template.DatapointIDs.DatapointIDs.nonDataIDs;
 
@@ -119,7 +120,7 @@ public class PreAutonFragment extends DataFragment {
     @Override
     public void onStart() {
         super.onStart();
-        ((MainActivity) MainActivity.context).updateBtScoutingInfo();
+        ((MainActivity) context).updateBtScoutingInfo();
     }
 
     /* Makes it so the toString() function for this class
@@ -154,13 +155,28 @@ public class PreAutonFragment extends DataFragment {
         switch(teamColorButtons.getValue()) {
             case "RED":
 //                binding.startingPosImage.setImageResource(R.drawable.TODO update path to field image);
-                binding.startingLocation.setBackgroundTintList(ColorStateList.valueOf(
-                        MainActivity.context.getColor(R.color.red)));
+
+                binding.leftStart.setBackground(AppCompatResources.getDrawable(context,R.drawable.start_toggle_red));
+                binding.leftStart.setTextColor(AppCompatResources.getColorStateList(context, R.color.red_text_toggle));
+
+                binding.middleLeftStart.setBackground(AppCompatResources.getDrawable(context,R.drawable.start_toggle_red));
+                binding.middleLeftStart.setTextColor(AppCompatResources.getColorStateList(context, R.color.red_text_toggle));
+
+                binding.rightStart.setBackground(AppCompatResources.getDrawable(context,R.drawable.start_toggle_red));
+                binding.rightStart.setTextColor(AppCompatResources.getColorStateList(context, R.color.red_text_toggle));
                 break;
             case "BLUE":
 //                binding.startingPosImage.setImageResource(R.drawable.TODO update path to field image);
-                binding.startingLocation.setBackgroundTintList(ColorStateList.valueOf(
-                        MainActivity.context.getColor(R.color.blue)));
+
+                binding.leftStart.setBackground(AppCompatResources.getDrawable(context,R.drawable.start_toggle_blue));
+                binding.leftStart.setTextColor(AppCompatResources.getColorStateList(context, R.color.blue_text_toggle));
+
+                binding.middleLeftStart.setBackground(AppCompatResources.getDrawable(context,R.drawable.start_toggle_blue));
+                binding.middleLeftStart.setTextColor(AppCompatResources.getColorStateList(context, R.color.blue_text_toggle));
+
+                binding.rightStart.setBackground(AppCompatResources.getDrawable(context,R.drawable.start_toggle_blue));
+                binding.rightStart.setTextColor(AppCompatResources.getColorStateList(context, R.color.blue_text_toggle));
+
         }
     }
 
@@ -198,11 +214,11 @@ public class PreAutonFragment extends DataFragment {
     public void setBtStatus(boolean status) {
         if(status) {
             binding.btConnectionStatus.setText(getResources().getString(R.string.connected_status_title), TextView.BufferType.NORMAL);
-            Toast.makeText(MainActivity.context, "connected", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "connected", Toast.LENGTH_LONG).show();
         }
         else {
             binding.btConnectionStatus.setText(getResources().getString(R.string.disconnected_status_title), TextView.BufferType.NORMAL);
-            Toast.makeText(MainActivity.context, "disconnected", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "disconnected", Toast.LENGTH_LONG).show();
         }
     }
 

@@ -18,6 +18,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.scouting_app_template.Bluetooth.BluetoothConnectedThread;
+import com.scouting_app_template.Extras.MatchTiming;
+import com.scouting_app_template.Extras.PermissionManager;
 import com.scouting_app_template.Fragments.ArchiveFragment;
 import com.scouting_app_template.Fragments.AutonFragment;
 import com.scouting_app_template.Fragments.DataFragment;
@@ -233,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
     public void updateFragments() {
         if((auton.isVisible() && currentState != gameState.autonStarted) ||
                 (teleop.isVisible() && currentState != gameState.teleopStarted)) {
-            ftm.showBlocker();
+            runOnUiThread(ftm::showBlocker);
         }
         else {
             ftm.hideBlocker();
@@ -242,10 +244,20 @@ public class MainActivity extends AppCompatActivity {
 
     public void autonStart() {
         currentState = gameState.autonStarted;
+        MatchTiming.scheduleRunAfterAuto(this::autonStop);
+    }
+
+    public void autonStop() {
+        currentState = gameState.autonStopped;
     }
 
     public void teleopStart() {
         currentState = gameState.teleopStarted;
+        MatchTiming.scheduleRunAfterTeleop(this::teleopStop);
+    }
+
+    public void teleopStop() {
+        currentState = gameState.postMatch;
     }
 
     @Override

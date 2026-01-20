@@ -1,4 +1,4 @@
-package com.scouting_app_template;
+package com.scouting_app_template.Extras;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -6,6 +6,8 @@ import android.content.pm.PackageManager;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.app.ActivityCompat;
+
+import com.scouting_app_template.MainActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -76,6 +76,10 @@
         <item>Shallow</item>
         <item>Park</item>
     </string-array>
+    <string-array name="slider_values">
+        <item>20</item>
+        <item>60</item>
+    </string-array>
 
     <!-- Submission Confirmation -->
     <string name="confirm_submit_title">Are you sure you want to submit?</string>
