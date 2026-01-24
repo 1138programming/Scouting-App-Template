@@ -1,16 +1,14 @@
 package com.scouting_app_template.UIElements;
 
-import static com.scouting_app_template.DatapointIDs.DatapointIDs.nonDataIDs;
 
 import android.content.res.ColorStateList;
 import android.util.Log;
 
 import static com.scouting_app_template.MainActivity.TAG;
 
-import com.scouting_app_template.DatapointIDs.NonDataEnum;
+import com.scouting_app_template.DatapointIDs.NonDataIDs;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class ButtonStack extends UIElement {
     private final android.widget.Button binding;
@@ -26,7 +24,7 @@ public class ButtonStack extends UIElement {
      * @param undoStack undoStack that will be given to each button alt
      */
     public ButtonStack(android.widget.Button binding, UndoStack undoStack) {
-        super(Objects.requireNonNull(nonDataIDs.get(NonDataEnum.ButtonStack)));
+        super(NonDataIDs.ButtonStack.getID());
         this.binding = binding;
         this.undoStack = undoStack;
     }
@@ -38,7 +36,7 @@ public class ButtonStack extends UIElement {
      * @param binding binding that will be home to all the button alts
      */
     public ButtonStack(android.widget.Button binding) {
-        super(Objects.requireNonNull(nonDataIDs.get(NonDataEnum.ButtonStack)));
+        super(NonDataIDs.ButtonStack.getID());
 
         undoStack = null;
         this.binding = binding;

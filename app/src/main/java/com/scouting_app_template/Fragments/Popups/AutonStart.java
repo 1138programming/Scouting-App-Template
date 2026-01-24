@@ -15,9 +15,8 @@ import com.scouting_app_template.UIElements.Button;
 
 import static com.scouting_app_template.MainActivity.context;
 import static com.scouting_app_template.MainActivity.ftm;
-import static com.scouting_app_template.DatapointIDs.DatapointIDs.nonDataIDs;
 
-import com.scouting_app_template.DatapointIDs.NonDataEnum;
+import com.scouting_app_template.DatapointIDs.NonDataIDs;
 import com.scouting_app_template.databinding.AutonStartFragmentBinding;
 
 import java.util.Objects;
@@ -40,11 +39,11 @@ public class AutonStart extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         Button backButton = new Button(
-                Objects.requireNonNull(nonDataIDs.get(NonDataEnum.AutonStartBack)), binding.backButton);
+                NonDataIDs.AutonStartBack.getID(), binding.backButton);
         backButton.setOnClickFunction(() -> ftm.autonStartBack());
 
         Button startButton = new Button(
-                Objects.requireNonNull(nonDataIDs.get(NonDataEnum.AutonStartStart)), binding.startButton);
+                NonDataIDs.AutonStartStart.getID(), binding.startButton);
         startButton.setOnClickFunction(() -> ((AutonFragment) Objects.requireNonNull(
                 getParentFragmentManager().findFragmentByTag("AutonFragment"))).startAuton());
         startButton.setOnClickFunction(((MainActivity)context)::autonStart);

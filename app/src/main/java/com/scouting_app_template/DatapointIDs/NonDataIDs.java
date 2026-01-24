@@ -1,6 +1,7 @@
 package com.scouting_app_template.DatapointIDs;
 
-public enum NonDataEnum {
+public enum NonDataIDs {
+    Default,
     ScouterName,
     MatchNumber,
     TeamColor,
@@ -30,6 +31,13 @@ public enum NonDataEnum {
     ConfirmSubmitCancel,
     ConfirmSubmitSubmit,
     ButtonStack,
+    ArchiveClose,
+    ArchiveCancel,
+    ArchiveConfirm,
     ResetCancel,
-    ResetConfirm
+    ResetConfirm;
+
+    public int getID() {
+        return -ordinal();
+    }
 }

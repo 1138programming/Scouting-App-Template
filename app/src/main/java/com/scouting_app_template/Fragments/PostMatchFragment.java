@@ -1,7 +1,5 @@
 package com.scouting_app_template.Fragments;
 
-import static com.scouting_app_template.DatapointIDs.DatapointIDs.datapointIDs;
-import static com.scouting_app_template.DatapointIDs.DatapointIDs.nonDataIDs;
 import static com.scouting_app_template.MainActivity.context;
 import static com.scouting_app_template.MainActivity.ftm;
 
@@ -13,8 +11,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.scouting_app_template.DatapointIDs.DatapointEnum;
-import com.scouting_app_template.DatapointIDs.NonDataEnum;
+import com.scouting_app_template.DatapointIDs.DatapointID;
+import com.scouting_app_template.DatapointIDs.NonDataIDs;
 import com.scouting_app_template.JSON.JSONManager;
 import com.scouting_app_template.MainActivity;
 import com.scouting_app_template.UIElements.Button;
@@ -24,7 +22,6 @@ import com.scouting_app_template.databinding.PostMatchFragmentBinding;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.util.Objects;
 
 public class PostMatchFragment extends DataFragment {
     private PostMatchFragmentBinding binding;
@@ -45,16 +42,13 @@ public class PostMatchFragment extends DataFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        int datapointID = Objects.requireNonNull(nonDataIDs.get(NonDataEnum.PostMatchBack));
-        Button backButton = new Button(datapointID, binding.returnToTeleop);
+        Button backButton = new Button(NonDataIDs.PostMatchBack.getID(), binding.returnToTeleop);
         backButton.setOnClickFunction(() -> ftm.postMatchBack());
 
-        datapointID = Objects.requireNonNull(nonDataIDs.get(NonDataEnum.PostMatchSubmit));
-        Button submitButton = new Button(datapointID, binding.submitButton);
+        Button submitButton = new Button(NonDataIDs.PostMatchSubmit.getID(), binding.submitButton);
         submitButton.setOnClickFunction(() -> ftm.matchSubmit());
 
-        datapointID = 67;
-        confidenceSlider = new SliderElement(datapointID, binding.confidenceSlider);
+        confidenceSlider = new SliderElement(DatapointID.scouterConfidence.getID(), binding.confidenceSlider);
     }
 
     @NonNull
@@ -68,7 +62,7 @@ public class PostMatchFragment extends DataFragment {
         JSONManager jsonManager = new JSONManager(((MainActivity)context).getBaseJSON());
         JSONArray jsonCollection = super.getFragmentMatchData();
 
-        jsonManager.addDatapoint(Objects.requireNonNull(datapointIDs.get(DatapointEnum.confidenceSlider)), confidenceSlider.getValue());
+        jsonManager.addDatapoint(DatapointID.scouterConfidence.getID(), confidenceSlider.getValue());
 
         JSONArray jsonArray = jsonManager.getJSON();
 

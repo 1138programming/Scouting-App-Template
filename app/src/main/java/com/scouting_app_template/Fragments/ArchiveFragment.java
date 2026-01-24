@@ -1,6 +1,5 @@
 package com.scouting_app_template.Fragments;
 
-import static com.scouting_app_template.DatapointIDs.DatapointIDs.nonDataIDs;
 import static com.scouting_app_template.MainActivity.TAG;
 import static com.scouting_app_template.MainActivity.context;
 import static com.scouting_app_template.MainActivity.ftm;
@@ -15,7 +14,7 @@ import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.scouting_app_template.DatapointIDs.NonDataEnum;
+import com.scouting_app_template.DatapointIDs.NonDataIDs;
 import com.scouting_app_template.Fragments.Popups.ArchiveConfirm;
 import com.scouting_app_template.MainActivity;
 import com.scouting_app_template.R;
@@ -24,7 +23,6 @@ import com.scouting_app_template.databinding.ArchiveFragmentBinding;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 
@@ -55,8 +53,7 @@ public class ArchiveFragment extends DataFragment {
             }
         }
 
-        int datapointID = Objects.requireNonNull(nonDataIDs.get(NonDataEnum.AutonBack));
-        Button backButton = new Button(datapointID, binding.closeArchive);
+        Button backButton = new Button(NonDataIDs.ArchiveClose.getID(), binding.closeArchive);
         backButton.setOnClickFunction(() -> ftm.archiveFragmentBack());
 
         File[] files = folderDir.listFiles();

@@ -1,6 +1,5 @@
 package com.scouting_app_template.Fragments.Popups;
 
-import static com.scouting_app_template.DatapointIDs.DatapointIDs.nonDataIDs;
 import static com.scouting_app_template.MainActivity.context;
 import static com.scouting_app_template.MainActivity.ftm;
 
@@ -13,8 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.scouting_app_template.DatapointIDs.NonDataEnum;
-import com.scouting_app_template.Fragments.AutonFragment;
+import com.scouting_app_template.DatapointIDs.NonDataIDs;
 import com.scouting_app_template.Fragments.PreAutonFragment;
 import com.scouting_app_template.MainActivity;
 import com.scouting_app_template.UIElements.Button;
@@ -41,11 +39,11 @@ public class ResetFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         Button cancelButton = new Button(
-                Objects.requireNonNull(nonDataIDs.get(NonDataEnum.ResetCancel)), binding.cancelButton);
+                NonDataIDs.ResetCancel.getID(), binding.cancelButton);
         cancelButton.setOnClickFunction(() -> ftm.resetCancel());
 
         Button startButton = new Button(
-                Objects.requireNonNull(nonDataIDs.get(NonDataEnum.ResetConfirm)), binding.confirmButton);
+                NonDataIDs.ResetConfirm.getID(), binding.confirmButton);
         startButton.setOnClickFunction(((PreAutonFragment) Objects.requireNonNull(
                 getParentFragmentManager().findFragmentByTag("PreAutonFragment")))::decrementMatchIndex);
         startButton.setOnClickFunction(((MainActivity)context)::recreateFragments);

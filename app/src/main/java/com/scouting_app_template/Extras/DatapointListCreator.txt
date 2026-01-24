@@ -8,19 +8,19 @@
 public class DatapointListCreator {
 
     public static void main(String[] args) {
-        printList("""
-
+        printList("reversedDatapointIDs.put(*i*, *k*);", """
 
 
         """);
     }
 
-    public static void printList(String beginning, String list) {
+    public static void printList(String format, String list) {
         list = list.replaceAll("\t", "");
         list = list.replaceAll("\n", "");
-        String[] nonDataArray = list.split(",");
-        for(int i = 0; i < nonDataArray.length; i++) {
-            String temp = beginning + nonDataArray[i] + ", -" + (i+1) + ");";
+        String[] listArray = list.split(",");
+        for(int i = 0; i < listArray.length; i++) {
+            String temp = format.replace("*i*", String.valueOf(i+1));
+            temp = temp.replace("*k*", "\"" + listArray[i] + "\"");
             System.out.println(temp);
         }
     }

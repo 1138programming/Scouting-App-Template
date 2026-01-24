@@ -3,8 +3,6 @@ package com.scouting_app_template.Fragments.Popups;
 import static com.scouting_app_template.MainActivity.context;
 import static com.scouting_app_template.MainActivity.ftm;
 
-import android.content.ComponentName;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,10 +19,8 @@ import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 import com.scouting_app_template.Bluetooth.CaptureAct;
 import com.scouting_app_template.Bluetooth.QrBtConnThread;
-import com.scouting_app_template.MainActivity;
 import com.scouting_app_template.databinding.MenuDropdownBinding;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class MenuFragment extends Fragment {

@@ -1,6 +1,5 @@
 package com.scouting_app_template.Fragments.Popups;
 
-import static com.scouting_app_template.DatapointIDs.DatapointIDs.nonDataIDs;
 import static com.scouting_app_template.MainActivity.context;
 import static com.scouting_app_template.MainActivity.ftm;
 
@@ -13,13 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.scouting_app_template.DatapointIDs.NonDataEnum;
-import com.scouting_app_template.Fragments.TeleopFragment;
+import com.scouting_app_template.DatapointIDs.NonDataIDs;
 import com.scouting_app_template.MainActivity;
 import com.scouting_app_template.UIElements.Button;
 import com.scouting_app_template.databinding.ConfirmSubmitFragmentBinding;
-
-import java.util.Objects;
 
 public class ConfirmSubmit extends Fragment {
     ConfirmSubmitFragmentBinding binding;
@@ -40,11 +36,11 @@ public class ConfirmSubmit extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         Button cancelButton = new Button(
-                Objects.requireNonNull(nonDataIDs.get(NonDataEnum.TeleopStartBack)), binding.cancelButton);
+                NonDataIDs.ConfirmSubmitCancel.getID(), binding.cancelButton);
         cancelButton.setOnClickFunction(() -> ftm.confirmSubmitBack());
 
         Button startButton = new Button(
-                Objects.requireNonNull(nonDataIDs.get(NonDataEnum.TeleopStartStart)), binding.submitButton);
+                NonDataIDs.ConfirmSubmitSubmit.getID(), binding.submitButton);
         startButton.setOnClickFunction(this::matchSubmit);
     }
 

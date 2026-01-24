@@ -1,7 +1,7 @@
 package com.scouting_app_template.UIElements;
 
 import static com.scouting_app_template.MainActivity.datapointEventValue;
-import static com.scouting_app_template.DatapointIDs.DatapointIDs.reversedDatapointIDs;
+import static com.scouting_app_template.DatapointIDs.ReversedDatapointIDs.reversedDatapointIDs;
 
 import android.content.res.ColorStateList;
 import android.widget.Toast;

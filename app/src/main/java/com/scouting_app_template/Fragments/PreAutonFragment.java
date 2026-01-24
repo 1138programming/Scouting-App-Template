@@ -11,11 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 
+import com.scouting_app_template.DatapointIDs.DatapointID;
 import com.scouting_app_template.MainActivity;
 import com.scouting_app_template.R;
 import com.scouting_app_template.UIElements.Button;
 import com.scouting_app_template.UIElements.Checkbox;
-import com.scouting_app_template.DatapointIDs.NonDataEnum;
+import com.scouting_app_template.DatapointIDs.NonDataIDs;
 import com.scouting_app_template.UIElements.RadioCheckboxGroup;
 import com.scouting_app_template.UIElements.RadioGroup;
 import com.scouting_app_template.UIElements.Spinner;
@@ -24,7 +25,6 @@ import com.scouting_app_template.databinding.PreAutonFragmentBinding;
 
 import static com.scouting_app_template.MainActivity.context;
 import static com.scouting_app_template.MainActivity.ftm;
-import static com.scouting_app_template.DatapointIDs.DatapointIDs.nonDataIDs;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,16 +65,14 @@ public class PreAutonFragment extends DataFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        int datapointID = Objects.requireNonNull(nonDataIDs.get(NonDataEnum.ScouterName));
-        scouterNameSpinner = new Spinner(datapointID, binding.nameOfScouterSpinner, true);
+        scouterNameSpinner = new Spinner(NonDataIDs.ScouterName.getID(), binding.nameOfScouterSpinner, true);
         scouterNameSpinner.setOnClickFunction(() -> ((MainActivity) requireContext()).updateTabletInformation());
         scouterNameSpinner.setOnClickFunction(this::updateIndices);
         if(scouterIndex < scouterNameSpinner.getLength()) {
             scouterNameSpinner.setIndex(scouterIndex);
         }
 
-        datapointID = Objects.requireNonNull(nonDataIDs.get(NonDataEnum.MatchNumber));
-        matchNumberSpinner = new Spinner(datapointID, binding.matchNumberSpinner, false);
+        matchNumberSpinner = new Spinner(NonDataIDs.MatchNumber.getID(), binding.matchNumberSpinner, false);
         matchNumberSpinner.updateSpinnerList(generateMatches());
         matchNumberSpinner.setOnClickFunction(() -> ((MainActivity) requireContext()).updateTabletInformation());
         matchNumberSpinner.setOnClickFunction(this::updateIndices);
@@ -82,36 +80,30 @@ public class PreAutonFragment extends DataFragment {
             matchNumberSpinner.setIndex(matchIndex);
         }
 
-        datapointID = Objects.requireNonNull(nonDataIDs.get(NonDataEnum.TeamColor));
-        teamColorButtons = new RadioGroup(datapointID, binding.teamColorSwitch);
+        teamColorButtons = new RadioGroup(NonDataIDs.TeamColor.getID(), binding.teamColorSwitch);
         teamColorButtons.setOnClickFunction(this::updateTeamColor);
 
-        datapointID = Objects.requireNonNull(nonDataIDs.get(NonDataEnum.TeamNumber));
-        teamNumberSpinner = new Spinner(datapointID, binding.teamNumberSpinner, false);
+        teamNumberSpinner = new Spinner(NonDataIDs.TeamNumber.getID(), binding.teamNumberSpinner, false);
         teamNumberSpinner.setOnClickFunction(() -> ((MainActivity) requireContext()).updateTabletInformation());
 
-        RadioCheckboxGroup startingPositionGroup = new RadioCheckboxGroup(1);
+        RadioCheckboxGroup startingPositionGroup = new RadioCheckboxGroup(DatapointID.startPos.getID());
 
-        datapointID = Objects.requireNonNull(nonDataIDs.get(NonDataEnum.StartPosRadio));
-        RadioGroup startingPosition = new RadioGroup(datapointID, binding.startingLocation);
+        RadioGroup startingPosition = new RadioGroup(NonDataIDs.StartPosRadio.getID(), binding.startingLocation);
             startingPositionGroup.addElement(startingPosition);
 
-        datapointID = Objects.requireNonNull(nonDataIDs.get(NonDataEnum.NoShow));
-        Checkbox noShowCheckbox = new Checkbox(datapointID, binding.noShowCheckbox, true, "noShow");
+        Checkbox noShowCheckbox = new Checkbox(NonDataIDs.NoShow.getID(), binding.noShowCheckbox, true, "noShow");
             startingPositionGroup.addElement(noShowCheckbox);
 
             startingPositionGroup.elementSelected(noShowCheckbox);
 
             undoStack.addElement(startingPositionGroup);
 
-        datapointID = Objects.requireNonNull(nonDataIDs.get(NonDataEnum.PreAutonNext));
-        Button nextButton = new Button(datapointID, binding.nextButton);
+        Button nextButton = new Button(NonDataIDs.PreAutonNext.getID(), binding.nextButton);
         nextButton.setOnClickFunction(() -> ftm.preAutonNext());
         nextButton.setOnClickFunction(() -> ((AutonFragment) Objects.requireNonNull(
                 getParentFragmentManager().findFragmentByTag("AutonFragment"))).autonOpen());
 
-        datapointID = Objects.requireNonNull(nonDataIDs.get(NonDataEnum.ArchiveHamburger));
-        ImageButton button = new ImageButton(datapointID, binding.archiveButton);
+        ImageButton button = new ImageButton(NonDataIDs.ArchiveHamburger.getID(), binding.archiveButton);
         button.setOnClickFunction(() -> ftm.preAutonMenu());
     }
 

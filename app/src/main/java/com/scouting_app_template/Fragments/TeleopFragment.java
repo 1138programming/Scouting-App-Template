@@ -1,6 +1,5 @@
 package com.scouting_app_template.Fragments;
 
-import static com.scouting_app_template.DatapointIDs.DatapointIDs.nonDataIDs;
 import static com.scouting_app_template.MainActivity.ftm;
 
 import android.os.Bundle;
@@ -11,13 +10,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.scouting_app_template.DatapointIDs.NonDataEnum;
+import com.scouting_app_template.DatapointIDs.NonDataIDs;
 import com.scouting_app_template.UIElements.Button;
 import com.scouting_app_template.databinding.TeleopFragmentBinding;
 
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.Objects;
 
 public class TeleopFragment extends DataFragment {
     private TeleopFragmentBinding binding;
@@ -38,12 +36,10 @@ public class TeleopFragment extends DataFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        int datapointID = Objects.requireNonNull(nonDataIDs.get(NonDataEnum.PostMatchBack));
-        Button backButton = new Button(datapointID, binding.backButton);
+        Button backButton = new Button(NonDataIDs.TeleopNext.getID(), binding.backButton);
         backButton.setOnClickFunction(() -> ftm.teleopBack());
 
-        datapointID = Objects.requireNonNull(nonDataIDs.get(NonDataEnum.PostMatchBack));
-        Button submitButton = new Button(datapointID, binding.nextButton);
+        Button submitButton = new Button(NonDataIDs.TeleopBack.getID(), binding.nextButton);
         submitButton.setOnClickFunction(() -> ftm.teleopNext());
     }
 
