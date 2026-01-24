@@ -102,6 +102,7 @@ public class Button extends UIElement {
     /**
      * Called by {@link UndoStack} to increase the value displayed on the button.
      */
+    @Override
     public void redo() {
         increment();
         Toast.makeText((MainActivity.context), "Redid " + reversedDatapointIDs.get(datapointID), Toast.LENGTH_SHORT).show();
@@ -122,6 +123,11 @@ public class Button extends UIElement {
      */
     public int getCounter() {
         return currValue;
+    }
+
+    @Override
+    public boolean getIndependent() {
+        return false;
     }
 
     public void setCounter(int value) {
@@ -160,7 +166,9 @@ public class Button extends UIElement {
         }
 
         if(binding != null) {
-            binding.setText(String.valueOf(currValue));
+            String title = (String) binding.getText();
+            title = title.substring(0,titleLength-1) + currValue;
+            binding.setText(title);
         }
         return updated;
     }
@@ -176,7 +184,9 @@ public class Button extends UIElement {
         }
 
         if(binding != null) {
-            binding.setText(String.valueOf(currValue));
+            String title = (String) binding.getText();
+            title = title.substring(0,titleLength) + currValue;
+            binding.setText(title);
         }
     }
 }

@@ -11,6 +11,7 @@ import com.scouting_app_template.MainActivity;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
@@ -21,9 +22,9 @@ import java.util.Stack;
  */
 public class UndoStack {
     private final Stack<UIElement> inputStack = new Stack<>();
-    private final Stack<Long> timestamps = new Stack<>();
+    private final Stack<Integer> timestamps = new Stack<>();
     private Stack<UIElement> redoStack = new Stack<>();
-    private final Stack<Long> redoTimestamps = new Stack<>();
+    private final Stack<Integer> redoTimestamps = new Stack<>();
     private final HashMap<Integer, UIElement> allElements = new HashMap<>();
 
     public UndoStack() {
@@ -43,7 +44,7 @@ public class UndoStack {
             addElement(element);
         }
         inputStack.add(element);
-        timestamps.add((Calendar.getInstance(Locale.US).getTimeInMillis()-((MainActivity)context).getCurrStartTime()));
+        timestamps.add((int) (Calendar.getInstance(Locale.US).getTimeInMillis()-((MainActivity)context).getCurrStartTime()));
         redoStack = new Stack<>();
     }
 
@@ -54,14 +55,30 @@ public class UndoStack {
             Log.d(TAG, String.valueOf(element.getID()));
         }
 
+        ArrayList<ButtonTimeToggle> buttonToggleList = new ArrayList<>();
+        ArrayList<Integer> toggleStartTimestamps = new ArrayList<>();
+
         //saves each timestamped datapoint to the JSON
         for(UIElement element : inputStack) {
-            manager.addDatapoint(element.getID(), element.getValue(), timestamps.pop().toString());
+            if(element instanceof ButtonTimeToggle) {
+                if(buttonToggleList.contains(element)) {
+                    int index = buttonToggleList.indexOf(element);
+                    manager.addDatapoint(element.getID(), String.valueOf(timestamps.pop()-toggleStartTimestamps.get(index)),
+                            String.valueOf(toggleStartTimestamps.remove(index)));
+                }
+                else {
+                    buttonToggleList.add((ButtonTimeToggle) element);
+                    toggleStartTimestamps.add(timestamps.pop());
+                }
+            }
+            else {
+                manager.addDatapoint(element.getID(), element.getValue(), timestamps.pop().toString());
+            }
         }
 
         //saves each non-timestamped datapoint to the JSON
         for(UIElement element : allElements.values()) {
-            if(!(element instanceof Button)) {
+            if(element.getIndependent()) {
                 manager.addDatapoint(element.getID(), element.getValue());
             }
         }

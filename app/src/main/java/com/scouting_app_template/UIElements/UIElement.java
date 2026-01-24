@@ -39,4 +39,8 @@ public class UIElement {
     public void redo() {
 
     }
+
+    public boolean getIndependent() {
+        return true;
+    }
 }

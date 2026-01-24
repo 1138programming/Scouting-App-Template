@@ -1,5 +1,6 @@
 package com.scouting_app_template.Fragments;
 
+import static com.scouting_app_template.MainActivity.context;
 import static com.scouting_app_template.MainActivity.ftm;
 
 import android.os.Bundle;
@@ -11,7 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.scouting_app_template.DatapointIDs.NonDataIDs;
+import com.scouting_app_template.MainActivity;
+import com.scouting_app_template.R;
 import com.scouting_app_template.UIElements.Button;
+import com.scouting_app_template.UIElements.ButtonTimeToggle;
 import com.scouting_app_template.databinding.AutonFragmentBinding;
 
 import java.util.Calendar;
@@ -36,6 +40,9 @@ public class AutonFragment extends DataFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        ButtonTimeToggle testButton = new ButtonTimeToggle(NonDataIDs.Default.getID(),
+                binding.testButton, undoStack, context.getColorStateList(R.color.dark_red));
 
         Button backButton = new Button(NonDataIDs.AutonBack.getID(), binding.backButton);
         backButton.setOnClickFunction(() -> ftm.autonBack());

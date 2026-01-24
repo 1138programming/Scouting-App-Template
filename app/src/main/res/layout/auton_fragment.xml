@@ -81,6 +81,19 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
+        android:id="@+id/testButton"
+        android:layout_width="240sp"
+        android:layout_height="120sp"
+        android:text="Test 0"
+        android:backgroundTint="@color/chaminade_orange"
+        android:textColor="@color/background_default"
+        android:textSize="48sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
         android:id="@+id/backButton"
         android:layout_width="240sp"
         android:layout_height="120sp"

@@ -42,10 +42,6 @@ public class JSONManager {
         addDatapoint(datapointID, value, defaultTimestamp);
     }
 
-    public void addStart(int datapointID, String timestamp) {
-        addDatapoint(datapointID, datapointEventValue, timestamp);
-    }
-
     public JSONArray getJSON() {
         return masterJSON;
     }
