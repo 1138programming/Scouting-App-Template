@@ -85,16 +85,19 @@ public class UpdateScoutingInfo {
         }
         String[] listsSplit = fileData.split("\n");
         String[] teamList = listsSplit[1].split(",");
-            Arrays.sort(teamList, (s, s2) -> {
-                int i = Integer.parseInt(s);
-                int i2 = Integer.parseInt(s2);
-                return Integer.compare(i, i2);
-            });
+        String[] matchBreakdown = listsSplit[2].split(",");
+
+        Arrays.sort(teamList, (s, s2) -> {
+            int i = Integer.parseInt(s);
+            int i2 = Integer.parseInt(s2);
+            return Integer.compare(i, i2);
+        });
 
         String[] scoutersWithNum = listsSplit[0].split(",");
             Arrays.sort(scoutersWithNum);
 
         ArrayList<ArrayList<CharSequence>> retVal = new ArrayList<>();
+            retVal.add(new ArrayList<>());
             retVal.add(new ArrayList<>());
             retVal.add(new ArrayList<>());
             retVal.add(new ArrayList<>());
@@ -106,6 +109,9 @@ public class UpdateScoutingInfo {
         }
         for (String teamNum : teamList) {
             retVal.get(2).add(teamNum);
+        }
+        for(String matchNumber : matchBreakdown) {
+            retVal.get(3).add(matchNumber);
         }
         return retVal;
     }

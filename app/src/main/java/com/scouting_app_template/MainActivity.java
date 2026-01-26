@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int teleopLengthMs = 140000;
     public static final int timeBufferMs = 3000;
     public static final String datapointEventValue = "";
-    public static final String defaultTimestamp = "0";
+    public static final int defaultTimestamp = 0;
     private boolean connectivity = false;
 
     /**

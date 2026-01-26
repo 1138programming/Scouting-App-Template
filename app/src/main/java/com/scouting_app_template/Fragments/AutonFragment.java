@@ -12,10 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.scouting_app_template.DatapointIDs.NonDataIDs;
-import com.scouting_app_template.MainActivity;
 import com.scouting_app_template.R;
 import com.scouting_app_template.UIElements.Button;
 import com.scouting_app_template.UIElements.ButtonTimeToggle;
+import com.scouting_app_template.UIElements.ImageButton;
 import com.scouting_app_template.databinding.AutonFragmentBinding;
 
 import java.util.Calendar;
@@ -41,8 +41,16 @@ public class AutonFragment extends DataFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        undoStack.setMatchPhaseAuton();
+
         ButtonTimeToggle testButton = new ButtonTimeToggle(NonDataIDs.Default.getID(),
-                binding.testButton, undoStack, context.getColorStateList(R.color.dark_red));
+                binding.testButton, undoStack, context.getColor(R.color.dark_red));
+
+        ImageButton undoButton = new ImageButton(NonDataIDs.AutonUndo.getID(), binding.undoButton);
+        undoButton.setOnClickFunction(undoButton::undo);
+
+        ImageButton redoButton = new ImageButton(NonDataIDs.AutonRedo.getID(), binding.redoButton);
+        redoButton.setOnClickFunction(undoButton::redo);
 
         Button backButton = new Button(NonDataIDs.AutonBack.getID(), binding.backButton);
         backButton.setOnClickFunction(() -> ftm.autonBack());

@@ -73,7 +73,7 @@ public class PreAutonFragment extends DataFragment {
         }
 
         matchNumberSpinner = new Spinner(NonDataIDs.MatchNumber.getID(), binding.matchNumberSpinner, false);
-        matchNumberSpinner.updateSpinnerList(generateMatches());
+        matchNumberSpinner.updateSpinnerList(generateMatches(100,13,3));
         matchNumberSpinner.setOnClickFunction(() -> ((MainActivity) requireContext()).updateTabletInformation());
         matchNumberSpinner.setOnClickFunction(this::updateIndices);
         if(matchIndex < matchNumberSpinner.getLength()) {
@@ -125,20 +125,17 @@ public class PreAutonFragment extends DataFragment {
 
     /** Generates an ArrayList filled with the necessary qualifying
      * and playoffs matches for an entire comp. */
-    private ArrayList<CharSequence> generateMatches() {
+    private ArrayList<CharSequence> generateMatches(int qualNumber, int playoffsNumber, int finalsNumber) {
         ArrayList<CharSequence> matchNumbers = new ArrayList<>();
         //creates spinner for match number
-        for(int i = 1; i<=100; i++) {
-            matchNumbers.add(Integer.toString(i));
+        for(int i = 1; i<=qualNumber; i++) {
+            matchNumbers.add("q" + i);
         }
-        for(int i = 1; i<=13; i++) {
-            matchNumbers.add("Playoffs "+i);
+        for(int i = 1; i<=playoffsNumber; i++) {
+            matchNumbers.add("p"+i);
         }
-        for(int i = 1; i<=3; i++) {
-            matchNumbers.add("Finals "+i);
-        }
-        for(int i = 1; i<=100; i++) {
-            matchNumbers.add("Practice "+i);
+        for(int i = 1; i<=finalsNumber; i++) {
+            matchNumbers.add("f"+i);
         }
         return matchNumbers;
     }
@@ -201,6 +198,12 @@ public class PreAutonFragment extends DataFragment {
         scouterNameSpinner.setIndex(scouterIndex);
 
         teamNumberSpinner.updateSpinnerList(list.get(2));
+
+        ArrayList<Integer> matches = new ArrayList<>();
+        for(CharSequence i : list.get(3)) {
+            matches.add(Integer.valueOf(i.toString()));
+        }
+        matchNumberSpinner.updateSpinnerList(generateMatches(matches.get(0), matches.get(1), matches.get(2)));
     }
 
     public void setBtStatus(boolean status) {
@@ -221,20 +224,20 @@ public class PreAutonFragment extends DataFragment {
     public JSONObject getBaseJSON() throws JSONException {
         JSONObject baseJson = new JSONObject();
 
-        baseJson.put("scouterID", scouterIDs.get(scouterNameSpinner.getSelectedIndex()).toString());
-        baseJson.put("matchID", matchNumberSpinner.getValue());
+        baseJson.put("ScouterID", scouterIDs.get(scouterNameSpinner.getSelectedIndex()).toString());
+        baseJson.put("MatchID", matchNumberSpinner.getValue());
         try {
-            baseJson.put("teamID", teamNumberSpinner.getValue());
+            baseJson.put("TeamID", teamNumberSpinner.getValue());
         } catch (NullPointerException e) {
-            baseJson.put("teamID", "0");
+            baseJson.put("TeamID", "0");
         }
         String allianceName = teamColorButtons.getValue();
         switch (allianceName) {
             case "RED":
-                baseJson.put("allianceID", "1");
+                baseJson.put("AllianceID", "1");
                 break;
             case "BLUE":
-                baseJson.put("allianceID", "2");
+                baseJson.put("AllianceID", "2");
         }
 
         return baseJson;

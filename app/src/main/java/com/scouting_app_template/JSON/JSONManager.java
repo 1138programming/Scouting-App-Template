@@ -1,7 +1,6 @@
 package com.scouting_app_template.JSON;
 
 import static com.scouting_app_template.MainActivity.TAG;
-import static com.scouting_app_template.MainActivity.datapointEventValue;
 import static com.scouting_app_template.MainActivity.defaultTimestamp;
 
 import android.util.Log;
@@ -17,7 +16,7 @@ public class JSONManager {
         this.jsonTemplate = jsonTemplate;
     }
 
-    public void addDatapoint(int datapointID, String value, String timestamp) {
+    public void addDatapoint(int datapointID, String value, int timestamp) {
         JSONObject temp;
         try {
             temp = new JSONObject(jsonTemplate.toString());
@@ -27,9 +26,9 @@ public class JSONManager {
         }
 
         try {
-            temp.put("datapointID", datapointID);
-            temp.put("DCValue", value);
-            temp.put("DCTimestamp", timestamp);
+            temp.put("DatapointID", datapointID);
+            temp.put("DatapointValue", value);
+            temp.put("DatapointTimestamp", timestamp);
         }
         catch (JSONException e) {
             Log.e(TAG, "Failed to add datapoint");

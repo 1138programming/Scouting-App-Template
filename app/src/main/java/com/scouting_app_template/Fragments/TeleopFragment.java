@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 
 import com.scouting_app_template.DatapointIDs.NonDataIDs;
 import com.scouting_app_template.UIElements.Button;
+import com.scouting_app_template.UIElements.ImageButton;
 import com.scouting_app_template.databinding.TeleopFragmentBinding;
 
 import java.util.Calendar;
@@ -35,6 +36,14 @@ public class TeleopFragment extends DataFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        undoStack.setMatchPhaseTeleop();
+
+        ImageButton undoButton = new ImageButton(NonDataIDs.TeleopUndo.getID(), binding.undoButton);
+        undoButton.setOnClickFunction(undoButton::undo);
+
+        ImageButton redoButton = new ImageButton(NonDataIDs.TeleopRedo.getID(), binding.redoButton);
+        redoButton.setOnClickFunction(undoButton::redo);
 
         Button backButton = new Button(NonDataIDs.TeleopNext.getID(), binding.backButton);
         backButton.setOnClickFunction(() -> ftm.teleopBack());

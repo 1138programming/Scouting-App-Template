@@ -127,7 +127,7 @@ public class BluetoothConnectedThread extends Thread {
      * &nbsp;&nbsp;1 - send match data<p>
      * &nbsp;&nbsp;2 - send tablet information<p>
      *     -1 - check if lists of teams and matches are up to date <p>
-     *     -2 - update lists of teams and matches <p>
+     *     -2 - update lists of scouters, teams, and matches <p>
      *      {@code IMPORTANT} numbers -1 and -2 shouldn't be used with this function.
      *             Use {@link BluetoothConnectedThread#checkLists()}  and {@link BluetoothConnectedThread#updateLists()} instead as needed
      * sends information

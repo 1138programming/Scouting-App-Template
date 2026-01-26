@@ -1,7 +1,9 @@
 package com.scouting_app_template.UIElements;
 
 import static com.scouting_app_template.MainActivity.TAG;
+import static com.scouting_app_template.MainActivity.autonLengthMs;
 import static com.scouting_app_template.MainActivity.context;
+import static com.scouting_app_template.MainActivity.teleopLengthMs;
 
 import android.util.Log;
 
@@ -26,6 +28,7 @@ public class UndoStack {
     private Stack<UIElement> redoStack = new Stack<>();
     private final Stack<Integer> redoTimestamps = new Stack<>();
     private final HashMap<Integer, UIElement> allElements = new HashMap<>();
+    private boolean matchPhaseAuton;
 
     public UndoStack() {
 
@@ -63,8 +66,9 @@ public class UndoStack {
             if(element instanceof ButtonTimeToggle) {
                 if(buttonToggleList.contains(element)) {
                     int index = buttonToggleList.indexOf(element);
-                    manager.addDatapoint(element.getID(), String.valueOf(timestamps.pop()-toggleStartTimestamps.get(index)),
-                            String.valueOf(toggleStartTimestamps.remove(index)));
+                    manager.addDatapoint(buttonToggleList.remove(index).getID(),
+                            String.valueOf(Math.abs(timestamps.pop()-toggleStartTimestamps.get(index))),
+                            toggleStartTimestamps.remove(index));
                 }
                 else {
                     buttonToggleList.add((ButtonTimeToggle) element);
@@ -72,7 +76,16 @@ public class UndoStack {
                 }
             }
             else {
-                manager.addDatapoint(element.getID(), element.getValue(), timestamps.pop().toString());
+                manager.addDatapoint(element.getID(), element.getValue(), timestamps.pop());
+            }
+        }
+        if(!buttonToggleList.isEmpty()) {
+            int periodTimeLength = matchPhaseAuton ? autonLengthMs : teleopLengthMs;
+            for(ButtonTimeToggle button : buttonToggleList) {
+                int index = buttonToggleList.indexOf(button);
+                manager.addDatapoint(button.getID(),
+                        String.valueOf((periodTimeLength-toggleStartTimestamps.get(index))),
+                        toggleStartTimestamps.get(index));
             }
         }
 
@@ -100,5 +113,13 @@ public class UndoStack {
         redoStack.peek().redo();
         inputStack.push(redoStack.pop());
         timestamps.push(redoTimestamps.pop());
+    }
+
+    public void setMatchPhaseAuton() {
+        matchPhaseAuton = true;
+    }
+
+    public void setMatchPhaseTeleop() {
+        matchPhaseAuton = false;
     }
 }
