@@ -85,7 +85,7 @@ public class BluetoothConnectedThread extends Thread {
                 throw new CommErrorException();
             }
         } catch (IOException e) {
-            Log.e(TAG, "Failure to read: " + e);
+            Log.e(TAG, "Failure to read:", e);
             throw new CommErrorException();
         }
     }
@@ -117,7 +117,7 @@ public class BluetoothConnectedThread extends Thread {
             outputStream.write(bytes);
         }
         catch(IOException e) {
-            Log.e(TAG, "Failure to write: " + e);
+            Log.e(TAG, "Failure to write:", e);
             throw new CommErrorException();
         }
     }
@@ -143,10 +143,10 @@ public class BluetoothConnectedThread extends Thread {
             write(bytes);
         }
         catch(CommErrorException e) {
-            Log.e(TAG, "Communication exchange failed");
+            Log.e(TAG, "Communication exchange failed", e);
             cancel();
         }
-        Toast.makeText(context,"Successful Submit", Toast.LENGTH_LONG).show();
+        Toast.makeText(context,"Successful Submit", Toast.LENGTH_SHORT).show();
     }
     /**
      * @return Returns true if the data is up to date with the central computer
@@ -172,7 +172,7 @@ public class BluetoothConnectedThread extends Thread {
                     MurmurHash.makeHash((new UpdateScoutingInfo()).getDataFromFile().getBytes(StandardCharsets.UTF_8));
         }
         catch(CommErrorException e) {
-            Log.e(TAG, "Communication exchange failed");
+            Log.e(TAG, "Communication exchange failed", e);
             cancel();
             return false;
         }
@@ -195,7 +195,7 @@ public class BluetoothConnectedThread extends Thread {
             (new UpdateScoutingInfo()).saveToFile(new String(buffer, StandardCharsets.UTF_8));
         }
         catch(CommErrorException | IOException e) {
-            Log.e(TAG, "Communication exchange failed");
+            Log.e(TAG, "Communication exchange failed", e);
             cancel();
         }
 

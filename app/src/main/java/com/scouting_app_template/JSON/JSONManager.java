@@ -31,7 +31,7 @@ public class JSONManager {
             temp.put("DatapointTimestamp", timestamp);
         }
         catch (JSONException e) {
-            Log.e(TAG, "Failed to add datapoint");
+            Log.e(TAG, "Failed to add datapoint", e);
             return;
         }
         masterJSON.put(temp);

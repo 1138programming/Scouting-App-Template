@@ -7,11 +7,15 @@ import static android.Manifest.permission.BLUETOOTH_ADVERTISE;
 import static android.Manifest.permission.BLUETOOTH_CONNECT;
 import static android.Manifest.permission.BLUETOOTH_SCAN;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.bluetooth.BluetoothManager;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -181,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 connectedThread.sendInformation(Files.readAllBytes(file.toPath()), 1);
             } catch (IOException e) {
-                Log.e(TAG, "failed to read from file to submit match");
+                Log.e(TAG, "failed to read from file to submit match", e);
             }
         }
         else {
@@ -258,6 +262,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void teleopStop() {
         currentState = gameState.postMatch;
+    }
+
+    @SuppressLint("MissingPermission")
+    public String getDeviceName() {
+        if(permissionManager.permissionNotGranted(BLUETOOTH_CONNECT)) {
+            return "ERROR";
+        }
+        else {
+            return ((BluetoothManager) MainActivity.context.getSystemService(Context.BLUETOOTH_SERVICE)).getAdapter().getName();
+        }
     }
 
     @Override

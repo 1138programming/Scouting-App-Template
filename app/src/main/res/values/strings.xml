@@ -45,7 +45,6 @@
     <string name="start_button">Start</string>
 
 <!--    <string name=""></string>-->
-    <!-- -->
 
     <!-- Auton Page -->
     <string name="auton_title">Auton</string>
@@ -75,10 +74,6 @@
         <item>Deep</item>
         <item>Shallow</item>
         <item>Park</item>
-    </string-array>
-    <string-array name="slider_values">
-        <item>20</item>
-        <item>60</item>
     </string-array>
 
     <!-- Submission Confirmation -->

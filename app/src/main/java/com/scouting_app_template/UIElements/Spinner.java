@@ -46,7 +46,7 @@ public class Spinner extends UIElement {
             return spinner.getSelectedItem().toString();
         }
         catch(Exception e) {
-            Log.e(TAG, e.toString());
+            Log.e(TAG, "Failed to get value from Spinner: ", e);
             return "";
         }
     }

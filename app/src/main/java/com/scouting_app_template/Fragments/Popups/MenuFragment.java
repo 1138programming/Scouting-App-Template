@@ -1,6 +1,5 @@
 package com.scouting_app_template.Fragments.Popups;
 
-import static com.scouting_app_template.MainActivity.context;
 import static com.scouting_app_template.MainActivity.ftm;
 
 import android.os.Bundle;
@@ -8,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
@@ -90,14 +88,14 @@ public class MenuFragment extends Fragment {
                 long now = System.currentTimeMillis();
                 adminClicks.add(now);
                 for(int i = 0; i < adminClicks.size(); i++) {
-                    if((now - adminClicks.get(i)) > 2000) {
+                    if((now - adminClicks.get(i)) > 1500) {
                         adminClicks.remove(i);
                         i--;
                     }
                 }
                 if(adminNotActivated && adminClicks.size() >= 5) {
-                    Toast.makeText(context, "67", Toast.LENGTH_SHORT).show();
-                    adminNotActivated = false;
+                    adminSelected();
+
                 }
                 break;
             case outside:
@@ -112,6 +110,10 @@ public class MenuFragment extends Fragment {
         options.setOrientationLocked(true);
         options.setCaptureActivity(CaptureAct.class);
         barLauncher.launch(options);
+    }
+
+    private void adminSelected() {
+
     }
 
     @NonNull

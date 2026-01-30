@@ -33,7 +33,7 @@ public class FileSaver {
             bufferedWriter.close();
         }
         catch(IOException e) {
-            Log.e(TAG, e.toString());
+            Log.e(TAG, "Unable to save file: ", e);
         }
     }
 

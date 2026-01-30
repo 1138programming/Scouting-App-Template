@@ -1,9 +1,12 @@
 package com.scouting_app_template.Fragments;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +26,7 @@ import com.scouting_app_template.UIElements.Spinner;
 import com.scouting_app_template.UIElements.ImageButton;
 import com.scouting_app_template.databinding.PreAutonFragmentBinding;
 
+import static com.scouting_app_template.MainActivity.TAG;
 import static com.scouting_app_template.MainActivity.context;
 import static com.scouting_app_template.MainActivity.ftm;
 
@@ -41,6 +45,9 @@ public class PreAutonFragment extends DataFragment {
     private Spinner teamNumberSpinner;
     private int scouterIndex;
     private int matchIndex;
+    private boolean successfulDeviceNameParse = false;
+    private int selectedColor;
+    private int driverStationNumber;
     private ArrayList<Integer> scouterIDs = new ArrayList<>(List.of(-1));
 
     public PreAutonFragment() {
@@ -81,6 +88,7 @@ public class PreAutonFragment extends DataFragment {
         }
 
         teamColorButtons = new RadioGroup(NonDataIDs.TeamColor.getID(), binding.teamColorSwitch);
+        attemptDeviceNameParse();
         teamColorButtons.setOnClickFunction(this::updateTeamColor);
 
         teamNumberSpinner = new Spinner(NonDataIDs.TeamNumber.getID(), binding.teamNumberSpinner, false);
@@ -231,18 +239,66 @@ public class PreAutonFragment extends DataFragment {
         } catch (NullPointerException e) {
             baseJson.put("TeamID", "0");
         }
-        String allianceName = teamColorButtons.getValue();
-        switch (allianceName) {
-            case "RED":
-                baseJson.put("AllianceID", "1");
-                break;
-            case "BLUE":
-                baseJson.put("AllianceID", "2");
+
+        if(successfulDeviceNameParse) {
+            /*
+                selectedColor = 1 -> red
+                selectedColor = 0 -> blue
+
+                allianceID = 1 -> red 1
+                allianceID = 2 -> red 2
+                allianceID = 3 -> red 3
+                allianceID = 4 -> blue 1
+                allianceID = 5 -> blue 2
+                allianceID = 6 -> blue 3
+                allianceID = 7 -> red (generic)
+                allianceID = 8 -> blue (generic)
+             */
+
+            int allianceID = (selectedColor == 1) ? driverStationNumber : driverStationNumber + 3;
+            baseJson.put("AllianceID", allianceID);
+        }
+        else {
+
+            String allianceName = teamColorButtons.getValue();
+            switch (allianceName) {
+                case "RED":
+                    baseJson.put("AllianceID", 7);
+                    break;
+                case "BLUE":
+                    baseJson.put("AllianceID", 8);
+            }
         }
 
         return baseJson;
     }
-    
+
+    private void attemptDeviceNameParse() {
+        String deviceName = ((MainActivity)context).getDeviceName();
+        String[] temp = deviceName.split(" ");
+        successfulDeviceNameParse = true;
+        driverStationNumber = Integer.parseInt(temp[temp.length-1]);
+
+        switch(temp[temp.length-2]) {
+            case "Red":
+                selectedColor = 1;
+                lockColor();
+                break;
+            case "Blue":
+                selectedColor = 0;
+                lockColor();
+                break;
+            default:
+                successfulDeviceNameParse = false;
+        }
+    }
+
+    private void lockColor() {
+        ((RadioButton)binding.teamColorSwitch.getChildAt(selectedColor)).setChecked(true);
+        binding.teamColorSwitch.getChildAt(0).setEnabled(false);
+        binding.teamColorSwitch.getChildAt(1).setEnabled(false);
+    }
+
     private void updateIndices() {
         this.scouterIndex = scouterNameSpinner.getSelectedIndex();
         this.matchIndex = matchNumberSpinner.getSelectedIndex();

@@ -3,6 +3,7 @@ package com.scouting_app_template.Bluetooth;
 import static com.scouting_app_template.MainActivity.TAG;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothSocket;
@@ -27,6 +28,7 @@ public class QrBtConnThread extends Thread {
      * @param mac The MAC address of the device
      * @param port The bluetooth port of the  on that device
      */
+     @SuppressLint("MissingPermission")
      public static void bluetoothConnect(String mac, int port) {
         if(((MainActivity) MainActivity.context).permissionManager.permissionNotGranted(Manifest.permission.BLUETOOTH_CONNECT)) {
             Log.e(TAG, "need permission for Bluetooth_Connect");
@@ -51,8 +53,8 @@ public class QrBtConnThread extends Thread {
             socket.connect();
             Log.e(TAG, "ROBERTBADLETTTTT");
         }
-        catch(IOException er){
-            Log.e(TAG, "Timed out/error");
+        catch(IOException e){
+            Log.e(TAG, "Timed out/error", e);
             // Unable to connect; close the socket and return.
             cancel();
         }
@@ -63,8 +65,8 @@ public class QrBtConnThread extends Thread {
          try {
              socket.close();
              Log.e(TAG, "socket closed");
-         } catch (IOException closeException) {
-             Log.e(TAG, "couldn't close", closeException);
+         } catch (IOException e) {
+             Log.e(TAG, "couldn't close", e);
          }
      }
 }

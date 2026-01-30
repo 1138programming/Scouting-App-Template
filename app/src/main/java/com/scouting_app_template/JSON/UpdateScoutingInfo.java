@@ -50,11 +50,21 @@ public class UpdateScoutingInfo {
 
     public String getDataFromFile() {
         File file = new File(folderDir, fileName);
+        if (!file.exists()) {
+            try {
+                if(!file.createNewFile()) {
+                    Log.e(TAG, "Unable to create file");
+                }
+            } catch (IOException e) {
+                return "";
+            }
+        }
+
         FileInputStream fis;
         try {
             fis = new FileInputStream(file);
         } catch (FileNotFoundException e) {
-            Log.e(TAG, "File doesn't exist" + e);
+            Log.e(TAG, "File doesn't exist", e);
             return "";
         }
         
@@ -72,7 +82,7 @@ public class UpdateScoutingInfo {
             }
         }
         catch (IOException e) {
-            Log.e(TAG, "Couldn't read file: " + e);
+            Log.e(TAG, "Couldn't read file: ", e);
             return "";
         }
         return sb.toString();
