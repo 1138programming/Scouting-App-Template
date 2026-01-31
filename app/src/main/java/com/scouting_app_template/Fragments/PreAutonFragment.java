@@ -1,8 +1,6 @@
 package com.scouting_app_template.Fragments;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +24,6 @@ import com.scouting_app_template.UIElements.Spinner;
 import com.scouting_app_template.UIElements.ImageButton;
 import com.scouting_app_template.databinding.PreAutonFragmentBinding;
 
-import static com.scouting_app_template.MainActivity.TAG;
 import static com.scouting_app_template.MainActivity.context;
 import static com.scouting_app_template.MainActivity.ftm;
 
@@ -302,7 +299,7 @@ public class PreAutonFragment extends DataFragment {
 
         if(successfulDeviceNameParse) {
             String colorStatus = temp[temp.length-2] + " " + driverStationNumber;
-            binding.robotDriverStation.setText("Red 2");
+            binding.robotDriverStation.setText(colorStatus);
         }
     }
 
