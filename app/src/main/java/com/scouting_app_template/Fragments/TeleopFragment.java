@@ -68,6 +68,10 @@ public class TeleopFragment extends DataFragment {
         return this.teleopStart;
     }
 
+    public void updateTeamNumber(int teamNumber) {
+        binding.teamNumber.setText(String.valueOf(teamNumber));
+    }
+
     @NonNull
     @Override
     public String toString() {

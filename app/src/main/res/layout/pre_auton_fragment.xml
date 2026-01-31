@@ -152,7 +152,6 @@ tools:context=".Fragments.PreAutonFragment">
             android:layout_width="240sp"
             android:layout_height="120sp"
             android:layout_marginBottom="5dp"
-            android:backgroundTint="@color/chaminade_orange"
             android:text="@string/next_button_title"
             android:textColor="@color/background_default"
             android:textSize="48sp"
@@ -164,13 +163,25 @@ tools:context=".Fragments.PreAutonFragment">
             android:id="@+id/versionNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="10dp"
             android:layout_marginBottom="5dp"
             android:text="@string/app_version"
             android:textColor="@color/off_white"
             android:textSize="32sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/robotDriverStation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"
+            android:text="@string/blue_general_position"
+            android:textColor="@color/off_white"
+            android:textSize="32sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <RadioGroup
             android:id="@+id/team_color_switch"
@@ -235,11 +246,11 @@ tools:context=".Fragments.PreAutonFragment">
                 android:layout_marginEnd="1dp"
                 android:layout_marginBottom="1dp"
                 android:layout_weight="1"
-                android:background="@drawable/start_toggle_red"
+                android:background="@drawable/start_toggle_blue"
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/start_far"
-                android:textColor="@color/red_text_toggle"
+                android:textColor="@color/blue_text_toggle"
                 android:textSize="24sp" />
 
             <RadioButton
@@ -251,11 +262,11 @@ tools:context=".Fragments.PreAutonFragment">
                 android:layout_marginEnd="60sp"
                 android:layout_marginBottom="1dp"
                 android:layout_weight="1"
-                android:background="@drawable/start_toggle_red"
+                android:background="@drawable/start_toggle_blue"
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/start_middle"
-                android:textColor="@color/red_text_toggle"
+                android:textColor="@color/blue_text_toggle"
                 android:textSize="24sp" />
 
             <RadioButton
@@ -266,11 +277,11 @@ tools:context=".Fragments.PreAutonFragment">
                 android:layout_marginTop="1dp"
                 android:layout_marginBottom="1dp"
                 android:layout_weight="1"
-                android:background="@drawable/start_toggle_red"
+                android:background="@drawable/start_toggle_blue"
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/start_processor"
-                android:textColor="@color/red_text_toggle"
+                android:textColor="@color/blue_text_toggle"
                 android:textSize="24sp" />
         </RadioGroup>
 

@@ -51,6 +51,10 @@ public class PostMatchFragment extends DataFragment {
         confidenceSlider = new SliderElement(DatapointID.scouterConfidence.getID(), binding.confidenceSlider);
     }
 
+    public void updateTeamNumber(int teamNumber) {
+        binding.teamNumber.setText(String.valueOf(teamNumber));
+    }
+
     @NonNull
     @Override
     public String toString() {

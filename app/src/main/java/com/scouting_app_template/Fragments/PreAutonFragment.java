@@ -88,11 +88,11 @@ public class PreAutonFragment extends DataFragment {
         }
 
         teamColorButtons = new RadioGroup(NonDataIDs.TeamColor.getID(), binding.teamColorSwitch);
-        attemptDeviceNameParse();
         teamColorButtons.setOnClickFunction(this::updateTeamColor);
 
         teamNumberSpinner = new Spinner(NonDataIDs.TeamNumber.getID(), binding.teamNumberSpinner, false);
         teamNumberSpinner.setOnClickFunction(() -> ((MainActivity) requireContext()).updateTabletInformation());
+        teamNumberSpinner.setOnClickFunction(() -> ((MainActivity) requireContext()).updateTeamNumber(Integer.parseInt(binding.teamNumberSpinner.getSelectedItem().toString())));
 
         RadioCheckboxGroup startingPositionGroup = new RadioCheckboxGroup(DatapointID.startPos.getID());
 
@@ -121,6 +121,7 @@ public class PreAutonFragment extends DataFragment {
     public void onStart() {
         super.onStart();
         ((MainActivity) context).updateBtScoutingInfo();
+        attemptDeviceNameParse();
     }
 
     /* Makes it so the toString() function for this class
@@ -161,6 +162,8 @@ public class PreAutonFragment extends DataFragment {
 
                 binding.rightStart.setBackground(AppCompatResources.getDrawable(context,R.drawable.start_toggle_red));
                 binding.rightStart.setTextColor(AppCompatResources.getColorStateList(context, R.color.red_text_toggle));
+
+                binding.robotDriverStation.setText(R.string.red_general_position);
                 break;
             case "BLUE":
 //                binding.startingPosImage.setImageResource(R.drawable.TODO update path to field image);
@@ -174,21 +177,26 @@ public class PreAutonFragment extends DataFragment {
                 binding.rightStart.setBackground(AppCompatResources.getDrawable(context,R.drawable.start_toggle_blue));
                 binding.rightStart.setTextColor(AppCompatResources.getColorStateList(context, R.color.blue_text_toggle));
 
+                binding.robotDriverStation.setText(R.string.blue_general_position);
         }
     }
 
     public byte[] getTabletInformation() {
         StringBuilder tabletInfo = new StringBuilder();
 
+        String driverStationPos = (selectedColor == 1) ? "Red " : "Blue ";
+        driverStationPos = driverStationPos + driverStationNumber;
+
         tabletInfo.append(scouterNameSpinner.getValue());
+        tabletInfo.append(": ");
+        tabletInfo.append(driverStationPos);
         tabletInfo.append(": ");
         tabletInfo.append(matchNumberSpinner.getValue());
         tabletInfo.append(": ");
         tabletInfo.append(teamNumberSpinner.getValue());
-        tabletInfo.append(": ");
 
         if(tabletInfo.length() > 2) {
-            return tabletInfo.delete(tabletInfo.length()-2,tabletInfo.length()).toString().getBytes();
+            return tabletInfo.toString().getBytes();
         }
         else {
             return "Error".getBytes();
@@ -290,6 +298,11 @@ public class PreAutonFragment extends DataFragment {
                 break;
             default:
                 successfulDeviceNameParse = false;
+        }
+
+        if(successfulDeviceNameParse) {
+            String colorStatus = temp[temp.length-2] + " " + driverStationNumber;
+            binding.robotDriverStation.setText("Red 2");
         }
     }
 

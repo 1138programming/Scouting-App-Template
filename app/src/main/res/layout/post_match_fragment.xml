@@ -14,6 +14,17 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/teamNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/off_white"
+            android:textSize="48sp"
+            app:layout_constraintBottom_toBottomOf="@+id/mainTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/mainTitle"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
             android:id="@+id/mainTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

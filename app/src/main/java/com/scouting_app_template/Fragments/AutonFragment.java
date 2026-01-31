@@ -79,6 +79,10 @@ public class AutonFragment extends DataFragment {
         return this.autonStart;
     }
 
+    public void updateTeamNumber(int teamNumber) {
+        binding.teamNumber.setText(String.valueOf(teamNumber));
+    }
+
     @NonNull
     @Override
     public String toString() {

@@ -7,15 +7,12 @@ import static android.Manifest.permission.BLUETOOTH_ADVERTISE;
 import static android.Manifest.permission.BLUETOOTH_CONNECT;
 import static android.Manifest.permission.BLUETOOTH_SCAN;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -272,6 +269,12 @@ public class MainActivity extends AppCompatActivity {
         else {
             return ((BluetoothManager) MainActivity.context.getSystemService(Context.BLUETOOTH_SERVICE)).getAdapter().getName();
         }
+    }
+
+    public void updateTeamNumber(int teamNumber) {
+        auton.updateTeamNumber(teamNumber);
+        teleop.updateTeamNumber(teamNumber);
+        postMatch.updateTeamNumber(teamNumber);
     }
 
     @Override
