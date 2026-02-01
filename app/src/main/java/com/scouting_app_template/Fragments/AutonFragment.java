@@ -83,6 +83,10 @@ public class AutonFragment extends DataFragment {
         binding.teamNumber.setText(String.valueOf(teamNumber));
     }
 
+    public void robotDisabled() {
+
+    }
+
     @NonNull
     @Override
     public String toString() {

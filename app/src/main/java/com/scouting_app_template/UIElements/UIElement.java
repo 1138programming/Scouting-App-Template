@@ -43,4 +43,12 @@ public class UIElement {
     public boolean getIndependent() {
         return true;
     }
+
+    public void enable() {
+
+    }
+
+    public void disable(boolean override) {
+
+    }
 }

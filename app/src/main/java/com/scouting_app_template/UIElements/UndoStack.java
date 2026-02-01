@@ -122,4 +122,22 @@ public class UndoStack {
     public void setMatchPhaseTeleop() {
         matchPhaseAuton = false;
     }
+
+    public void disableScouting() {
+        for(UIElement element : allElements.values()) {
+            element.disable(false);
+        }
+    }
+
+    public void disableAll() {
+        for(UIElement element : allElements.values()) {
+            element.disable(true);
+        }
+    }
+
+    public void enableAll() {
+        for(UIElement element : allElements.values()) {
+            element.enable();
+        }
+    }
 }

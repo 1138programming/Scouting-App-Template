@@ -13,7 +13,7 @@ import com.scouting_app_template.MainActivity;
 import java.util.Objects;
 
 public class Button extends UIElement {
-    private final android.widget.Button binding;
+    private final android.widget.Button button;
     private final UndoStack undostack;
     private final boolean dataTracking;
     private final int titleLength;
@@ -21,6 +21,7 @@ public class Button extends UIElement {
     private int maxValue = 99;
     private int minValue = 0;
     private int color;
+    private boolean disableable = true;
 
     /**
      * This constructor is used to create an independent button and takes a
@@ -28,22 +29,37 @@ public class Button extends UIElement {
      * is also a data button so it takes an UndoStack.
      * 
      * @param datapointID datapointID of the button
-     * @param binding binding of the button
+     * @param button binding of the button
      * @param undoStack undoStack of the given fragment
      */
-    public Button(int datapointID, @Nullable android.widget.Button binding, UndoStack undoStack) {
+    public Button(int datapointID, @Nullable android.widget.Button button, UndoStack undoStack) {
         super(datapointID);
-        this.binding = binding;
+        this.button = button;
         this.undostack = undoStack;
         this.dataTracking = true;
-        if(this.binding != null) {
-            this.titleLength = this.binding.length() - 1;
-            this.color = Objects.requireNonNull(this.binding.getBackgroundTintList()).getDefaultColor();
-            this.binding.setOnClickListener(view -> clicked());
+        if(this.button != null) {
+            this.titleLength = this.button.length() - 1;
+            this.color = Objects.requireNonNull(this.button.getBackgroundTintList()).getDefaultColor();
+            this.button.setOnClickListener(view -> clicked());
         }
         else {
             this.titleLength = 0;
         }
+    }
+
+    /**
+     * This constructor is used to create an independent button and takes a
+     * binding since it's the only datapoint for the given button binding. It
+     * is also a data button so it takes an UndoStack.
+     *
+     * @param datapointID datapointID of the button
+     * @param button binding of the button
+     * @param undoStack undoStack of the given fragment
+     * @param disableable should the button be disabled when the robot is
+     */
+    public Button(int datapointID, @Nullable android.widget.Button button, UndoStack undoStack, boolean disableable) {
+        this(datapointID, button ,undoStack);
+        this.disableable = disableable;
     }
 
     /**
@@ -54,17 +70,17 @@ public class Button extends UIElement {
      * 
      * @param datapointID datapointID of the button (should be negative given that 
      *                    the button doesn't store data)
-     * @param binding binding of the button
+     * @param button binding of the button
      */
-    public Button(int datapointID, @Nullable android.widget.Button binding) {
+    public Button(int datapointID, @Nullable android.widget.Button button) {
         super(datapointID);
-        this.binding = binding;
+        this.button = button;
         this.undostack = null;
         this.dataTracking = false;
-        if(this.binding != null) {
-            this.titleLength = this.binding.length() - 1;
-            this.color = Objects.requireNonNull(this.binding.getBackgroundTintList()).getDefaultColor();
-            binding.setOnClickListener(view -> clicked());
+        if(this.button != null) {
+            this.titleLength = this.button.length() - 1;
+            this.color = Objects.requireNonNull(this.button.getBackgroundTintList()).getDefaultColor();
+            button.setOnClickListener(view -> clicked());
         }
         else {
             this.titleLength = 0;
@@ -85,8 +101,8 @@ public class Button extends UIElement {
 
     public void setColor(int color) {
         this.color = color;
-        if(binding != null) {
-            binding.setBackgroundTintList(ColorStateList.valueOf(this.color));
+        if(button != null) {
+            button.setBackgroundTintList(ColorStateList.valueOf(this.color));
         }
     }
 
@@ -132,9 +148,9 @@ public class Button extends UIElement {
 
     public void setCounter(int value) {
         currValue = Math.min(value, maxValue);
-        if(binding != null) {
-            CharSequence temp = binding.getText().subSequence(0,titleLength) + String.valueOf(currValue);
-            binding.setText(temp);
+        if(button != null) {
+            CharSequence temp = button.getText().subSequence(0,titleLength) + String.valueOf(currValue);
+            button.setText(temp);
         }
     }
 
@@ -165,10 +181,10 @@ public class Button extends UIElement {
             updated = true;
         }
 
-        if(binding != null) {
-            String title = (String) binding.getText();
+        if(button != null) {
+            String title = (String) button.getText();
             title = title.substring(0,titleLength-1) + currValue;
-            binding.setText(title);
+            button.setText(title);
         }
         return updated;
     }
@@ -183,10 +199,26 @@ public class Button extends UIElement {
             currValue--;
         }
 
-        if(binding != null) {
-            String title = (String) binding.getText();
+        if(button != null) {
+            String title = (String) button.getText();
             title = title.substring(0,titleLength) + currValue;
-            binding.setText(title);
+            button.setText(title);
         }
+    }
+
+    @Override
+    public void enable() {
+        button.setEnabled(true);
+    }
+
+    @Override
+    public void disable(boolean override) {
+        if(disableable || override) {
+            button.setEnabled(false);
+        }
+    }
+
+    public void disableable(boolean disableable) {
+        this.disableable = disableable;
     }
 }
