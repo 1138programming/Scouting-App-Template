@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class UIElement {
     protected int datapointID;
+    protected boolean disableable = true;
     private final ArrayList<Runnable> onClickFunctions = new ArrayList<>();
 
     /**
@@ -50,5 +51,9 @@ public class UIElement {
 
     public void disable(boolean override) {
 
+    }
+
+    public void disableable(boolean disableable) {
+        this.disableable = disableable;
     }
 }

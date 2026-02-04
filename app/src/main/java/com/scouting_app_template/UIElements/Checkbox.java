@@ -9,7 +9,6 @@ public class Checkbox extends UIElement {
     private final boolean locking;
     private final UndoStack undoStack;
     private String nameValue;
-    private boolean disableable = true;
     public Checkbox(int datapointID, android.widget.CheckBox checkbox, boolean startingState, boolean locking, UndoStack undoStack) {
         super(datapointID);
         this.checkbox = checkbox;
@@ -17,11 +16,6 @@ public class Checkbox extends UIElement {
         this.undoStack = undoStack;
         checkbox.setOnClickListener(view -> this.clicked());
         if(startingState) checkbox.performClick();
-    }
-
-    public Checkbox(int datapointID, android.widget.CheckBox checkbox, boolean startingState, boolean locking, UndoStack undoStack, boolean disableable) {
-        this(datapointID,checkbox,startingState,locking, undoStack);
-        this.disableable = disableable;
     }
 
     public Checkbox(int datapointID, android.widget.CheckBox checkbox, boolean startingState, String name) {
@@ -84,9 +78,5 @@ public class Checkbox extends UIElement {
         if(disableable || override) {
             checkbox.setEnabled(false);
         }
-    }
-
-    public void setDisableable(boolean disableable) {
-        this.disableable = disableable;
     }
 }

@@ -40,10 +40,10 @@ public class TeleopFragment extends DataFragment {
         undoStack.setMatchPhaseTeleop();
 
         ImageButton undoButton = new ImageButton(NonDataIDs.TeleopUndo.getID(), binding.undoButton);
-        undoButton.setOnClickFunction(undoButton::undo);
+        undoButton.setOnClickFunction(undoStack::undo);
 
         ImageButton redoButton = new ImageButton(NonDataIDs.TeleopRedo.getID(), binding.redoButton);
-        redoButton.setOnClickFunction(undoButton::redo);
+        redoButton.setOnClickFunction(undoStack::redo);
 
         Button backButton = new Button(NonDataIDs.TeleopNext.getID(), binding.backButton);
         backButton.setOnClickFunction(() -> ftm.teleopBack());

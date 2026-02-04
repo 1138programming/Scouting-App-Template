@@ -4,11 +4,13 @@ import com.google.android.material.slider.Slider;
 
 public class SliderElement extends UIElement {
     private final Slider slider;
-    public SliderElement(int datapointID, Slider slider) {
+
+    public SliderElement(int datapointID, Slider slider, UndoStack undoStack) {
         super(datapointID);
 
         this.slider = slider;
         this.slider.addOnChangeListener((slider1, value, fromUser) -> SliderElement.this.clicked());
+        undoStack.addElement(this);
     }
 
     @Override

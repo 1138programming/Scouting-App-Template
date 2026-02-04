@@ -47,10 +47,10 @@ public class AutonFragment extends DataFragment {
                 binding.testButton, undoStack, context.getColor(R.color.dark_red));
 
         ImageButton undoButton = new ImageButton(NonDataIDs.AutonUndo.getID(), binding.undoButton);
-        undoButton.setOnClickFunction(undoButton::undo);
+        undoButton.setOnClickFunction(undoStack::undo);
 
         ImageButton redoButton = new ImageButton(NonDataIDs.AutonRedo.getID(), binding.redoButton);
-        redoButton.setOnClickFunction(undoButton::redo);
+        redoButton.setOnClickFunction(undoStack::redo);
 
         Button backButton = new Button(NonDataIDs.AutonBack.getID(), binding.backButton);
         backButton.setOnClickFunction(() -> ftm.autonBack());

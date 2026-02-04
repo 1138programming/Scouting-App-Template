@@ -15,7 +15,6 @@ import java.util.ArrayList;
 public class Spinner extends UIElement {
     private final android.widget.Spinner spinner;
     private final boolean addOther;
-    private boolean disableable = true;
     private String currSelected = "";
     public Spinner(int datapointID, android.widget.Spinner spinner, boolean addOther) {
         super(datapointID);
@@ -34,11 +33,6 @@ public class Spinner extends UIElement {
                 spinner.setSelection(0);
             }
         });
-    }
-
-    public Spinner(int datapointID, android.widget.Spinner spinner, boolean addOther, boolean disableable) {
-        this(datapointID,spinner, addOther);
-        this.disableable = disableable;
     }
 
     @Override

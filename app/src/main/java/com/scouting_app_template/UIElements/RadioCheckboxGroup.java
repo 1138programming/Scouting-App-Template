@@ -12,6 +12,7 @@ public class RadioCheckboxGroup extends UIElement{
     public void addElement(UIElement element) {
         elements.add(element);
         element.setOnClickFunction(() -> elementSelected(element));
+        element.disableable(disableable);
     }
 
     public void elementSelected(UIElement element) {
@@ -37,4 +38,19 @@ public class RadioCheckboxGroup extends UIElement{
         if(currSelected == -1 || elements.isEmpty()) return "";
         return elements.get(currSelected).getValue();
     }
+
+    @Override
+    public void enable() {
+        for(UIElement element : elements) {
+            element.enable();
+        }
+    }
+
+    @Override
+    public void disable(boolean override) {
+        for(UIElement element : elements) {
+            element.disable(override);
+        }
+    }
+
 }

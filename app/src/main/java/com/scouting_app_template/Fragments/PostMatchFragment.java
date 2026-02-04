@@ -25,7 +25,6 @@ import org.json.JSONException;
 
 public class PostMatchFragment extends DataFragment {
     private PostMatchFragmentBinding binding;
-    private SliderElement confidenceSlider;
 
     public PostMatchFragment() {
 
@@ -48,7 +47,7 @@ public class PostMatchFragment extends DataFragment {
         Button submitButton = new Button(NonDataIDs.PostMatchSubmit.getID(), binding.submitButton);
         submitButton.setOnClickFunction(() -> ftm.matchSubmit());
 
-        confidenceSlider = new SliderElement(DatapointID.scouterConfidence.getID(), binding.confidenceSlider);
+        new SliderElement(DatapointID.scouterConfidence.getID(), binding.confidenceSlider, undoStack);
     }
 
     public void updateTeamNumber(int teamNumber) {
@@ -65,8 +64,6 @@ public class PostMatchFragment extends DataFragment {
     public JSONArray getFragmentMatchData() throws JSONException {
         JSONManager jsonManager = new JSONManager(((MainActivity)context).getBaseJSON());
         JSONArray jsonCollection = super.getFragmentMatchData();
-
-        jsonManager.addDatapoint(DatapointID.scouterConfidence.getID(), confidenceSlider.getValue());
 
         JSONArray jsonArray = jsonManager.getJSON();
 

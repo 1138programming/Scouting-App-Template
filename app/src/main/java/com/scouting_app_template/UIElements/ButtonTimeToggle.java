@@ -5,19 +5,19 @@ import android.content.res.ColorStateList;
 import java.util.Objects;
 
 public class ButtonTimeToggle extends UIElement {
-    private final android.widget.Button binding;
+    private final android.widget.Button button;
     private final UndoStack undoStack;
     private final int normalColor;
     private final int altColor;
     private boolean colorSwapped = false;
 
-    public ButtonTimeToggle(int datapointID, android.widget.Button binding, UndoStack undoStack, int altColor) {
+    public ButtonTimeToggle(int datapointID, android.widget.Button button, UndoStack undoStack, int altColor) {
         super(datapointID);
-        this.binding = binding;
+        this.button = button;
         this.undoStack = undoStack;
-        normalColor = Objects.requireNonNull(binding.getBackgroundTintList()).getDefaultColor();
+        normalColor = Objects.requireNonNull(button.getBackgroundTintList()).getDefaultColor();
         this.altColor = altColor;
-        this.binding.setOnClickListener(View1 -> clicked());
+        this.button.setOnClickListener(View1 -> clicked());
     }
 
     @Override
@@ -55,6 +55,18 @@ public class ButtonTimeToggle extends UIElement {
     }
 
     private void setColor(int color) {
-        binding.setBackgroundTintList(ColorStateList.valueOf(color));
+        button.setBackgroundTintList(ColorStateList.valueOf(color));
+    }
+
+    @Override
+    public void enable() {
+        button.setEnabled(true);
+    }
+
+    @Override
+    public void disable(boolean override) {
+        if(disableable || override) {
+            button.setEnabled(false);
+        }
     }
 }

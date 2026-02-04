@@ -103,7 +103,9 @@ public class UndoStack {
     public void undo() {
         if(inputStack.isEmpty()) return;
 
-        inputStack.peek().undo();
+        if(inputStack.peek() instanceof RadioButton) {
+            inputStack.peek().undo();
+        }
 
         redoStack.push(inputStack.pop());
         redoTimestamps.push(timestamps.pop());

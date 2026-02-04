@@ -21,7 +21,6 @@ public class Button extends UIElement {
     private int maxValue = 99;
     private int minValue = 0;
     private int color;
-    private boolean disableable = true;
 
     /**
      * This constructor is used to create an independent button and takes a
@@ -45,21 +44,6 @@ public class Button extends UIElement {
         else {
             this.titleLength = 0;
         }
-    }
-
-    /**
-     * This constructor is used to create an independent button and takes a
-     * binding since it's the only datapoint for the given button binding. It
-     * is also a data button so it takes an UndoStack.
-     *
-     * @param datapointID datapointID of the button
-     * @param button binding of the button
-     * @param undoStack undoStack of the given fragment
-     * @param disableable should the button be disabled when the robot is
-     */
-    public Button(int datapointID, @Nullable android.widget.Button button, UndoStack undoStack, boolean disableable) {
-        this(datapointID, button ,undoStack);
-        this.disableable = disableable;
     }
 
     /**
@@ -216,9 +200,5 @@ public class Button extends UIElement {
         if(disableable || override) {
             button.setEnabled(false);
         }
-    }
-
-    public void disableable(boolean disableable) {
-        this.disableable = disableable;
     }
 }
