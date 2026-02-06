@@ -1,6 +1,5 @@
-package com.scouting_app_template.Fragments;
+package com.scouting_app_template.fragments;
 
-import static com.scouting_app_template.MainActivity.context;
 import static com.scouting_app_template.MainActivity.ftm;
 
 import android.os.Bundle;
@@ -11,8 +10,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.scouting_app_template.DatapointIDs.DatapointID;
-import com.scouting_app_template.DatapointIDs.NonDataIDs;
+import com.scouting_app_template.datapointIDs.DatapointID;
+import com.scouting_app_template.datapointIDs.NonDataIDs;
 import com.scouting_app_template.JSON.JSONManager;
 import com.scouting_app_template.MainActivity;
 import com.scouting_app_template.UIElements.Button;
@@ -62,7 +61,7 @@ public class PostMatchFragment extends DataFragment {
 
     @Override
     public JSONArray getFragmentMatchData() throws JSONException {
-        JSONManager jsonManager = new JSONManager(((MainActivity)context).getBaseJSON());
+        JSONManager jsonManager = new JSONManager(((MainActivity)requireActivity()).getBaseJSON());
         JSONArray jsonCollection = super.getFragmentMatchData();
 
         JSONArray jsonArray = jsonManager.getJSON();

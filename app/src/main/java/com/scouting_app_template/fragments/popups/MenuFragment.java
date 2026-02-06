@@ -1,4 +1,4 @@
-package com.scouting_app_template.Fragments.Popups;
+package com.scouting_app_template.fragments.popups;
 
 import static com.scouting_app_template.MainActivity.ftm;
 
@@ -15,8 +15,9 @@ import androidx.fragment.app.Fragment;
 
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
-import com.scouting_app_template.Bluetooth.CaptureAct;
-import com.scouting_app_template.Bluetooth.QrBtConnThread;
+import com.scouting_app_template.bluetooth.CaptureAct;
+import com.scouting_app_template.bluetooth.QrBtConnThread;
+import com.scouting_app_template.MainActivity;
 import com.scouting_app_template.databinding.MenuDropdownBinding;
 
 import java.util.ArrayList;
@@ -25,7 +26,6 @@ public class MenuFragment extends Fragment {
     private MenuDropdownBinding binding;
     private final ActivityResultLauncher<ScanOptions> barLauncher;
     private final ArrayList<Long> adminClicks = new ArrayList<>();
-    private boolean adminNotActivated = true;
     public enum MenuOptions {
         connect,
         reset,
@@ -45,7 +45,7 @@ public class MenuFragment extends Fragment {
                 if(results.length == 2) {
                     String log = "MAC Address: " + results[0] + "  Port: " + results[1];
                     Log.d("1138 SCApp", log);
-                    QrBtConnThread.bluetoothConnect(results[0], Integer.parseInt(results[1]));
+                    QrBtConnThread.bluetoothConnect(results[0], Integer.parseInt(results[1]), (MainActivity) requireActivity());
                 }
                 else {
                     Log.e("1138 SCApp", "Error parsing QR-Code");
@@ -93,9 +93,8 @@ public class MenuFragment extends Fragment {
                         i--;
                     }
                 }
-                if(adminNotActivated && adminClicks.size() >= 5) {
+                if(adminClicks.size() >= 5) {
                     adminSelected();
-
                 }
                 break;
             case outside:

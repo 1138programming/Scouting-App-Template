@@ -18,25 +18,25 @@ import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.scouting_app_template.Bluetooth.BluetoothConnectedThread;
-import com.scouting_app_template.Extras.MatchTiming;
-import com.scouting_app_template.Extras.PermissionManager;
-import com.scouting_app_template.Fragments.ArchiveFragment;
-import com.scouting_app_template.Fragments.AutonFragment;
-import com.scouting_app_template.Fragments.DataFragment;
-import com.scouting_app_template.Fragments.FragmentTransManager;
-import com.scouting_app_template.Fragments.Popups.ArchiveConfirm;
-import com.scouting_app_template.Fragments.Popups.BlockerFragment;
-import com.scouting_app_template.Fragments.Popups.MenuFragment;
-import com.scouting_app_template.Fragments.Popups.ResetFragment;
-import com.scouting_app_template.Fragments.PostMatchFragment;
-import com.scouting_app_template.Fragments.PreAutonFragment;
-import com.scouting_app_template.Fragments.TeleopFragment;
+import com.scouting_app_template.bluetooth.BluetoothConnectedThread;
+import com.scouting_app_template.extras.MatchTiming;
+import com.scouting_app_template.extras.PermissionManager;
+import com.scouting_app_template.fragments.ArchiveFragment;
+import com.scouting_app_template.fragments.AutonFragment;
+import com.scouting_app_template.fragments.DataFragment;
+import com.scouting_app_template.fragments.FragmentTransManager;
+import com.scouting_app_template.fragments.popups.ArchiveConfirm;
+import com.scouting_app_template.fragments.popups.BlockerFragment;
+import com.scouting_app_template.fragments.popups.MenuFragment;
+import com.scouting_app_template.fragments.popups.ResetFragment;
+import com.scouting_app_template.fragments.PostMatchFragment;
+import com.scouting_app_template.fragments.PreAutonFragment;
+import com.scouting_app_template.fragments.TeleopFragment;
 import com.scouting_app_template.JSON.FileSaver;
 import com.scouting_app_template.JSON.UpdateScoutingInfo;
-import com.scouting_app_template.Fragments.Popups.AutonStart;
-import com.scouting_app_template.Fragments.Popups.ConfirmSubmit;
-import com.scouting_app_template.Fragments.Popups.TeleopStart;
+import com.scouting_app_template.fragments.popups.AutonStart;
+import com.scouting_app_template.fragments.popups.ConfirmSubmit;
+import com.scouting_app_template.fragments.popups.TeleopStart;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,10 +54,9 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "Team1138ScoutingApp";
     public static final UUID MY_UUID = UUID.fromString("0007EA11-1138-1000-5465-616D31313338");
     @SuppressLint("StaticFieldLeak")
-    public static Context context;
     public BluetoothConnectedThread connectedThread;
     public static FragmentTransManager ftm;
-    public ArrayList<Fragment> fragments = new ArrayList<>();
+    public final ArrayList<Fragment> fragments = new ArrayList<>();
     public PreAutonFragment preAuton = new PreAutonFragment();
     public AutonFragment auton = new AutonFragment();
     public TeleopFragment teleop = new TeleopFragment();
@@ -70,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     public ArchiveConfirm archiveConfirmSubmit = new ArchiveConfirm();
     public MenuFragment menuFragment = new MenuFragment();
     public ResetFragment resetFragment = new ResetFragment();
-    public PermissionManager permissionManager = new PermissionManager(this);
+    public final PermissionManager permissionManager = new PermissionManager(this);
     private enum gameState {
         preAuton,
         autonStarted,
@@ -116,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         fragments.add(resetFragment);
         fragments.add(menuFragment);
 
-        ftm = new FragmentTransManager(fragments);
+        ftm = new FragmentTransManager(fragments, this);
     }
 
     private void addPermissions() {
@@ -140,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         if (!Objects.isNull(connectedThread) && !connectedThread.checkLists()) {
             connectedThread.updateLists();
         }
-        ArrayList<ArrayList<CharSequence>> splitData = (new UpdateScoutingInfo()).getSplitFileData();
+        ArrayList<ArrayList<CharSequence>> splitData = (new UpdateScoutingInfo(this)).getSplitFileData();
         if (!splitData.isEmpty() && !splitData.get(0).isEmpty()) {
             preAuton.setScoutingInfo(splitData);
         }
@@ -175,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
         resetFragment = new ResetFragment();
         fragments.add(resetFragment);
 
-        ftm = new FragmentTransManager(fragments);
+        ftm = new FragmentTransManager(fragments, this);
     }
     public void sendSavedData(File file) {
         if(connectivity) {
@@ -211,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        FileSaver.saveFile(jsonFile.toString(), preAuton.getFileTitle());
+        FileSaver.saveFile(jsonFile.toString(), preAuton.getFileTitle(), this);
 
         if(connectivity) {
             connectedThread.sendInformation(jsonFile.toString().getBytes(StandardCharsets.UTF_8), 1);
@@ -245,22 +244,24 @@ public class MainActivity extends AppCompatActivity {
 
     public void autonStart() {
         currentState = gameState.autonStarted;
-        MatchTiming.scheduleRunAfterAuto(this::autonStop);
+        MatchTiming.scheduleRunAfterAuto(this::autonStop, this);
     }
 
     public void autonStop() {
         if(currentState == gameState.autonStarted) {
             currentState = gameState.autonStopped;
         }
+        auton.endAuton();
     }
 
     public void teleopStart() {
         currentState = gameState.teleopStarted;
-        MatchTiming.scheduleRunAfterTeleop(this::teleopStop);
+        MatchTiming.scheduleRunAfterTeleop(this::teleopStop, this);
     }
 
     public void teleopStop() {
         currentState = gameState.postMatch;
+        teleop.endTeleop();
     }
 
     @SuppressLint("MissingPermission")
@@ -269,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
             return "ERROR";
         }
         else {
-            return ((BluetoothManager) MainActivity.context.getSystemService(Context.BLUETOOTH_SERVICE)).getAdapter().getName();
+            return ((BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE)).getAdapter().getName();
         }
     }
 
@@ -283,7 +284,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        context = this;
         addFragmentsToManager();
 
         addPermissions();

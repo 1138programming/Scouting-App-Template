@@ -1,4 +1,4 @@
-package com.scouting_app_template.DatapointIDs;
+package com.scouting_app_template.datapointIDs;
 
 import java.util.HashMap;
 

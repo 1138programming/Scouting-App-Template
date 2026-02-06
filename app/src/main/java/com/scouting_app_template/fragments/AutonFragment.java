@@ -1,6 +1,5 @@
-package com.scouting_app_template.Fragments;
+package com.scouting_app_template.fragments;
 
-import static com.scouting_app_template.MainActivity.context;
 import static com.scouting_app_template.MainActivity.ftm;
 
 import android.os.Bundle;
@@ -11,7 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.scouting_app_template.DatapointIDs.NonDataIDs;
+import com.scouting_app_template.datapointIDs.NonDataIDs;
 import com.scouting_app_template.R;
 import com.scouting_app_template.UIElements.Button;
 import com.scouting_app_template.UIElements.ButtonTimeToggle;
@@ -44,7 +43,7 @@ public class AutonFragment extends DataFragment {
         undoStack.setMatchPhaseAuton();
 
         ButtonTimeToggle testButton = new ButtonTimeToggle(NonDataIDs.Default.getID(),
-                binding.testButton, undoStack, context.getColor(R.color.dark_red));
+                binding.testButton, undoStack, requireContext().getColor(R.color.dark_red));
 
         ImageButton undoButton = new ImageButton(NonDataIDs.AutonUndo.getID(), binding.undoButton);
         undoButton.setOnClickFunction(undoStack::undo);
@@ -58,21 +57,27 @@ public class AutonFragment extends DataFragment {
         Button nextButton = new Button(NonDataIDs.AutonNext.getID(), binding.nextButton);
         nextButton.setOnClickFunction(() -> ftm.autonNext());
         nextButton.setOnClickFunction(() -> ((TeleopFragment) Objects.requireNonNull(
-                getParentFragmentManager().findFragmentByTag("TeleopFragment"))).teleopOpen());
-    }
-
-    public void autonOpen() {
-        if(autonStart == null) {
-            ftm.showAutonStart();
-        }
+                getParentFragmentManager().findFragmentByTag("TeleopFragment"))).openTeleop());
     }
 
     /**
      * Called every time auton is opened to make sure the auton start
      * popup is shown before auton starts.
      */
+    public void openAuton() {
+        if(autonStart == null) {
+            ftm.showAutonStart();
+            undoStack.disableAll();
+        }
+    }
+
     public void startAuton() {
         this.autonStart = Calendar.getInstance(Locale.US).getTimeInMillis();
+        undoStack.enableAll();
+    }
+
+    public void endAuton() {
+        undoStack.disableAll();
     }
 
     public long getAutonStart() {

@@ -1,4 +1,4 @@
-package com.scouting_app_template.Fragments.Popups;
+package com.scouting_app_template.fragments.popups;
 
 import static com.scouting_app_template.MainActivity.ftm;
 
@@ -11,8 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.scouting_app_template.DatapointIDs.NonDataIDs;
-import com.scouting_app_template.Fragments.ArchiveFragment;
+import com.scouting_app_template.datapointIDs.NonDataIDs;
+import com.scouting_app_template.fragments.ArchiveFragment;
 import com.scouting_app_template.UIElements.Button;
 import com.scouting_app_template.databinding.ArchiveConfirmSubmitBinding;
 import java.util.Objects;

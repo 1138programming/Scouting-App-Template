@@ -6,7 +6,7 @@ import android.util.Log;
 
 import static com.scouting_app_template.MainActivity.TAG;
 
-import com.scouting_app_template.DatapointIDs.NonDataIDs;
+import com.scouting_app_template.datapointIDs.NonDataIDs;
 
 import java.util.ArrayList;
 

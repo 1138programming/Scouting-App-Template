@@ -1,11 +1,12 @@
 package com.scouting_app_template.UIElements;
 
+import static com.scouting_app_template.datapointIDs.ReversedDatapointIDs.reversedDatapointIDs;
 import static com.scouting_app_template.MainActivity.TAG;
 import static com.scouting_app_template.MainActivity.autonLengthMs;
-import static com.scouting_app_template.MainActivity.context;
 import static com.scouting_app_template.MainActivity.teleopLengthMs;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.scouting_app_template.JSON.JSONManager;
 import com.scouting_app_template.MainActivity;
@@ -28,10 +29,11 @@ public class UndoStack {
     private Stack<UIElement> redoStack = new Stack<>();
     private final Stack<Integer> redoTimestamps = new Stack<>();
     private final HashMap<Integer, UIElement> allElements = new HashMap<>();
+    private final MainActivity mainActivity;
     private boolean matchPhaseAuton;
 
-    public UndoStack() {
-
+    public UndoStack(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
     }
 
     public void addElement(UIElement element) {
@@ -46,8 +48,9 @@ public class UndoStack {
         if(!allElements.containsKey(element.getID())) {
             addElement(element);
         }
+
         inputStack.add(element);
-        timestamps.add((int) (Calendar.getInstance(Locale.US).getTimeInMillis()-((MainActivity)context).getCurrStartTime()));
+        timestamps.add((int) (Calendar.getInstance(Locale.US).getTimeInMillis()-(mainActivity.getCurrStartTime())));
         redoStack = new Stack<>();
     }
 
@@ -97,24 +100,39 @@ public class UndoStack {
         }
         return manager.getJSON();
     }
+
     /**
      *
+     * @return the top {@link UIElement} in the inputStack
      */
-    public void undo() {
-        if(inputStack.isEmpty()) return;
+    public UIElement undo() {
+        if(inputStack.isEmpty()) return null;
 
-        if(inputStack.peek() instanceof RadioButton) {
-            inputStack.peek().undo();
-        }
+        UIElement element = inputStack.pop();
 
-        redoStack.push(inputStack.pop());
+        element.undo();
+        redoStack.push(element);
         redoTimestamps.push(timestamps.pop());
+        Toast.makeText(mainActivity, "Undid " + reversedDatapointIDs.get(element.getID()), Toast.LENGTH_SHORT).show();
+
+        return element;
     }
-    public void redo() {
-        if(redoStack.isEmpty()) return;
-        redoStack.peek().redo();
-        inputStack.push(redoStack.pop());
+
+    /**
+     *
+     * @return the {@link UIElement} that was moved to top of inputStack
+     */
+    public UIElement redo() {
+        if(redoStack.isEmpty()) return null;
+
+        UIElement element = redoStack.pop();
+
+        element.redo();
+        inputStack.push(element);
         timestamps.push(redoTimestamps.pop());
+        Toast.makeText(mainActivity, "Redid " + reversedDatapointIDs.get(element.getID()), Toast.LENGTH_SHORT).show();
+
+        return element;
     }
 
     public void setMatchPhaseAuton() {

@@ -2,12 +2,12 @@ package com.scouting_app_template.UIElements;
 
 import static com.scouting_app_template.MainActivity.TAG;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
-import com.scouting_app_template.MainActivity;
 import com.scouting_app_template.R;
 
 import java.util.ArrayList;
@@ -20,7 +20,6 @@ public class Spinner extends UIElement {
         super(datapointID);
         this.spinner = spinner;
         this.addOther = addOther;
-        if(addOther) updateSpinnerList(new ArrayList<>());
         this.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -61,12 +60,12 @@ public class Spinner extends UIElement {
         return spinner.getCount();
     }
 
-    public void updateSpinnerList(ArrayList<CharSequence> providedList) {
+    public void updateSpinnerList(ArrayList<CharSequence> providedList, Context context) {
         ArrayList<CharSequence> spinnerList = new ArrayList<>();
         if(addOther) spinnerList.add("Other");
         spinnerList.addAll(providedList);
         ArrayAdapter<CharSequence> listAdapter
-                = new ArrayAdapter<>(MainActivity.context, R.layout.spinner_layout, spinnerList);
+                = new ArrayAdapter<>(context, R.layout.spinner_layout, spinnerList);
         listAdapter.setDropDownViewResource(R.layout.spinner_layout);
         spinner.setAdapter(listAdapter);
         int index = listAdapter.getPosition(currSelected);

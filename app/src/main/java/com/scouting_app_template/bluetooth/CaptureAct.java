@@ -1,4 +1,4 @@
-package com.scouting_app_template.Bluetooth;
+package com.scouting_app_template.bluetooth;
 
 import com.journeyapps.barcodescanner.CaptureActivity;
 

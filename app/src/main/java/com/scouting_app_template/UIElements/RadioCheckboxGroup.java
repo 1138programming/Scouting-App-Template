@@ -3,7 +3,7 @@ package com.scouting_app_template.UIElements;
 import java.util.ArrayList;
 
 public class RadioCheckboxGroup extends UIElement{
-    ArrayList<UIElement> elements = new ArrayList<>();
+    final ArrayList<UIElement> elements = new ArrayList<>();
     int currSelected = -1;
     public RadioCheckboxGroup(int datapointID) {
         super(datapointID);

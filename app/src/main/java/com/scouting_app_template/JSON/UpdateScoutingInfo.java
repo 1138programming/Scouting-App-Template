@@ -1,9 +1,10 @@
 package com.scouting_app_template.JSON;
 
 import static com.scouting_app_template.MainActivity.TAG;
-import static com.scouting_app_template.MainActivity.context;
 
 import android.util.Log;
+
+import com.scouting_app_template.MainActivity;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -19,11 +20,15 @@ import java.util.Arrays;
 
 public class UpdateScoutingInfo {
 
-    private final File folderDir = new File(context.getFilesDir().getPath() + "/scoutingData");
+    private final File folderDir;
     private final String fileName = "scouterInfo.txt";
+    private final MainActivity mainActivity;
     boolean dirExists = true;
 
-    public UpdateScoutingInfo() {
+    public UpdateScoutingInfo(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
+        this.folderDir = new File(mainActivity.getFilesDir().getPath() + "/scoutingData");
+
         if (!folderDir.isDirectory()) {
             if (!folderDir.mkdir()) {
                 dirExists = false;

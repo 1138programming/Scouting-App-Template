@@ -1,4 +1,4 @@
-package com.scouting_app_template.Extras;
+package com.scouting_app_template.extras;
 
 import android.content.Context;
 import android.content.pm.PackageManager;

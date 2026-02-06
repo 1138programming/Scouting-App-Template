@@ -2,10 +2,13 @@ package com.scouting_app_template.UIElements;
 
 import android.content.res.ColorStateList;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class ButtonTimeToggle extends UIElement {
     private final android.widget.Button button;
+    private final ArrayList<Runnable> onSelectFunctions = new ArrayList<>();
+    private final ArrayList<Runnable> onDeselectFunctions = new ArrayList<>();
     private final UndoStack undoStack;
     private final int normalColor;
     private final int altColor;
@@ -25,8 +28,27 @@ public class ButtonTimeToggle extends UIElement {
         super.clicked();
 
         swapColors();
+        this.specialClicked();
 
         undoStack.addTimestamp(this);
+    }
+
+    /**
+     * Runs functions that are only run on select or deselect
+     */
+    private void specialClicked() {
+        // if the button was just selected then iterate through the onSelectFunctions and vice versa
+        for(Runnable onClickFunction : (colorSwapped ? onSelectFunctions : onDeselectFunctions)) {
+            onClickFunction.run();
+        }
+    }
+
+    public void setOnSelectFunction(Runnable onClickFunction) {
+        onSelectFunctions.add(onClickFunction);
+    }
+
+    public void setOnDeselectFunction(Runnable onClickFunction) {
+        onDeselectFunctions.add(onClickFunction);
     }
 
     @Override

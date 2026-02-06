@@ -1,6 +1,5 @@
-package com.scouting_app_template.Fragments.Popups;
+package com.scouting_app_template.fragments.popups;
 
-import static com.scouting_app_template.MainActivity.context;
 import static com.scouting_app_template.MainActivity.ftm;
 
 import android.os.Bundle;
@@ -12,8 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.scouting_app_template.DatapointIDs.NonDataIDs;
-import com.scouting_app_template.Fragments.PreAutonFragment;
+import com.scouting_app_template.datapointIDs.NonDataIDs;
+import com.scouting_app_template.fragments.PreAutonFragment;
 import com.scouting_app_template.MainActivity;
 import com.scouting_app_template.UIElements.Button;
 import com.scouting_app_template.databinding.ConfirmResetFragmentBinding;
@@ -46,7 +45,7 @@ public class ResetFragment extends Fragment {
                 NonDataIDs.ResetConfirm.getID(), binding.confirmButton);
         startButton.setOnClickFunction(((PreAutonFragment) Objects.requireNonNull(
                 getParentFragmentManager().findFragmentByTag("PreAutonFragment")))::decrementMatchIndex);
-        startButton.setOnClickFunction(((MainActivity)context)::recreateFragments);
+        startButton.setOnClickFunction(((MainActivity)requireActivity())::recreateFragments);
     }
 
     @NonNull

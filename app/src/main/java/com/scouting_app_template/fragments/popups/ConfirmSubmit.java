@@ -1,6 +1,5 @@
-package com.scouting_app_template.Fragments.Popups;
+package com.scouting_app_template.fragments.popups;
 
-import static com.scouting_app_template.MainActivity.context;
 import static com.scouting_app_template.MainActivity.ftm;
 
 import android.os.Bundle;
@@ -12,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.scouting_app_template.DatapointIDs.NonDataIDs;
+import com.scouting_app_template.datapointIDs.NonDataIDs;
 import com.scouting_app_template.MainActivity;
 import com.scouting_app_template.UIElements.Button;
 import com.scouting_app_template.databinding.ConfirmSubmitFragmentBinding;
@@ -45,8 +44,8 @@ public class ConfirmSubmit extends Fragment {
     }
 
     private void matchSubmit() {
-        ((MainActivity)context).sendMatchData();
-        ((MainActivity)context).recreateFragments();
+        ((MainActivity)requireActivity()).sendMatchData();
+        ((MainActivity)requireActivity()).recreateFragments();
     }
 
     @NonNull

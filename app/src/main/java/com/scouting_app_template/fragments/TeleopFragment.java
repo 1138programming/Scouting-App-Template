@@ -1,4 +1,4 @@
-package com.scouting_app_template.Fragments;
+package com.scouting_app_template.fragments;
 
 import static com.scouting_app_template.MainActivity.ftm;
 
@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.scouting_app_template.DatapointIDs.NonDataIDs;
+import com.scouting_app_template.datapointIDs.NonDataIDs;
 import com.scouting_app_template.UIElements.Button;
 import com.scouting_app_template.UIElements.ImageButton;
 import com.scouting_app_template.databinding.TeleopFragmentBinding;
@@ -56,13 +56,19 @@ public class TeleopFragment extends DataFragment {
      * Called every time teleop is opened to make sure the teleop start
      * popup is shown before teleop starts.
      */
-    public void teleopOpen() {
+    public void openTeleop() {
         if(teleopStart == null) {
             ftm.showTeleopStart();
+            undoStack.disableAll();
         }
     }
     public void startTeleop() {
         this.teleopStart = Calendar.getInstance(Locale.US).getTimeInMillis();
+        undoStack.enableAll();
+    }
+
+    public void endTeleop() {
+        undoStack.disableAll();
     }
     public long getTeleopStart() {
         return this.teleopStart;

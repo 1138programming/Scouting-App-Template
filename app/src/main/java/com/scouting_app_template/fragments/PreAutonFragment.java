@@ -1,5 +1,6 @@
-package com.scouting_app_template.Fragments;
+package com.scouting_app_template.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,12 +14,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 
-import com.scouting_app_template.DatapointIDs.DatapointID;
+import com.scouting_app_template.datapointIDs.DatapointID;
 import com.scouting_app_template.MainActivity;
 import com.scouting_app_template.R;
 import com.scouting_app_template.UIElements.Button;
 import com.scouting_app_template.UIElements.Checkbox;
-import com.scouting_app_template.DatapointIDs.NonDataIDs;
+import com.scouting_app_template.datapointIDs.NonDataIDs;
 import com.scouting_app_template.UIElements.RadioCheckboxGroup;
 import com.scouting_app_template.UIElements.RadioGroup;
 import com.scouting_app_template.UIElements.Spinner;
@@ -26,7 +27,6 @@ import com.scouting_app_template.UIElements.ImageButton;
 import com.scouting_app_template.databinding.PreAutonFragmentBinding;
 
 import static com.scouting_app_template.MainActivity.TAG;
-import static com.scouting_app_template.MainActivity.context;
 import static com.scouting_app_template.MainActivity.ftm;
 
 import org.json.JSONException;
@@ -79,7 +79,7 @@ public class PreAutonFragment extends DataFragment {
         }
 
         matchNumberSpinner = new Spinner(NonDataIDs.MatchNumber.getID(), binding.matchNumberSpinner, false);
-        matchNumberSpinner.updateSpinnerList(generateMatches(100,13,3));
+        matchNumberSpinner.updateSpinnerList(generateMatches(100,13,3), requireContext());
         matchNumberSpinner.setOnClickFunction(() -> ((MainActivity) requireContext()).updateTabletInformation());
         matchNumberSpinner.setOnClickFunction(this::updateIndices);
         if(matchIndex < matchNumberSpinner.getLength()) {
@@ -108,7 +108,7 @@ public class PreAutonFragment extends DataFragment {
         Button nextButton = new Button(NonDataIDs.PreAutonNext.getID(), binding.nextButton);
         nextButton.setOnClickFunction(() -> ftm.preAutonNext());
         nextButton.setOnClickFunction(() -> ((AutonFragment) Objects.requireNonNull(
-                getParentFragmentManager().findFragmentByTag("AutonFragment"))).autonOpen());
+                getParentFragmentManager().findFragmentByTag("AutonFragment"))).openAuton());
 
         ImageButton button = new ImageButton(NonDataIDs.ArchiveHamburger.getID(), binding.archiveButton);
         button.setOnClickFunction(() -> ftm.preAutonMenu());
@@ -119,7 +119,7 @@ public class PreAutonFragment extends DataFragment {
     @Override
     public void onStart() {
         super.onStart();
-        ((MainActivity) context).updateBtScoutingInfo();
+        ((MainActivity) requireActivity()).updateBtScoutingInfo();
         attemptDeviceNameParse();
     }
 
@@ -149,6 +149,8 @@ public class PreAutonFragment extends DataFragment {
     }
 
     public void updateTeamColor() {
+        Context context = requireContext();
+
         switch(teamColorButtons.getValue()) {
             case "RED":
 //                binding.startingPosImage.setImageResource(R.drawable.TODO update path to field image);
@@ -209,26 +211,26 @@ public class PreAutonFragment extends DataFragment {
             this.scouterIDs.add(Integer.valueOf(curr));
         }
 
-        scouterNameSpinner.updateSpinnerList(list.get(0));
+        scouterNameSpinner.updateSpinnerList(list.get(0), requireContext());
         scouterNameSpinner.setIndex(scouterIndex);
 
-        teamNumberSpinner.updateSpinnerList(list.get(2));
+        teamNumberSpinner.updateSpinnerList(list.get(2), requireContext());
 
         ArrayList<Integer> matches = new ArrayList<>();
         for(CharSequence i : list.get(3)) {
             matches.add(Integer.valueOf(i.toString()));
         }
-        matchNumberSpinner.updateSpinnerList(generateMatches(matches.get(0), matches.get(1), matches.get(2)));
+        matchNumberSpinner.updateSpinnerList(generateMatches(matches.get(0), matches.get(1), matches.get(2)), requireContext());
     }
 
     public void setBtStatus(boolean status) {
         if(status) {
             binding.btConnectionStatus.setText(getResources().getString(R.string.connected_status_title), TextView.BufferType.NORMAL);
-            Toast.makeText(context, "connected", Toast.LENGTH_LONG).show();
+            Toast.makeText(requireContext(), "connected", Toast.LENGTH_LONG).show();
         }
         else {
             binding.btConnectionStatus.setText(getResources().getString(R.string.disconnected_status_title), TextView.BufferType.NORMAL);
-            Toast.makeText(context, "disconnected", Toast.LENGTH_LONG).show();
+            Toast.makeText(requireContext(), "disconnected", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -282,7 +284,7 @@ public class PreAutonFragment extends DataFragment {
 
     private void attemptDeviceNameParse() {
         successfulDeviceNameParse = true;
-        String deviceName = ((MainActivity)context).getDeviceName();
+        String deviceName = ((MainActivity)requireActivity()).getDeviceName();
         String[] temp = deviceName.split(" ");
         if(temp.length >= 2) try {
             driverStationNumber = Integer.parseInt(temp[temp.length-1]);

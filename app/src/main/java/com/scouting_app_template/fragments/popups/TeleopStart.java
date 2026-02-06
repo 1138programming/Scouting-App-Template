@@ -1,6 +1,5 @@
-package com.scouting_app_template.Fragments.Popups;
+package com.scouting_app_template.fragments.popups;
 
-import static com.scouting_app_template.MainActivity.context;
 import static com.scouting_app_template.MainActivity.ftm;
 
 import android.os.Bundle;
@@ -12,8 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.scouting_app_template.DatapointIDs.NonDataIDs;
-import com.scouting_app_template.Fragments.TeleopFragment;
+import com.scouting_app_template.datapointIDs.NonDataIDs;
+import com.scouting_app_template.fragments.TeleopFragment;
 import com.scouting_app_template.MainActivity;
 import com.scouting_app_template.UIElements.Button;
 import com.scouting_app_template.databinding.TeleopStartFragmentBinding;
@@ -45,7 +44,7 @@ public class TeleopStart extends Fragment {
                 NonDataIDs.TeleopStartStart.getID(), binding.startButton);
         startButton.setOnClickFunction(() -> ((TeleopFragment) Objects.requireNonNull(
                 getParentFragmentManager().findFragmentByTag("TeleopFragment"))).startTeleop());
-        startButton.setOnClickFunction(((MainActivity)context)::teleopStart);
+        startButton.setOnClickFunction(((MainActivity)requireActivity())::teleopStart);
         startButton.setOnClickFunction(() -> ftm.teleopStartStart());
     }
 
