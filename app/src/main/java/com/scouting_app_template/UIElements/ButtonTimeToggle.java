@@ -3,22 +3,23 @@ package com.scouting_app_template.UIElements;
 import android.content.res.ColorStateList;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class ButtonTimeToggle extends UIElement {
     private final android.widget.Button button;
     private final ArrayList<Runnable> onSelectFunctions = new ArrayList<>();
     private final ArrayList<Runnable> onDeselectFunctions = new ArrayList<>();
     private final UndoStack undoStack;
-    private final int normalColor;
-    private final int altColor;
+    private final ColorStateList normalColor;
+    private final ColorStateList altColor;
     private boolean colorSwapped = false;
 
-    public ButtonTimeToggle(int datapointID, android.widget.Button button, UndoStack undoStack, int altColor) {
+    public ButtonTimeToggle(int datapointID, android.widget.Button button, UndoStack undoStack, ColorStateList altColor) {
         super(datapointID);
         this.button = button;
         this.undoStack = undoStack;
-        normalColor = Objects.requireNonNull(button.getBackgroundTintList()).getDefaultColor();
+        this.undoStack.addElement(this);
+        button.setBackgroundTintList(button.getBackgroundTintList());
+        normalColor = button.getBackgroundTintList();
         this.altColor = altColor;
         this.button.setOnClickListener(View1 -> clicked());
     }
@@ -54,11 +55,13 @@ public class ButtonTimeToggle extends UIElement {
     @Override
     public void undo() {
         swapColors();
+        specialClicked();
     }
 
     @Override
     public void redo() {
         swapColors();
+        specialClicked();
     }
 
     @Override
@@ -69,10 +72,10 @@ public class ButtonTimeToggle extends UIElement {
     private void swapColors() {
         colorSwapped = !colorSwapped;
         if (colorSwapped) {
-            setColor(altColor);
+            button.setBackgroundTintList(altColor);
         }
         else {
-            setColor(normalColor);
+            button.setBackgroundTintList(normalColor);
         }
     }
 

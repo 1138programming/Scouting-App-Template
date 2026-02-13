@@ -29,6 +29,7 @@ public class UndoStack {
     private Stack<UIElement> redoStack = new Stack<>();
     private final Stack<Integer> redoTimestamps = new Stack<>();
     private final HashMap<Integer, UIElement> allElements = new HashMap<>();
+    private final ArrayList<UIElement> disableOnlyElements = new ArrayList<>();
     private final MainActivity mainActivity;
     private boolean matchPhaseAuton;
 
@@ -40,17 +41,23 @@ public class UndoStack {
         allElements.put(element.getID(), element);
     }
 
+    public void addDisableOnlyElement(UIElement element) {
+        disableOnlyElements.add(element);
+    }
+
     public UIElement getElement(int datapointID) {
         return allElements.get(datapointID);
     }
 
     public void addTimestamp(UIElement element) {
         if(!allElements.containsKey(element.getID())) {
+            Log.e(TAG, "Element not added to undoStack", new Throwable().fillInStackTrace());
             addElement(element);
         }
 
         inputStack.add(element);
         timestamps.add((int) (Calendar.getInstance(Locale.US).getTimeInMillis()-(mainActivity.getCurrStartTime())));
+
         redoStack = new Stack<>();
     }
 
@@ -103,10 +110,9 @@ public class UndoStack {
 
     /**
      *
-     * @return the top {@link UIElement} in the inputStack
      */
-    public UIElement undo() {
-        if(inputStack.isEmpty()) return null;
+    public void undo() {
+        if(inputStack.isEmpty()) return;
 
         UIElement element = inputStack.pop();
 
@@ -115,15 +121,13 @@ public class UndoStack {
         redoTimestamps.push(timestamps.pop());
         Toast.makeText(mainActivity, "Undid " + reversedDatapointIDs.get(element.getID()), Toast.LENGTH_SHORT).show();
 
-        return element;
     }
 
     /**
      *
-     * @return the {@link UIElement} that was moved to top of inputStack
      */
-    public UIElement redo() {
-        if(redoStack.isEmpty()) return null;
+    public void redo() {
+        if(redoStack.isEmpty()) return;
 
         UIElement element = redoStack.pop();
 
@@ -132,7 +136,6 @@ public class UndoStack {
         timestamps.push(redoTimestamps.pop());
         Toast.makeText(mainActivity, "Redid " + reversedDatapointIDs.get(element.getID()), Toast.LENGTH_SHORT).show();
 
-        return element;
     }
 
     public void setMatchPhaseAuton() {
@@ -147,16 +150,25 @@ public class UndoStack {
         for(UIElement element : allElements.values()) {
             element.disable(false);
         }
+        for(UIElement element : disableOnlyElements) {
+            element.disable(false);
+        }
     }
 
     public void disableAll() {
         for(UIElement element : allElements.values()) {
             element.disable(true);
         }
+        for(UIElement element : disableOnlyElements) {
+            element.disable(true);
+        }
     }
 
     public void enableAll() {
         for(UIElement element : allElements.values()) {
+            element.enable();
+        }
+        for(UIElement element : disableOnlyElements) {
             element.enable();
         }
     }

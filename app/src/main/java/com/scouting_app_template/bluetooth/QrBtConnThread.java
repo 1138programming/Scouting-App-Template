@@ -38,6 +38,7 @@ public class QrBtConnThread extends Thread {
                  .getAdapter().getRemoteDevice(mac);
 
         try {
+//            @SuppressLint("NoSuchMethod") TODO fix pls
             Method method = device.getClass().getMethod("createInsecureRfcommSocket", int.class);
             tmp = (BluetoothSocket) method.invoke(device, port);
             socket = tmp;

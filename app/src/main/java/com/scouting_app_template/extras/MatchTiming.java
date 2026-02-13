@@ -10,10 +10,13 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public class MatchTiming {
-    private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
+    private static ScheduledFuture<?> afterAutonFuture;
+    private static ScheduledFuture<?> afterTeleopFuture;
     /**
      * calculates the length of auto and the buffer, but subtracts the
      * amount of time that has already passed (current time - when auton started)
@@ -24,6 +27,7 @@ public class MatchTiming {
                 - (Calendar.getInstance(Locale.US).getTimeInMillis() - mainActivity.auton.getAutonStart());
 
         scheduler.schedule(runWithUpdate(task, mainActivity), timeToWait, TimeUnit.MILLISECONDS);
+        afterAutonFuture = scheduler.schedule(runWithUpdate(task, mainActivity), timeToWait, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -36,6 +40,7 @@ public class MatchTiming {
                 - (Calendar.getInstance(Locale.US).getTimeInMillis() - mainActivity.teleop.getTeleopStart());
 
         scheduler.schedule(runWithUpdate(task, mainActivity), timeToWait, TimeUnit.MILLISECONDS);
+        afterTeleopFuture = scheduler.schedule(runWithUpdate(task, mainActivity), timeToWait, TimeUnit.MILLISECONDS);
     }
 
     private static Runnable runWithUpdate(Runnable task, MainActivity mainActivity) {
@@ -43,5 +48,10 @@ public class MatchTiming {
             task.run();
             mainActivity.updateFragments();
         };
+    }
+
+    public static void cancel() {
+        if(afterAutonFuture != null) afterAutonFuture.cancel(true);
+        if(afterTeleopFuture != null)afterTeleopFuture.cancel(true);
     }
 }

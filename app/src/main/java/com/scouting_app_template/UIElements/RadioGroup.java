@@ -5,6 +5,7 @@ import static com.scouting_app_template.MainActivity.TAG;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.Stack;
 
 
@@ -14,6 +15,7 @@ public class RadioGroup extends UIElement {
     private final Stack<RadioButton> radioInputStack = new Stack<>();
     private final Stack<RadioButton> radioRedoStack = new Stack<>();
     private boolean unchecking = false;
+    private boolean stackChange = false;
     public RadioGroup(int datapointID, android.widget.RadioGroup radioGroup) {
         super(datapointID);
         this.radioGroup = radioGroup;
@@ -45,8 +47,13 @@ public class RadioGroup extends UIElement {
 
     @Override
     public void undo() {
-        radioGroup.check(radioInputStack.peek().getButton().getId());
         radioRedoStack.push(radioInputStack.pop());
+        try {
+            radioGroup.check(radioInputStack.peek().getButton().getId());
+        }
+        catch(EmptyStackException e) {
+            radioGroup.clearCheck();
+        }
     }
 
     @Override
@@ -68,14 +75,32 @@ public class RadioGroup extends UIElement {
         else return ((android.widget.RadioButton)radioGroup.findViewById(radioGroup.getCheckedRadioButtonId())).getText().toString();
     }
 
+    @Override
+    public void disable(boolean override) {
+        if(disableable || override) {
+            radioGroup.setEnabled(false);
+        }
+    }
+
+    @Override
+    public void enable() {
+        radioGroup.setEnabled(true);
+    }
+
+    public void setSelected(int childIndex) {
+        radioGroup.check(radioGroup.getChildAt(childIndex).getId());
+    }
+
     public class RadioButton extends UIElement {
         private final android.widget.RadioButton radioButton;
         private RadioButton(int datapointID, android.widget.RadioButton radioButton, UndoStack undoStack) {
             super(datapointID);
 
+            undoStack.addElement(this);
+
             this.radioButton = radioButton;
             radioButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if(isChecked) {
+                if(!stackChange && isChecked) {
                     undoStack.addTimestamp(this);
                     radioInputStack.push(this);
                 }
@@ -84,12 +109,16 @@ public class RadioGroup extends UIElement {
 
         @Override
         public void undo() {
+            stackChange = true;
             RadioGroup.this.undo();
+            stackChange = false;
         }
 
         @Override
         public void redo() {
+            stackChange = true;
             RadioGroup.this.redo();
+            stackChange = false;
         }
 
         public android.widget.RadioButton getButton() {
@@ -104,6 +133,18 @@ public class RadioGroup extends UIElement {
         @Override
         public boolean getIndependent() {
             return false;
+        }
+
+        @Override
+        public void disable(boolean override) {
+            if(disableable || override) {
+                radioButton.setEnabled(false);
+            }
+        }
+
+        @Override
+        public void enable() {
+            radioButton.setEnabled(true);
         }
     }
 

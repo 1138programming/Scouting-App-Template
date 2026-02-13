@@ -3,7 +3,7 @@ package com.scouting_app_template.datapointIDs;
 public enum DatapointID {
     other,
     startPos,
-    autonRedWin,
+    firstActiveHub,
     autonEnteredRed,
     autonEnteredNeutral,
     autonEnteredBlue,

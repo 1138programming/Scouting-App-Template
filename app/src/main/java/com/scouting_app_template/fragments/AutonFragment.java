@@ -42,9 +42,6 @@ public class AutonFragment extends DataFragment {
 
         undoStack.setMatchPhaseAuton();
 
-        ButtonTimeToggle testButton = new ButtonTimeToggle(NonDataIDs.Default.getID(),
-                binding.testButton, undoStack, requireContext().getColor(R.color.dark_red));
-
         ImageButton undoButton = new ImageButton(NonDataIDs.AutonUndo.getID(), binding.undoButton);
         undoButton.setOnClickFunction(undoStack::undo);
 
@@ -86,10 +83,6 @@ public class AutonFragment extends DataFragment {
 
     public void updateTeamNumber(int teamNumber) {
         binding.teamNumber.setText(String.valueOf(teamNumber));
-    }
-
-    public void robotDisabled() {
-
     }
 
     @NonNull
