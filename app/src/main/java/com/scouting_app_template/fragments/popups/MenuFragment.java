@@ -100,7 +100,7 @@ public class MenuFragment extends Fragment {
                 }
                 break;
             case practice:
-//                ftm.menuPractice();
+                ftm.menuPractice();
                 break;
             case outside:
                 ftm.menuClose();

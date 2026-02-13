@@ -1,5 +1,10 @@
 package com.scouting_app_template.fragments;
 
+import android.os.Bundle;
+import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.scouting_app_template.MainActivity;
@@ -9,9 +14,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 public class DataFragment extends Fragment {
-    protected final UndoStack undoStack;
+    protected UndoStack undoStack;
 
     public DataFragment() {
+
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         undoStack = new UndoStack((MainActivity)requireActivity());
     }
 

@@ -90,6 +90,7 @@
     <string name="cancel_button_title">Cancel</string>
     <string name="confirm_reset_title">Are you sure you want to reset?</string>
     <string name="confirm_reset_button">Reset</string>
+    <string name="confirm_practice_title">Are you sure you want to practice scout this match?</string>
 
     <!-- Bluetooth -->
     <string name="connected_status_title">Connected</string>

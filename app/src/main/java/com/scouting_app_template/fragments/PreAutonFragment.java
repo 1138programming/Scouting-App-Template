@@ -115,7 +115,7 @@ public class PreAutonFragment extends DataFragment {
     }
 
     /* When the fragment is completely created, we test so see
-    * if we are connected and if so we send send our basic info. */
+    * if we are connected and if so we send our basic info. */
     @Override
     public void onStart() {
         super.onStart();
@@ -296,8 +296,9 @@ public class PreAutonFragment extends DataFragment {
             Log.e(TAG, "Unable to parse device name");
             successfulDeviceNameParse = false;
         }
-
-
+        else {
+            successfulDeviceNameParse = false;
+        }
 
         if(successfulDeviceNameParse) switch(temp[temp.length-2]) {
             case "Red":
@@ -329,13 +330,13 @@ public class PreAutonFragment extends DataFragment {
         this.matchIndex = matchNumberSpinner.getSelectedIndex();
     }
 
-    public int getColor() {
+    public int getPos() {
         String color = teamColorButtons.getValue();
         if(color.equals("RED")) {
-            return 1;
+            return 0;
         }
         else {
-            return 0;
+            return 2;
         }
     }
     
@@ -348,5 +349,9 @@ public class PreAutonFragment extends DataFragment {
     }
     public void decrementMatchIndex() {
         matchIndex--;
+    }
+
+    public void setMatchPractice() {
+
     }
 }

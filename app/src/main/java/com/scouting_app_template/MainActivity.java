@@ -21,12 +21,14 @@ import android.widget.Toast;
 import com.scouting_app_template.bluetooth.BluetoothConnectedThread;
 import com.scouting_app_template.extras.MatchTiming;
 import com.scouting_app_template.extras.PermissionManager;
+import com.scouting_app_template.fragments.AdminFragment;
 import com.scouting_app_template.fragments.ArchiveFragment;
 import com.scouting_app_template.fragments.AutonFragment;
 import com.scouting_app_template.fragments.DataFragment;
 import com.scouting_app_template.fragments.FragmentTransManager;
 import com.scouting_app_template.fragments.popups.ArchiveConfirm;
 import com.scouting_app_template.fragments.popups.MenuFragment;
+import com.scouting_app_template.fragments.popups.PracticeConfirm;
 import com.scouting_app_template.fragments.popups.ResetFragment;
 import com.scouting_app_template.fragments.PostMatchFragment;
 import com.scouting_app_template.fragments.PreAutonFragment;
@@ -67,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
     public ArchiveConfirm archiveConfirmSubmit = new ArchiveConfirm();
     public MenuFragment menuFragment = new MenuFragment();
     public ResetFragment resetFragment = new ResetFragment();
+    public PracticeConfirm practiceConfirm = new PracticeConfirm();
+    public AdminFragment adminFragment = new AdminFragment();
     public final PermissionManager permissionManager = new PermissionManager(this);
     private enum gameState {
         preAuton,
@@ -111,6 +115,8 @@ public class MainActivity extends AppCompatActivity {
         fragments.add(confirmSubmit);
         fragments.add(resetFragment);
         fragments.add(menuFragment);
+        fragments.add(practiceConfirm);
+        fragments.add(adminFragment);
 
         ftm = new FragmentTransManager(fragments, this);
     }
@@ -168,6 +174,10 @@ public class MainActivity extends AppCompatActivity {
         fragments.add(menuFragment);
         resetFragment = new ResetFragment();
         fragments.add(resetFragment);
+        practiceConfirm = new PracticeConfirm();
+        fragments.add(practiceConfirm);
+        adminFragment = new AdminFragment();
+        fragments.add(adminFragment);
 
         ftm = new FragmentTransManager(fragments, this);
         currentState = gameState.preAuton;
