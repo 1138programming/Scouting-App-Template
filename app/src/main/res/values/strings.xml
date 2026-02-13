@@ -40,6 +40,7 @@
     <string name="menu_reset_title">Reset</string>
     <string name="menu_archive_title">Archive</string>
     <string name="menu_admin_title">Admin</string>
+    <string name="menu_practice_title">Practice</string>
 
     <!-- Admin Menu -->
     <string name="admin_title">Admin Menu</string>

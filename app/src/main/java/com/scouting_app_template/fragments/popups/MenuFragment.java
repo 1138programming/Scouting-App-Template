@@ -31,6 +31,7 @@ public class MenuFragment extends Fragment {
         reset,
         archive,
         admin,
+        practice,
         outside
     }
 
@@ -68,6 +69,7 @@ public class MenuFragment extends Fragment {
         binding.menuResetButton.setOnClickListener(View1 -> menuSelected(MenuOptions.reset));
         binding.menuArchiveButton.setOnClickListener(View1 -> menuSelected(MenuOptions.archive));
         binding.menuAdminButton.setOnClickListener(View1 -> menuSelected(MenuOptions.admin));
+        binding.menuPracticeButton.setOnClickListener(View1 -> menuSelected(MenuOptions.practice));
         binding.backgroundDetect.setOnClickListener(View1 -> menuSelected(MenuOptions.outside));
 
     }
@@ -97,6 +99,9 @@ public class MenuFragment extends Fragment {
                     adminSelected();
                 }
                 break;
+            case practice:
+//                ftm.menuPractice();
+                break;
             case outside:
                 ftm.menuClose();
         }
@@ -112,7 +117,7 @@ public class MenuFragment extends Fragment {
     }
 
     private void adminSelected() {
-
+        ftm.adminFragmentOpen();
     }
 
     @NonNull

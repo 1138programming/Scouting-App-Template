@@ -26,7 +26,6 @@ import com.scouting_app_template.fragments.AutonFragment;
 import com.scouting_app_template.fragments.DataFragment;
 import com.scouting_app_template.fragments.FragmentTransManager;
 import com.scouting_app_template.fragments.popups.ArchiveConfirm;
-import com.scouting_app_template.fragments.popups.BlockerFragment;
 import com.scouting_app_template.fragments.popups.MenuFragment;
 import com.scouting_app_template.fragments.popups.ResetFragment;
 import com.scouting_app_template.fragments.PostMatchFragment;
@@ -60,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
     public PreAutonFragment preAuton = new PreAutonFragment();
     public AutonFragment auton = new AutonFragment();
     public TeleopFragment teleop = new TeleopFragment();
-    public BlockerFragment blockerFragment = new BlockerFragment();
     public AutonStart autonStart = new AutonStart();
     public TeleopStart teleopStart = new TeleopStart();
     public PostMatchFragment postMatch = new PostMatchFragment();
@@ -105,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
         fragments.add(preAuton);
         fragments.add(auton);
         fragments.add(teleop);
-        fragments.add(blockerFragment);
         fragments.add(autonStart);
         fragments.add(teleopStart);
         fragments.add(postMatch);
@@ -155,8 +152,6 @@ public class MainActivity extends AppCompatActivity {
         fragments.add(auton);
         teleop = new TeleopFragment();
         fragments.add(teleop);
-        blockerFragment = new BlockerFragment();
-        fragments.add(blockerFragment);
         autonStart = new AutonStart();
         fragments.add(autonStart);
         teleopStart = new TeleopStart();
@@ -231,16 +226,6 @@ public class MainActivity extends AppCompatActivity {
             default:
                 Log.e(TAG, "Tried to get time while game is not active.");
                 return -1;
-        }
-    }
-
-    public void updateFragments() {
-        if((auton.isVisible() && currentState != gameState.autonStarted) ||
-                (teleop.isVisible() && currentState != gameState.teleopStarted)) {
-            runOnUiThread(ftm::showBlocker);
-        }
-        else {
-            ftm.hideBlocker();
         }
     }
 

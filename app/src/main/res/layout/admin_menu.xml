@@ -50,20 +50,6 @@
             app:layout_constraintStart_toEndOf="@+id/manualOverrideTitle"
             app:layout_constraintTop_toTopOf="@+id/manualOverrideTitle" />
 
-<!--        <CheckBox-->
-<!--            android:id="@+id/manualOverrideCheckbox"-->
-<!--            android:layout_width="120sp"-->
-<!--            android:layout_height="120sp"-->
-<!--            android:background="?android:attr/listChoiceIndicatorMultiple"-->
-<!--            android:backgroundTint="@color/chaminade_orange"-->
-<!--            android:button="@null"-->
-<!--            android:checked="false"-->
-<!--            app:layout_constraintBottom_toBottomOf="@+id/manualOverrideTitle"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toEndOf="@+id/manualOverrideTitle"-->
-<!--            app:layout_constraintTop_toTopOf="@+id/manualOverrideTitle" />-->
-
-
         <Button
             android:id="@+id/closeMenu"
             android:layout_width="400sp"

@@ -3,7 +3,7 @@ package com.scouting_app_template.bluetooth;
 /**
  * thrown when an error occurs in the middle of communication
  */
-public class CommErrorException extends Exception{
+public class CommErrorException extends Exception {
 
     public CommErrorException() {
 

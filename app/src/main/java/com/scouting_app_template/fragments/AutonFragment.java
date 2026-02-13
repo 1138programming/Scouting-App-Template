@@ -11,9 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.scouting_app_template.datapointIDs.NonDataIDs;
-import com.scouting_app_template.R;
 import com.scouting_app_template.UIElements.Button;
-import com.scouting_app_template.UIElements.ButtonTimeToggle;
 import com.scouting_app_template.UIElements.ImageButton;
 import com.scouting_app_template.databinding.AutonFragmentBinding;
 

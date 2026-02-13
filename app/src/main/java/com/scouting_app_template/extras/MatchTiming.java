@@ -26,8 +26,8 @@ public class MatchTiming {
         long timeToWait = autonLengthMs + timeBufferMs
                 - (Calendar.getInstance(Locale.US).getTimeInMillis() - mainActivity.auton.getAutonStart());
 
-        scheduler.schedule(runWithUpdate(task, mainActivity), timeToWait, TimeUnit.MILLISECONDS);
-        afterAutonFuture = scheduler.schedule(runWithUpdate(task, mainActivity), timeToWait, TimeUnit.MILLISECONDS);
+        scheduler.schedule(task, timeToWait, TimeUnit.MILLISECONDS);
+        afterAutonFuture = scheduler.schedule(task, timeToWait, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -39,16 +39,10 @@ public class MatchTiming {
         long timeToWait = teleopLengthMs + timeBufferMs
                 - (Calendar.getInstance(Locale.US).getTimeInMillis() - mainActivity.teleop.getTeleopStart());
 
-        scheduler.schedule(runWithUpdate(task, mainActivity), timeToWait, TimeUnit.MILLISECONDS);
-        afterTeleopFuture = scheduler.schedule(runWithUpdate(task, mainActivity), timeToWait, TimeUnit.MILLISECONDS);
+        scheduler.schedule(task, timeToWait, TimeUnit.MILLISECONDS);
+        afterTeleopFuture = scheduler.schedule(task, timeToWait, TimeUnit.MILLISECONDS);
     }
 
-    private static Runnable runWithUpdate(Runnable task, MainActivity mainActivity) {
-        return () -> {
-            task.run();
-            mainActivity.updateFragments();
-        };
-    }
 
     public static void cancel() {
         if(afterAutonFuture != null) afterAutonFuture.cancel(true);
