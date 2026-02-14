@@ -213,4 +213,17 @@ public class FragmentTransManager {
         hideFragment("PracticeConfirm");
         ft.commitNow();
     }
+
+    public void menuReplay() {
+        ft = fm.beginTransaction();
+        hideFragment("MenuFragment");
+        showFragment("ReplayConfirm");
+        ft.commitNow();
+    }
+
+    public void replayClose() {
+        ft = fm.beginTransaction();
+        hideFragment("ReplayConfirm");
+        ft.commitNow();
+    }
 }

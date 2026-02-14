@@ -26,7 +26,6 @@ public class MatchTiming {
         long timeToWait = autonLengthMs + timeBufferMs
                 - (Calendar.getInstance(Locale.US).getTimeInMillis() - mainActivity.auton.getAutonStart());
 
-        scheduler.schedule(task, timeToWait, TimeUnit.MILLISECONDS);
         afterAutonFuture = scheduler.schedule(task, timeToWait, TimeUnit.MILLISECONDS);
     }
 
@@ -39,10 +38,8 @@ public class MatchTiming {
         long timeToWait = teleopLengthMs + timeBufferMs
                 - (Calendar.getInstance(Locale.US).getTimeInMillis() - mainActivity.teleop.getTeleopStart());
 
-        scheduler.schedule(task, timeToWait, TimeUnit.MILLISECONDS);
         afterTeleopFuture = scheduler.schedule(task, timeToWait, TimeUnit.MILLISECONDS);
     }
-
 
     public static void cancel() {
         if(afterAutonFuture != null) afterAutonFuture.cancel(true);

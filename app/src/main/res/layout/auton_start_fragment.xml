@@ -45,7 +45,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/confirmResetPrompt"
+            android:id="@+id/confirmReplayPrompt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10sp"

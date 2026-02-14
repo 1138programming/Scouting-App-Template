@@ -47,7 +47,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/confirmResetPrompt"
+            android:id="@+id/confirmPracticePrompt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10sp"
@@ -74,10 +74,10 @@
 
         <Button
             android:id="@+id/confirmButton"
-            android:layout_width="160dp"
+            android:layout_width="190dp"
             android:layout_height="90dp"
             android:backgroundTint="@color/chaminade_orange"
-            android:text="@string/confirm_reset_button"
+            android:text="@string/confirm_practice_button"
             android:textColor="@color/background_default"
             android:textSize="32sp"
             app:layout_constraintBottom_toBottomOf="@+id/cancelButton"

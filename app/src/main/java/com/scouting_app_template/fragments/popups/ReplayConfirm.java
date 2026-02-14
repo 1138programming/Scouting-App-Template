@@ -13,18 +13,15 @@ import androidx.fragment.app.Fragment;
 
 import com.scouting_app_template.MainActivity;
 import com.scouting_app_template.UIElements.Button;
-import com.scouting_app_template.databinding.ConfirmPracticeFragmentBinding;
+import com.scouting_app_template.databinding.ConfirmReplayFragmentBinding;
 import com.scouting_app_template.datapointIDs.NonDataIDs;
-import com.scouting_app_template.fragments.PreAutonFragment;
 
-import java.util.Objects;
-
-public class PracticeConfirm extends Fragment {
-    ConfirmPracticeFragmentBinding binding;
+public class ReplayConfirm extends Fragment {
+    ConfirmReplayFragmentBinding binding;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.binding = ConfirmPracticeFragmentBinding.inflate(inflater,container,false);
+        this.binding = ConfirmReplayFragmentBinding.inflate(inflater,container,false);
         return this.binding.getRoot();
     }
 
@@ -34,17 +31,17 @@ public class PracticeConfirm extends Fragment {
 
         Button cancelButton = new Button(
                 NonDataIDs.PracticeClose.getID(), binding.cancelButton);
-        cancelButton.setOnClickFunction(() -> ftm.practiceClose());
+        cancelButton.setOnClickFunction(() -> ftm.replayClose());
 
         Button startButton = new Button(
                 NonDataIDs.PracticeConfirm.getID(), binding.confirmButton);
-        startButton.setOnClickFunction(() -> ftm.practiceClose());
-        startButton.setOnClickFunction(((MainActivity)requireActivity())::togglePractice);
+        startButton.setOnClickFunction(() -> ftm.replayClose());
+        startButton.setOnClickFunction(((MainActivity)requireActivity())::increaseReplayLevel);
     }
 
     @NonNull
     @Override
     public String toString() {
-        return "PracticeConfirm";
+        return "ReplayConfirm";
     }
 }

@@ -2,6 +2,7 @@ package com.scouting_app_template.fragments.popups;
 
 import static com.scouting_app_template.MainActivity.ftm;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,10 +12,12 @@ import android.view.ViewGroup;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
 
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
+import com.scouting_app_template.R;
 import com.scouting_app_template.bluetooth.CaptureAct;
 import com.scouting_app_template.bluetooth.QrBtConnThread;
 import com.scouting_app_template.MainActivity;
@@ -32,6 +35,7 @@ public class MenuFragment extends Fragment {
         archive,
         admin,
         practice,
+        replay,
         outside
     }
 
@@ -70,8 +74,8 @@ public class MenuFragment extends Fragment {
         binding.menuArchiveButton.setOnClickListener(View1 -> menuSelected(MenuOptions.archive));
         binding.menuAdminButton.setOnClickListener(View1 -> menuSelected(MenuOptions.admin));
         binding.menuPracticeButton.setOnClickListener(View1 -> menuSelected(MenuOptions.practice));
+        binding.menuReplayButton.setOnClickListener(View1 -> menuSelected(MenuOptions.replay));
         binding.backgroundDetect.setOnClickListener(View1 -> menuSelected(MenuOptions.outside));
-
     }
 
     private void menuSelected(MenuOptions selectedOption) {
@@ -100,7 +104,16 @@ public class MenuFragment extends Fragment {
                 }
                 break;
             case practice:
-                ftm.menuPractice();
+                if(((MainActivity)requireActivity()).getPractice()) {
+                    ((MainActivity)requireActivity()).togglePractice();
+                    ftm.menuClose();
+                }
+                else {
+                    ftm.menuPractice();
+                }
+                break;
+            case replay:
+                ftm.menuReplay();
                 break;
             case outside:
                 ftm.menuClose();
@@ -114,6 +127,15 @@ public class MenuFragment extends Fragment {
         options.setOrientationLocked(true);
         options.setCaptureActivity(CaptureAct.class);
         barLauncher.launch(options);
+    }
+
+    public void updatePractice(boolean practice) {
+        if(practice) {
+            binding.menuPracticeButton.setBackground(AppCompatResources.getDrawable(requireContext(), R.drawable.menu_selected_outline));
+        }
+        else {
+            binding.menuPracticeButton.setBackground(AppCompatResources.getDrawable(requireContext(), R.drawable.menu_outline));
+        }
     }
 
     private void adminSelected() {

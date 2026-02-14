@@ -47,7 +47,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/confirmResetPrompt"
+            android:id="@+id/confirmReplayPrompt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10sp"
@@ -67,7 +67,7 @@
             android:textColor="@color/off_white"
             android:textSize="32sp"
             app:layout_constraintBottom_toTopOf="@+id/cancelButton"
-            app:layout_constraintTop_toBottomOf="@+id/confirmResetPrompt"
+            app:layout_constraintTop_toBottomOf="@+id/confirmReplayPrompt"
             app:layout_constraintVertical_bias="0.15"
             tools:layout_editor_absoluteX="10dp" />
 
