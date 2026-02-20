@@ -22,11 +22,9 @@ public class UpdateScoutingInfo {
 
     private final File folderDir;
     private final String fileName = "scouterInfo.txt";
-    private final MainActivity mainActivity;
     boolean dirExists = true;
 
     public UpdateScoutingInfo(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
         this.folderDir = new File(mainActivity.getFilesDir().getPath() + "/scoutingData");
 
         if (!folderDir.isDirectory()) {
@@ -72,7 +70,7 @@ public class UpdateScoutingInfo {
             Log.e(TAG, "File doesn't exist", e);
             return "";
         }
-        
+
         InputStreamReader inputStreamReader = new InputStreamReader(fis, StandardCharsets.UTF_8);
         StringBuilder sb = new StringBuilder();
         try(BufferedReader reader = new BufferedReader((inputStreamReader))) {
@@ -101,6 +99,7 @@ public class UpdateScoutingInfo {
         String[] listsSplit = fileData.split("\n");
         String[] teamList = listsSplit[1].split(",");
         String[] matchBreakdown = listsSplit[2].split(",");
+        String compID = listsSplit[3];
 
         Arrays.sort(teamList, (s, s2) -> {
             int i = Integer.parseInt(s);
@@ -109,13 +108,14 @@ public class UpdateScoutingInfo {
         });
 
         String[] scoutersWithNum = listsSplit[0].split(",");
-            Arrays.sort(scoutersWithNum);
+        Arrays.sort(scoutersWithNum);
 
         ArrayList<ArrayList<CharSequence>> retVal = new ArrayList<>();
-            retVal.add(new ArrayList<>());
-            retVal.add(new ArrayList<>());
-            retVal.add(new ArrayList<>());
-            retVal.add(new ArrayList<>());
+        retVal.add(new ArrayList<>());
+        retVal.add(new ArrayList<>());
+        retVal.add(new ArrayList<>());
+        retVal.add(new ArrayList<>());
+        retVal.add(new ArrayList<>());
 
         for (String i : scoutersWithNum) {
             String[] split = i.split(":");
@@ -128,6 +128,7 @@ public class UpdateScoutingInfo {
         for(String matchNumber : matchBreakdown) {
             retVal.get(3).add(matchNumber);
         }
+        retVal.get(4).add(compID);
         return retVal;
     }
 }

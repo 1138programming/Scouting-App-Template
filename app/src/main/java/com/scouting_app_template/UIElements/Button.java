@@ -146,7 +146,7 @@ public class Button extends UIElement {
     /**
      * Called to increment value of the button. If the value exceeds a maximum
      * value it remains at that value.
-     * @return Returns a {@code boolean} for whether or not the button's value
+     * @return Returns a {@code boolean} for regardless of whether the button's value
      * was updated or not due to it being at max value.
      */
     private boolean increment() {

@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 
+import com.scouting_app_template.JSON.TemplateContext;
 import com.scouting_app_template.datapointIDs.DatapointID;
 import com.scouting_app_template.MainActivity;
 import com.scouting_app_template.R;
@@ -28,9 +29,6 @@ import com.scouting_app_template.databinding.PreAutonFragmentBinding;
 
 import static com.scouting_app_template.MainActivity.TAG;
 import static com.scouting_app_template.MainActivity.ftm;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +60,7 @@ public class PreAutonFragment extends DataFragment {
     }
 
     /* When the fragment binding is created we override the function so we
-    * can get the binding in this class to use. */
+     * can get the binding in this class to use. */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -76,18 +74,10 @@ public class PreAutonFragment extends DataFragment {
 
         scouterNameSpinner = new Spinner(NonDataIDs.ScouterName.getID(), binding.nameOfScouterSpinner, true);
         scouterNameSpinner.setOnClickFunction(() -> ((MainActivity) requireContext()).updateTabletInformation());
-        scouterNameSpinner.setOnClickFunction(this::updateIndices);
-        if(scouterIndex < scouterNameSpinner.getLength()) {
-            scouterNameSpinner.setIndex(scouterIndex);
-        }
 
         matchNumberSpinner = new Spinner(NonDataIDs.MatchNumber.getID(), binding.matchNumberSpinner, false);
         matchNumberSpinner.setOnClickFunction(() -> ((MainActivity) requireContext()).updateTabletInformation());
-        matchNumberSpinner.setOnClickFunction(this::updateIndices);
         updateMatches();
-        if(matchIndex < matchNumberSpinner.getLength()) {
-            matchNumberSpinner.setIndex(matchIndex);
-        }
 
         teamColorButtons = new RadioGroup(NonDataIDs.TeamColor.getID(), binding.teamColorSwitch);
         teamColorButtons.setOnClickFunction(this::updateTeamColor);
@@ -99,14 +89,14 @@ public class PreAutonFragment extends DataFragment {
         RadioCheckboxGroup startingPositionGroup = new RadioCheckboxGroup(DatapointID.startPos.getID());
 
         RadioGroup startingPosition = new RadioGroup(NonDataIDs.StartPosRadio.getID(), binding.startingLocation);
-            startingPositionGroup.addElement(startingPosition);
+        startingPositionGroup.addElement(startingPosition);
 
         Checkbox noShowCheckbox = new Checkbox(NonDataIDs.NoShow.getID(), binding.noShowCheckbox, true, "noShow");
-            startingPositionGroup.addElement(noShowCheckbox);
+        startingPositionGroup.addElement(noShowCheckbox);
 
-            startingPositionGroup.elementSelected(noShowCheckbox);
+        startingPositionGroup.elementSelected(noShowCheckbox);
 
-            undoStack.addElement(startingPositionGroup);
+        undoStack.addElement(startingPositionGroup);
 
         Button nextButton = new Button(NonDataIDs.PreAutonNext.getID(), binding.nextButton);
         nextButton.setOnClickFunction(() -> ftm.preAutonNext());
@@ -118,16 +108,26 @@ public class PreAutonFragment extends DataFragment {
     }
 
     /* When the fragment is completely created, we test so see
-    * if we are connected and if so we send our basic info. */
+     * if we are connected and if so we send our basic info. */
     @Override
     public void onStart() {
         super.onStart();
         ((MainActivity) requireActivity()).updateBtScoutingInfo();
         attemptDeviceNameParse();
+
+        if(scouterIndex < scouterNameSpinner.getLength()) {
+            scouterNameSpinner.setIndex(scouterIndex);
+        }
+        scouterNameSpinner.setOnClickFunction(this::updateScouterIndex);
+
+        if(matchIndex < matchNumberSpinner.getLength()) {
+            matchNumberSpinner.setIndex(matchIndex);
+        }
+        matchNumberSpinner.setOnClickFunction(this::updateMatchIndex);
     }
 
     /* Makes it so the toString() function for this class
-    * return the name of the class. */
+     * return the name of the class. */
     @NonNull
     @Override
     public String toString() {
@@ -237,8 +237,9 @@ public class PreAutonFragment extends DataFragment {
 
     public void updateMatches() {
         int replayLevel = ((MainActivity)requireActivity()).getReplayLevel();
-
+        int currIndex = matchNumberSpinner.getSelectedIndex();
         matchNumberSpinner.updateSpinnerList(generateMatches(qualNum, playoffNum, finalsNum, replayLevel), requireContext());
+        matchNumberSpinner.setIndex(currIndex);
     }
 
     private void updateMatches(int quals, int playoffs, int finals) {
@@ -266,22 +267,21 @@ public class PreAutonFragment extends DataFragment {
         return scouterNameSpinner.getValue() + " Match #"+matchNumberSpinner.getValue();
     }
 
-    public JSONObject getBaseJSON() throws JSONException {
-        JSONObject baseJson = new JSONObject();
+    public void updateTemplateContext() {
+        TemplateContext context = TemplateContext.getInstance();
 
         int scouterNameIndex = scouterNameSpinner.getSelectedIndex();
         if(scouterNameIndex >= 0) {
-            baseJson.put("ScouterID", scouterIDs.get(scouterNameIndex).toString());
+            context.setScouterID(scouterIDs.get(scouterNameIndex));
         }
         else {
-            baseJson.put("ScouterID", -1);
+            context.setScouterID(-1);
         }
 
-        baseJson.put("MatchID", getMatch());
-        try {
-            baseJson.put("TeamID", teamNumberSpinner.getValue());
-        } catch (NullPointerException e) {
-            baseJson.put("TeamID", "0");
+        context.setMatchID(getMatch());
+        String teamNumber = teamNumberSpinner.getValue();
+        if(!teamNumber.isEmpty()) {
+            context.setTeamID(Integer.parseInt(teamNumber));
         }
 
         if(successfulDeviceNameParse) {
@@ -300,21 +300,19 @@ public class PreAutonFragment extends DataFragment {
              */
 
             int allianceID = (selectedColor == 1) ? driverStationNumber : driverStationNumber + 3;
-            baseJson.put("AllianceID", allianceID);
+            context.setAllianceID(allianceID);
         }
         else {
 
             String allianceName = teamColorButtons.getValue();
             switch (allianceName) {
                 case "RED":
-                    baseJson.put("AllianceID", 7);
+                    context.setAllianceID(7);
                     break;
                 case "BLUE":
-                    baseJson.put("AllianceID", 8);
+                    context.setAllianceID(8);
             }
         }
-
-        return baseJson;
     }
 
     private void attemptDeviceNameParse() {
@@ -328,20 +326,20 @@ public class PreAutonFragment extends DataFragment {
                 throw new NumberFormatException("Drive station number is outside range");
             }
         } catch (NumberFormatException e) {
-            Log.e(TAG, "Unable to parse device name");
+            Log.e(TAG, "Unable to parse device name: ", e);
             successfulDeviceNameParse = false;
         }
         else {
             successfulDeviceNameParse = false;
         }
 
-        if(successfulDeviceNameParse) switch(temp[temp.length-2]) {
+        if (successfulDeviceNameParse) switch(temp[temp.length-2]) {
             case "Red":
-                selectedColor = 1;
+                selectedColor = 0;
                 lockColor();
                 break;
             case "Blue":
-                selectedColor = 0;
+                selectedColor = 1;
                 lockColor();
                 break;
             default:
@@ -360,8 +358,11 @@ public class PreAutonFragment extends DataFragment {
         binding.teamColorSwitch.getChildAt(1).setEnabled(false);
     }
 
-    private void updateIndices() {
+    private void updateScouterIndex() {
         this.scouterIndex = scouterNameSpinner.getSelectedIndex();
+    }
+
+    private void updateMatchIndex() {
         this.matchIndex = matchNumberSpinner.getSelectedIndex();
     }
 
@@ -374,7 +375,7 @@ public class PreAutonFragment extends DataFragment {
             return 2;
         }
     }
-    
+
     public int getScouterIndex() {
         return scouterIndex;
     }

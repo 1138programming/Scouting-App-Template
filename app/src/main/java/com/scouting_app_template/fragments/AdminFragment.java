@@ -10,14 +10,20 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.scouting_app_template.JSON.TemplateContext;
+import com.scouting_app_template.R;
 import com.scouting_app_template.UIElements.Button;
+import com.scouting_app_template.UIElements.Spinner;
 import com.scouting_app_template.databinding.AdminFragmentBinding;
 import com.scouting_app_template.datapointIDs.NonDataIDs;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class AdminFragment extends DataFragment {
     AdminFragmentBinding binding;
+    Spinner compIDSpinner;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -33,6 +39,21 @@ public class AdminFragment extends DataFragment {
         Button closeButton = new Button(
                 NonDataIDs.PracticeClose.getID(), binding.closeMenu);
         closeButton.setOnClickFunction(() -> ftm.adminFragmentBack());
+        closeButton.setOnClickFunction(this::saveUpdates);
+
+        List<CharSequence> compIDs = Arrays.asList(requireActivity().getResources().getStringArray(R.array.compids_array));
+        compIDSpinner = new Spinner(
+                NonDataIDs.AdminCompIDSpinner.getID(),
+                binding.compIDSpinner,
+                true);
+        compIDSpinner.updateSpinnerList(new ArrayList<>(compIDs), requireContext());
+    }
+
+    private void saveUpdates() {
+        String compID = compIDSpinner.getValue();
+        if(!(compID.isEmpty() || compID.equals("Other"))) {
+            TemplateContext.getInstance().setCompID(compID);
+        }
     }
 
     @NonNull

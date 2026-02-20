@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.scouting_app_template.fragments.AutonFragment;
-import com.scouting_app_template.MainActivity;
 import com.scouting_app_template.UIElements.Button;
 
 import static com.scouting_app_template.MainActivity.ftm;

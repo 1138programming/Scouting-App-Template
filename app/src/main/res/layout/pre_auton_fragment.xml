@@ -160,7 +160,6 @@ tools:context=".fragments.PreAutonFragment">
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/versionNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -211,7 +210,6 @@ tools:context=".fragments.PreAutonFragment">
                 android:textSize="20sp" />
 
             <RadioButton
-                android:id="@+id/team_red"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginTop="1dp"

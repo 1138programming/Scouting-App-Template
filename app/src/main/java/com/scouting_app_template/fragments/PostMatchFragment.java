@@ -12,14 +12,9 @@ import androidx.annotation.Nullable;
 
 import com.scouting_app_template.datapointIDs.DatapointID;
 import com.scouting_app_template.datapointIDs.NonDataIDs;
-import com.scouting_app_template.JSON.JSONManager;
-import com.scouting_app_template.MainActivity;
 import com.scouting_app_template.UIElements.Button;
 import com.scouting_app_template.UIElements.SliderElement;
 import com.scouting_app_template.databinding.PostMatchFragmentBinding;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 
 
 public class PostMatchFragment extends DataFragment {
@@ -57,19 +52,5 @@ public class PostMatchFragment extends DataFragment {
     @Override
     public String toString() {
         return "PostMatchFragment";
-    }
-
-    @Override
-    public JSONArray getFragmentMatchData() throws JSONException {
-        JSONManager jsonManager = new JSONManager(((MainActivity)requireActivity()).getBaseJSON());
-        JSONArray jsonCollection = super.getFragmentMatchData();
-
-        JSONArray jsonArray = jsonManager.getJSON();
-
-        for (int i = 0; i < jsonArray.length(); i++) {
-            jsonCollection.put(jsonArray.getJSONObject(i));
-        }
-
-        return jsonCollection;
     }
 }

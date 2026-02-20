@@ -47,7 +47,6 @@
         app:tint="@color/chaminade_orange"/>
 
     <TextView
-        android:id="@+id/undo_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/undo_title"
@@ -70,7 +69,6 @@
         app:tint="@color/chaminade_orange" />
 
     <TextView
-        android:id="@+id/redo_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/redo_title"
@@ -91,7 +89,6 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
-        android:id="@+id/testButton"
         android:layout_width="240sp"
         android:layout_height="120sp"
         android:text="Test 0"

@@ -15,9 +15,6 @@ import com.scouting_app_template.MainActivity;
 import com.scouting_app_template.UIElements.Button;
 import com.scouting_app_template.databinding.ConfirmPracticeFragmentBinding;
 import com.scouting_app_template.datapointIDs.NonDataIDs;
-import com.scouting_app_template.fragments.PreAutonFragment;
-
-import java.util.Objects;
 
 public class PracticeConfirm extends Fragment {
     ConfirmPracticeFragmentBinding binding;

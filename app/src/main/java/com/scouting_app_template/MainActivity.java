@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.scouting_app_template.JSON.TemplateContext;
 import com.scouting_app_template.bluetooth.BluetoothConnectedThread;
 import com.scouting_app_template.extras.MatchTiming;
 import com.scouting_app_template.extras.PermissionManager;
@@ -139,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
         this.connectedThread = connectedThread;
     }
     public void updateTabletInformation() {
+        preAuton.updateTemplateContext();
         if(!connectivity) return;
         byte[] info = preAuton.getTabletInformation();
         connectedThread.sendInformation(info, 2);
@@ -150,11 +152,10 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<ArrayList<CharSequence>> splitData = (new UpdateScoutingInfo(this)).getSplitFileData();
         if (!splitData.isEmpty() && !splitData.get(0).isEmpty()) {
             preAuton.setScoutingInfo(splitData);
+            TemplateContext.getInstance().setCompID((String)splitData.get(4).get(0));
         }
     }
-    public JSONObject getBaseJSON() throws JSONException {
-        return preAuton.getBaseJSON();
-    }
+
     public void recreateFragments() {
         currentState = gameState.preAuton;
         MatchTiming.cancel();
@@ -192,6 +193,7 @@ public class MainActivity extends AppCompatActivity {
         fragments.add(adminFragment);
 
         ftm = new FragmentTransManager(fragments, this);
+        updateTabletInformation();
     }
     public void sendSavedData(File file) {
         if(connectivity) {

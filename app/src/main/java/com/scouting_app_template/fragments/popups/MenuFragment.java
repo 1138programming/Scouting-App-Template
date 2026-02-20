@@ -2,7 +2,6 @@ package com.scouting_app_template.fragments.popups;
 
 import static com.scouting_app_template.MainActivity.ftm;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;

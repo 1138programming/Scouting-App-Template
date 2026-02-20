@@ -13,18 +13,13 @@ public class SliderElement extends UIElement {
         undoStack.addElement(this);
     }
 
-    @Override
-    public void clicked() {
-        super.clicked();
-    }
-
     public void setStepSize(float stepSize) {
         slider.setStepSize(stepSize);
     }
 
     @Override
     public String getValue() {
-        return Float.toString(slider.getValue());
+        return Integer.toString((int)slider.getValue());
     }
 
     public void setLabels(String[] labels) {
@@ -35,3 +30,4 @@ public class SliderElement extends UIElement {
         slider.setLabelFormatter(value -> labels[(int)value]);
     }
 }
+
