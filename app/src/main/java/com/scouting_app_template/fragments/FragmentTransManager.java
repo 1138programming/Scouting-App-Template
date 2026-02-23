@@ -226,4 +226,19 @@ public class FragmentTransManager {
         hideFragment("ReplayConfirm");
         ft.commitNow();
     }
+
+    public void qrCodeOpen() {
+        ft = fm.beginTransaction();
+        hideFragment("MenuFragment");
+        hideFragment("PreAutonFragment");
+        showFragment("QrCodeFragment");
+        ft.commitNow();
+    }
+
+    public void qrCodeClose() {
+        ft = fm.beginTransaction();
+        hideFragment("QrCodeFragment");
+        showFragment("PreAutonFragment");
+        ft.commitNow();
+    }
 }

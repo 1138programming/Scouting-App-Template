@@ -1,5 +1,6 @@
 package com.scouting_app_template.fragments.popups;
 
+import static com.scouting_app_template.MainActivity.TAG;
 import static com.scouting_app_template.MainActivity.ftm;
 
 import android.os.Bundle;
@@ -35,24 +36,26 @@ public class MenuFragment extends Fragment {
         admin,
         practice,
         replay,
+        qrcode,
         outside
     }
 
     public MenuFragment() {
-         barLauncher = registerForActivityResult(new ScanContract(), result -> {
+        barLauncher = registerForActivityResult(new ScanContract(), result -> {
             if(result.getContents() == null) {
-                Log.e("1138 SCApp", "QR-Code empty");
+                Log.e(TAG, "QR-Code is empty");
             }
             else {
                 String contents = result.getContents();
                 String[] results = contents.split(";");
                 if(results.length == 2) {
                     String log = "MAC Address: " + results[0] + "  Port: " + results[1];
-                    Log.d("1138 SCApp", log);
+                    Log.d(TAG, log);
                     QrBtConnThread.bluetoothConnect(results[0], Integer.parseInt(results[1]), (MainActivity) requireActivity());
+                    ((MainActivity)requireActivity()).setQrCode(contents);
                 }
                 else {
-                    Log.e("1138 SCApp", "Error parsing QR-Code");
+                    Log.e(TAG, "Error parsing QR-Code");
                 }
             }
         });
@@ -74,6 +77,7 @@ public class MenuFragment extends Fragment {
         binding.menuAdminButton.setOnClickListener(View1 -> menuSelected(MenuOptions.admin));
         binding.menuPracticeButton.setOnClickListener(View1 -> menuSelected(MenuOptions.practice));
         binding.menuReplayButton.setOnClickListener(View1 -> menuSelected(MenuOptions.replay));
+        binding.menuQrCodeButton.setOnClickListener(View1 -> menuSelected(MenuOptions.qrcode));
         binding.backgroundDetect.setOnClickListener(View1 -> menuSelected(MenuOptions.outside));
     }
 
@@ -113,6 +117,9 @@ public class MenuFragment extends Fragment {
                 break;
             case replay:
                 ftm.menuReplay();
+                break;
+            case qrcode:
+                ftm.qrCodeOpen();
                 break;
             case outside:
                 ftm.menuClose();
